@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load helpers %}
+
+{% block 'breadcrumb' %}
+{{ block.super }}
+<li class="breadcrumb-item active">Repositories</li>
+{% endblock %}
+
+{% block 'content' %}
+<div class="row">
+  <div class="col-sm-12 mb-3">
+    <h1>Repositories</h1>
+  </div>
+</div>
+<div class="fade-in row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-6">
+            <h4>Total Usage: {{current_total_usage|humanmegabytes}}</h4>
+          </div>
+          <div class="col-sm-6 text-right">
+            <button class="btn btn-primary btn-sm" data-url="{% url 'repository-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
+            </svg> New Repo</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-responsive-sm">
+          <thead>
+            <th>Name</th>
+            <th>Usage</th>
+            <th>SSH-Keys</th>
+            <th>Security</th>
+            <th>Access</th>
+            <th>Modified</th>
+            <th style="width: 200px">Actions</th>
+          </thead>
+          <tbody>
+            {% for object in object_list %}
+            <tr>
+            <td>
+              <strong><a href="{% url 'repository-detail' object.id %}">{{object.name}}</a></strong>
+              {% if not object.is_created %}
+              <span class="badge badge-light">not created</span>
+              {% endif %}
+            </td>
+            <td>{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</td>
+            <td>
+            {% for key in object.ssh_keys.all %}
+              <span class="badge badge-secondary" style="font-size: 0.9em">{{key.name}}</span>
+            {% endfor %}
+            </td>
+            <td>
+            <svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
+            </svg>
+            </td>
+            <td>{{object.get_last_access}}</td>
+            <td>{{object.get_last_updated}}</td>
+            <td class="text-right"><button class="btn btn-secondary btn-sm" data-url="{% url 'repository-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+            </svg></button>
+            <a href="{% url 'repository-detail' object.id %}" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="Statistic"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-chart-line"></use>
+            </svg></a>
+            <button class="btn btn-secondary btn-sm" data-url="{% url 'repository-delete' object.id %}" data-toggle="modal" data-target="#modal"  data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+            </svg></button>
+          </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

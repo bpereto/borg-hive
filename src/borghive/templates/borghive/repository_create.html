@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+<form method="post" action="{% url 'repository-create' %}">
+  {% csrf_token %}
+  <div class="modal-header">
+   <h4 class="modal-title">Create Repository</h4>
+   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  </div>
+  <div id="form-modal-body" class="modal-body">
+     {{ form|crispy}}
+  </div>
+  <div class="modal-footer">
+   <button type="submit" class="btn btn-primary btn-sm">Create Repo</button>
+  </div>
+</form>

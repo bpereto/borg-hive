@@ -1,0 +1,35 @@
+FROM python:3.8-slim
+MAINTAINER bpereto
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTEapp 1
+ENV PYTHONUNBUFFERED 1
+
+# Install Borg & SSH
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup
+
+RUN useradd -rm -u 1000 borg && \
+    mkdir /repos /run/sshd && \
+    chown borg.borg /repos
+ADD borg/sshd_config /etc/ssh/sshd_config
+ADD borg/pam-sshd.conf /etc/pam.d/sshd
+
+ADD borg/authorized-keys-check /sbin/
+RUN chown root.root /sbin/authorized-keys-check
+
+RUN ln -sf /config/passwd /etc/passwd
+RUN ln -sf /config/shadow /etc/shadow
+
+ADD borg/init.sh /init.sh
+
+RUN mkdir /app
+WORKDIR /app
+COPY requirements.txt /app/
+COPY borg/requirements.txt /app/borg/requirements.txt
+RUN pip install -r requirements.txt -r borg/requirements.txt
+COPY src /app/
+
+EXPOSE 22
+VOLUME ["/repos"]
+
+CMD ["/init.sh"]

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load helpers %}
+
+{% block 'breadcrumb' %}
+{{ block.super }}
+<li class="breadcrumb-item">Repositories</li>
+<li class="breadcrumb-item active">Repository: {{object.name}}</li>
+{% endblock %}
+
+{% block 'content' %}
+<div class="row">
+  <div class="col-sm-10 mb-3">
+    <h1>Repository: {{object.name}}</h1>
+  </div>
+  <div class="col-sm-2 text-right">
+
+  </div>
+</div>
+
+<div class="fade-in row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
+              <small class="text-muted">Current Usage</small><br>
+              <strong class="h4">{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</strong>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-2">
+            <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
+              <small class="text-muted">Last Access</small><br>
+              <strong class="h4">{{object.get_last_repository_statistic.last_access}}</strong>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-2">
+            <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
+              <small class="text-muted">Last Modified</small><br>
+              <strong class="h4">{{object.get_last_repository_statistic.last_update}}</strong>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-6 text-right">
+            <form method=post>
+            {% csrf_token %}
+            <button type="submit" name="refresh" class="btn btn-primary btn-sm"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-reload"></use>
+            </svg> Refresh</button>
+            <button type="button" class="btn btn-danger btn-sm" data-url="{% url 'repository-delete' object.id %}" data-toggle="modal" data-target="#modal"  data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+            </svg></button>
+        </form>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12" style="height: 500px;">
+            <canvas id="canvas-repository-usage"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fade-in row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h4>Events</h4>
+      </div>
+      <div class="card-body">
+          Todo
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block 'script' %}
+<script src="/static/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js"></script>
+
+<script>
+var repoUsageLineChart = new Chart(document.getElementById('canvas-repository-usage').getContext('2d'), {
+  type: 'line',
+  data: {
+    datasets: [{
+      data: {{ chart_repo_usage_data|safe }},
+      backgroundColor: [
+        '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+      ],
+      label: 'Usage'
+    }],
+    labels: {{ chart_repo_usage_labels|safe }}
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    annotation: {
+        annotations: [{
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y-axis-0',
+            value: '10',
+            borderColor: 'tomato',
+            borderWidth: 1
+        }],
+        drawTime: "afterDraw" // (default)
+    }
+  }
+});
+</script>
+{% endblock %}
+
+{% block 'css' %}
+<link href="/static/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+{% endblock %}

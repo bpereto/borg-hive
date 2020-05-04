@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v3.0.0
+* @link https://coreui.io
+* Copyright (c) 2020 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+<html lang="en">
+  <head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Borghive - Manage borgbackup">
+    <title>{% block 'title' %}{% endblock %}</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/static/assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/static/assets/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Main styles for this application-->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% block 'css' %}{% endblock %}
+  </head>
+  <body class="c-app">
+    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+      <div class="c-sidebar-brand d-lg-down-none">
+        <svg class="c-icon c-icon-xl">
+          <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-audio-spectrum"></use>
+        </svg>
+        <span style="font-weight: bold; font-size: 1.5em" class="ml-2">Borg Hive</span>
+      </div>
+      {% include "navigation.html" %}
+      <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+    </div>
+    <div class="c-wrapper c-fixed-components">
+      <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
+        <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
+          <svg class="c-icon c-icon-lg">
+            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+          </svg>
+        </button><a class="c-header-brand d-lg-none" href="#">
+          <svg width="118" height="46" alt="Logo">
+            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-audio-spectrum"></use>
+          </svg></a>
+        <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
+          <svg class="c-icon c-icon-lg">
+            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+          </svg>
+        </button>
+        {% include "navigation-header.html" %}
+        <div class="c-subheader px-3">
+          <!-- Breadcrumb-->
+          <ol class="breadcrumb border-0 m-0">
+            {% block 'breadcrumb' %}
+            <!-- Breadcrumb Menu-->
+            {% endblock %}
+          </ol>
+        </div>
+      </header>
+      <div class="c-body">
+        <main class="c-main">
+          <div class="container-fluid">
+            {% if messages %}
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+            {% endif %}
+            {% include "messages.html" %}
+            {% block 'content' %}{% endblock %}
+
+            <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+             <div class="modal-dialog">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h4 class="modal-title">Loading...</h4>
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 </div>
+                 <div id="form-modal-body" class="modal-body">
+                   loading ...
+                 </div>
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                 </div>
+               </div>
+             </div>
+            </div>
+
+          </div>
+        </main>
+        <footer class="c-footer">
+
+        </footer>
+      </div>
+    </div>
+    <!-- CoreUI and necessary plugins-->
+    <script src="/static/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+    <!-- App -->
+    <script src="/static/js/app.js"></script>
+    <!--[if IE]><!-->
+    <script src="/static/vendors/@coreui/icons/js/svgxuse.min.js"></script>
+    <!--<![endif]-->
+    {% block 'script' %}{% endblock %}
+
+  </body>
+</html>

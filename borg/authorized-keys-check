@@ -1,0 +1,56 @@
+#!/bin/env python3
+
+import sys
+import logging
+
+import mysql.connector
+from mysql.connector import Error
+from environs import Env
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+LOGGER = logging.getLogger()
+
+env = Env()
+MYSQL_HOST = env('MYSQL_HOST', 'db')
+MYSQL_DATABASE = env('MYSQL_DATABASE', 'borghive')
+MYSQL_USER = env('MYSQL_USER', 'borghive')
+MYSQL_PASSWORD = env('MYSQL_PASSWORD', 'borghive')
+BORGHIVE_REPO_PATH = env('BORGHIVE_REPO_PATH', '/repos')
+
+LOGGER.debug(sys.argv)
+if len(sys.argv) != 2:
+    raise Exception('Invalid number of arguments')
+
+USER = sys.argv[1]
+#KEY = sys.argv[2]
+
+SELECT_STATEMENT = 'SELECT `borghive_sshpublickey`.`id`, `borghive_sshpublickey`.`name`, `borghive_sshpublickey`.`public_key` FROM `borghive_sshpublickey` INNER JOIN `borghive_repository_keys` ON (`borghive_sshpublickey`.`id` = `borghive_repository_keys`.`sshpublickey_id`) INNER JOIN `borghive_repository` ON (`borghive_repository_keys`.`repository_id` = `borghive_repository`.`id`) INNER JOIN `borghive_repositoryuser` ON (`borghive_repository`.`user_id` = `borghive_repositoryuser`.`id`) WHERE `borghive_repositoryuser`.`name` = "{}"'.format(USER)
+
+try:
+    connection = mysql.connector.connect(host=MYSQL_HOST,
+                                         database=MYSQL_DATABASE,
+                                         user=MYSQL_USER,
+                                         password=MYSQL_PASSWORD)
+
+    query = SELECT_STATEMENT.format(USER)
+    LOGGER.debug(query)
+
+    cursor = connection.cursor()
+    cursor.execute(query)
+    records = cursor.fetchall()
+    LOGGER.debug("results found: %s", cursor.rowcount)
+
+    for row in records:
+        repo_path = os.path.join(BORGHIVE_REPO_PATH, )
+        key_cmd = 'command="borg serve --restrict-to-repository {}",restrict '.format(BORGHIVE_REPO_PATH)
+        # extend borg serve information
+        print(key_cmd + row[2])
+
+except Error as e:
+    LOGGER.error("Error reading data from MySQL table", e)
+    sys.exit(1)
+finally:
+    if (connection.is_connected()):
+        connection.close()
+        cursor.close()
+        LOGGER.debug("MySQL connection is closed")

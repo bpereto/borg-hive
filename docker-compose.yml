@@ -1,0 +1,69 @@
+version: '3'
+services:
+  db:
+    image: mariadb:10.5
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - ./src:/app
+      - borg-config:/config
+      - borg-repos:/repos
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  worker:
+    build: .
+    command: celery worker -A core -l DEBUG
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - ./src:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  borg:
+    build:
+      context: .
+      dockerfile: Dockerfile.borg
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - borg-repos:/repos
+      - borg-config:/config
+      - ./src:/app
+    ports:
+      - "22:22"
+
+  rabbitmq:
+    image: rabbitmq:latest
+
+volumes:
+  mariadb-data:
+  borg-repos:
+  borg-config:

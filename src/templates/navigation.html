@@ -1,0 +1,13 @@
+
+{% block 'navigation' %}
+<ul class="c-sidebar-nav">
+  <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'repository-list' %}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+      </svg> Repositories</a></li>
+  <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{% url 'key-list' %}">
+      <svg class="c-sidebar-nav-icon">
+        <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
+      </svg> SSH Keys</a></li>
+</ul>
+{% endblock %}

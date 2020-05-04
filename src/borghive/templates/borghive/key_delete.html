@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+<form method="post" action="{% url 'key-delete' object.id %}">
+  {% csrf_token %}
+  <div class="modal-header">
+   <h4 class="modal-title">Delete SSH-Key</h4>
+   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  </div>
+  <div id="form-modal-body" class="modal-body">
+     Do you really want to delete the Key: <strong>{{object.name}}</strong>?
+  </div>
+  <div class="modal-footer">
+   <button type="submit" class="btn btn-danger btn-sm">Delete SSH-Key</button>
+  </div>
+</form>
