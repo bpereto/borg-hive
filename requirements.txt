@@ -6,6 +6,7 @@ django-extensions
 django-crispy-forms
 django-login-required-middleware
 sshpubkeys
-rules
+django-extensions
+django-celery-beat
 
 celery

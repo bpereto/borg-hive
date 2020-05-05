@@ -15,9 +15,9 @@ AddressFamily any
 ListenAddress 0.0.0.0
 ListenAddress ::
 
-HostKey /etc/ssh/ssh_host_rsa_key
-HostKey /etc/ssh/ssh_host_ecdsa_key
-HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /config/ssh_host_rsa_key
+HostKey /config/ssh_host_ecdsa_key
+HostKey /config/ssh/ssh_host_ed25519_key
 
 # Logging
 SyslogFacility AUTH

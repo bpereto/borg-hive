@@ -78,8 +78,10 @@ class Repository(BaseModel):
         '''
         check if repository is encrypted
         '''
-        if is_created:
-            return False
+        if self.is_created():
+            config = os.path.join(self.get_repo_path(), 'config')
+            with open(config, 'r') as f:
+                return'key =' in f.read()
         return False
 
     def get_last_access(self):

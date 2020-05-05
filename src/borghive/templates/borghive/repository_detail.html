@@ -55,6 +55,34 @@
       </div>
       <div class="card-body">
         <div class="row">
+          <div class="col-md-12" style="font-size: 1.1em">
+            <p>Initialize the repository:</p>
+
+            <p><code>
+$ borg init --encryption=repokey-blake2 {{object.repo_user.name}}@{{request.get_host}}:{{object.name}}
+            </code></p>
+
+            <p>SSH-Host fingerprints to validate:</p>
+
+            <p><code>
+            {% for key_type, fingerprint in key_info.items %}
+              {{key_type | upper}}: {{fingerprint}}<br>
+            {% endfor %}
+            </code></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fade-in row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h4><a data-toggle="collapse" href="#statistic" role="button" aria-expanded="false" aria-controls="statistic">Statistic</a></h4>
+      </div>
+      <div id="statistic" class="card-body collapse">
+        <div class="row">
           <div class="col-md-12" style="height: 500px;">
             <canvas id="canvas-repository-usage"></canvas>
           </div>
@@ -67,9 +95,10 @@
   <div class="col-sm-12">
     <div class="card">
       <div class="card-header">
-        <h4>Events</h4>
+        <h4><a data-toggle="collapse" href="#events" role="button" aria-expanded="false" aria-controls="events">
+Events</a></h4>
       </div>
-      <div class="card-body">
+      <div id="events" class="card-body collapse">
           Todo
       </div>
     </div>

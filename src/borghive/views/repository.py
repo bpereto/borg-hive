@@ -13,6 +13,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from borghive.models import Repository, RepositoryUser
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
 from borghive.mixins import OwnerFilterMixin
+from borghive.lib.keys import get_ssh_host_key_infos
 
 from django.utils import timezone
 import datetime
@@ -62,6 +63,7 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.chart_data_usage())
+        context['key_info'] = get_ssh_host_key_infos()
         return context
 
     def post(self, request, pk, **kwargs):

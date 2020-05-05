@@ -55,8 +55,8 @@
             {% endfor %}
             </td>
             <td>
-            <svg class="c-icon">
-              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
+            <svg class="c-icon" data-toggle="tooltip" data-placement="top" data-original-title="{% if object.is_encrypted %}encrypted{% else %}unencrypted{% endif %}">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.is_encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
             </svg>
             </td>
             <td>{{object.get_last_access}}</td>

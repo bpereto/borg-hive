@@ -40,8 +40,8 @@
             <td>
               {{object.name}}
             </td>
-            <td></td>
-            <td></td>
+            <td>{{object.type}} ({{object.bits}})</td>
+            <td><span class="badge badge-pill badge-light" style="font-size: 0.85em">{{object.fingerprint}}</span></td>
             <td>{{object.created}}</td>
             <td><button class="btn btn-secondary btn-sm" data-url="{% url 'key-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>

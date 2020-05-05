@@ -7,7 +7,7 @@ from django import template
 def humanmegabytes(MB):
    'Return the given megabytes as a human friendly MB, GB, or TB string'
 
-   if not MB:
+   if type(MB) is not type(1):
        return MB
 
    MB = float(MB)
