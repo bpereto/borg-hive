@@ -12,6 +12,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from borghive.models import Repository, RepositoryUser
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
+from borghive.mixins import OwnerFilterMixin
 
 from django.utils import timezone
 import datetime
@@ -19,9 +20,12 @@ import datetime
 LOGGER = logging.getLogger(__name__)
 
 
-class RepositoryListView(ListView):
+class RepositoryListView(OwnerFilterMixin, ListView):
 
     model = Repository
+
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user)
 
     def get_total_usage(self):
         total_size = 0
@@ -37,7 +41,7 @@ class RepositoryListView(ListView):
         return context
 
 
-class RepositoryDetailView(DetailView):
+class RepositoryDetailView(OwnerFilterMixin, DetailView):
 
     model = Repository
 
@@ -49,34 +53,11 @@ class RepositoryDetailView(DetailView):
         labels = []
         data   = []
 
-        timetraveller = self.object.created
-        now = timezone.now()
+        for stat in self.object.repositorystatistic_set.all():
+            labels.append(stat.created.isoformat())
+            data.append(stat.repo_size)
 
-        # shift resolution depending on repo age
-        if ((now - timetraveller).days <= 7):
-            resolution = 1
-        elif ((now - timetraveller).days <= 365):
-            resolution = 7
-        elif ((now - timetraveller).days > 365):
-            resolution = 30
-
-        LOGGER.debug('chart_data_usage: resolution = %s', resolution)
-        while (timetraveller < now):
-            timetraveller_end = timetraveller + datetime.timedelta(days=resolution)
-            LOGGER.debug('chart_data_usage: get dataset from %s to %s', timetraveller, timetraveller_end)
-            qs = self.object.repositorystatistic_set.filter(created__gte=timetraveller, created__lte=timetraveller_end)
-            if qs:
-                avg = qs.aggregate(Avg('repo_size'))
-                avg_date = format(qs.first().created, settings.DATE_FORMAT)
-                labels.append(avg_date)
-                data.append(avg['repo_size__avg'])
-                LOGGER.debug('chart_data_usage: average repo_size: %s', avg)
-                LOGGER.debug('chart_data_usage: average date: %s', avg_date)
-            else:
-                LOGGER.debug('chart_data_usage: no data found for timeframe %s to %s', timetraveller, timetraveller_end)
-
-            timetraveller += datetime.timedelta(days=resolution)
-        return {'chart_repo_usage_data': data, 'chart_repo_usage_labels': labels}
+        return {'chart_repo_usage_data': data, 'chart_repo_usage_labels': labels, 'chart_date_format': settings.DATETIME_FORMAT}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -91,7 +72,7 @@ class RepositoryDetailView(DetailView):
         return redirect(reverse('repository-detail', args=[pk]))
 
 
-class RepositoryUpdateView(UpdateView):
+class RepositoryUpdateView(OwnerFilterMixin, UpdateView):
 
     model = Repository
     success_url = reverse_lazy('repository-list')
@@ -99,14 +80,14 @@ class RepositoryUpdateView(UpdateView):
     template_name = 'borghive/repository_update.html'
 
 
-class RepositoryDeleteView(DeleteView):
+class RepositoryDeleteView(OwnerFilterMixin, DeleteView):
 
     model = Repository
     success_url = reverse_lazy('repository-list')
     template_name = 'borghive/repository_delete.html'
 
 
-class RepositoryCreateView(CreateView):
+class RepositoryCreateView(OwnerFilterMixin, CreateView):
 
     model = Repository
     form_class = RepositoryCreateForm
@@ -119,8 +100,8 @@ class RepositoryCreateView(CreateView):
         repo_user = RepositoryUser()
         repo_user.save()
         form.instance.repo_user = repo_user
+        form.instance.owner = self.request.user
         return super().form_valid(form)
-
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, "Form is invalid")

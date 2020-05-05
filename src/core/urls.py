@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import borghive.urls
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', include('borghive.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls)
 ]

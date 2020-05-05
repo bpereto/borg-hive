@@ -4,5 +4,8 @@ environs
 mysqlclient==1.4.6
 django-extensions
 django-crispy-forms
+django-login-required-middleware
+sshpubkeys
+rules
 
 celery

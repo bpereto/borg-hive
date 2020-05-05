@@ -175,7 +175,7 @@ a {
 }
 
 a,a:hover {
-  color: #321fdb;
+  color: rgb(60, 75, 121);
 }
 
 a:hover {
@@ -1175,8 +1175,8 @@ fieldset:disabled a.btn {
 
 .btn-primary:hover,.btn-primary:focus, .btn-primary.focus {
   color: #fff;
-  background-color: #6A85B0;
-  border-color: #6A85B0;
+  background-color: rgb(60, 75, 121);
+  border-color: rgb(60, 75, 121);
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -1192,8 +1192,8 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #2819ae;
-  border-color: #2517a3;
+  background-color: rgb(60, 75, 121);
+  border-color: rgb(60, 75, 121);
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -9855,7 +9855,7 @@ html:not([dir="rtl"]) .c-sidebar.c-sidebar-show.c-sidebar-right, html:not([dir="
 
 .c-sidebar .c-sidebar-nav-link:hover, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
   color: #fff;
-  background: #321fdb;
+  background: #6A85B0;
 }
 
 .c-sidebar .c-sidebar-nav-link:hover .c-sidebar-nav-icon, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover .c-sidebar-nav-icon {

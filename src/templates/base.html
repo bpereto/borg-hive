@@ -75,11 +75,7 @@
       <div class="c-body">
         <main class="c-main">
           <div class="container-fluid">
-            {% if messages %}
-            {% for message in messages %}
-            {{message}}
-            {% endfor %}
-            {% endif %}
+
             {% include "messages.html" %}
             {% block 'content' %}{% endblock %}
 
@@ -115,6 +111,5 @@
     <script src="/static/vendors/@coreui/icons/js/svgxuse.min.js"></script>
     <!--<![endif]-->
     {% block 'script' %}{% endblock %}
-
   </body>
 </html>

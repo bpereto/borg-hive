@@ -1,32 +1,35 @@
-<script type="module">
-  var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-  var toastList = toastElList.map(function (toastEl) {
-    return new coreui.Toast(toastEl, option)
-  })
-
-</script>
 {% if messages %}
-{% for message in messages %}
-{{message}}
-{% endfor %}
 
-  <div style="position: absolute; top: 0; right: 0;">
+  <div style="position: absolute; top: 80px; right: 25px; z-index:9999">
 
     {% for message in messages %}
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img"><rect width="100%" height="100%" fill="#007aff"/></svg>
-
-        <strong class="mr-auto">{{message.tags}}</strong>
+      <div class="toast-header text-{{message.tags}}">
+        <svg class="c-icon c-icon-lg">
+          <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
+        </svg>
+        <strong class="mr-auto text-uppercase">  {{message.tags}}</strong>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="toast-body">
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {{ message|safe }}
       </div>
     </div>
     {% endfor %}
 
   </div>
 {% endif %}
+
+{% block 'script' %}
+{{ super }}
+<script type="module">
+  var toaster = [].slice.call(document.querySelectorAll('.toast'))
+  var toasts = toaster.map(function (toasts) {
+    var toast = new coreui.Toast(toasts, {'delay': 10000})
+    toast.show()
+    return toast
+  })
+</script>
+{% endblock %}

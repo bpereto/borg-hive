@@ -28,19 +28,19 @@
               <strong class="h4">{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</strong>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
               <small class="text-muted">Last Access</small><br>
               <strong class="h4">{{object.get_last_repository_statistic.last_access}}</strong>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
               <small class="text-muted">Last Modified</small><br>
               <strong class="h4">{{object.get_last_repository_statistic.last_update}}</strong>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-6 text-right">
+          <div class="col-sm-4 text-right">
             <form method=post>
             {% csrf_token %}
             <button type="submit" name="refresh" class="btn btn-primary btn-sm"><svg class="c-icon">
@@ -78,34 +78,58 @@
 {% endblock %}
 
 {% block 'script' %}
+<script src="/static/vendors/momentjs/moment.min.js"></script>
 <script src="/static/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js"></script>
 
 <script>
+function fileSize(mb) {
+  var thresh = 1024;
+  if (Math.abs(mb) < thresh) {
+    return mb + ' MB';
+  }
+  var units = ['GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  var u = -1;
+  do {
+    mb /= thresh;
+    ++u;
+  } while (Math.abs(mb) >= thresh && u < units.length - 1);
+  return mb.toFixed(1) + ' ' + units[u];
+}
+
 var repoUsageLineChart = new Chart(document.getElementById('canvas-repository-usage').getContext('2d'), {
   type: 'line',
   data: {
     datasets: [{
       data: {{ chart_repo_usage_data|safe }},
-      backgroundColor: [
-        '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-      ],
-      label: 'Usage'
+      label: 'Repo Size'
     }],
     labels: {{ chart_repo_usage_labels|safe }}
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    annotation: {
-        annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            scaleID: 'y-axis-0',
-            value: '10',
-            borderColor: 'tomato',
-            borderWidth: 1
-        }],
-        drawTime: "afterDraw" // (default)
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'month',
+          tooltipFormat:'MM/DD/YYYY'
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          callback: function(v, i, vs) {
+            return fileSize(v);
+          }
+        }
+      }]
+    },
+    tooltips: {
+      callbacks: {
+          label: function(tooltipItem, data) {
+            return fileSize(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+          }
+      }
     }
   }
 });

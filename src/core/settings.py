@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'crispy_forms',
+    'rules',
     'borghive'
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'login_required.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -112,7 +114,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+LOGIN_REDIRECT_URL = '/'
+LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
+    'login',
+    'admin:login',
+]
 
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -161,11 +172,17 @@ LOGGING = {
     },
 }
 
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'danger',
+}
+
+
 #
 # APP
 #
 BORGHIVE = {
     'REPO_PATH': env("BORGHIVE_REPO_PATH", '/repos'),
     'LOGIN_CONFIG_PATH': env('LOGIN_CONFIG_PATH', '/config'),
-    'SSH_PUBLIC_KEY_REGEX': 'ssh-([a-zA-Z0-9]+) (AAAA[0-9A-Za-z+/=]+) ([\w\-@]+)'
+    'SSH_PUBLIC_KEY_REGEX': 'ssh-([a-zA-Z0-9]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@]+)?'
 }

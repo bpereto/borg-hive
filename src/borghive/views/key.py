@@ -7,43 +7,66 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from borghive.models import SSHPublicKey
 from borghive.forms import SSHPublicKeyCreateForm, SSHPublicKeyUpdateForm
+from borghive.mixins import OwnerFilterMixin
 
 
-class SSHPublicKeyListView(ListView):
+class SSHPublicKeyListView(OwnerFilterMixin, ListView):
 
     model = SSHPublicKey
     template_name = 'borghive/key_list.html'
 
 
-class SSHPublicKeyDetailView(DetailView):
+class SSHPublicKeyDetailView(OwnerFilterMixin, DetailView):
 
     model = SSHPublicKey
 
 
-class SSHPublicKeyDeleteView(DeleteView):
+class SSHPublicKeyDeleteView(OwnerFilterMixin, DeleteView):
 
     model = SSHPublicKey
     success_url = reverse_lazy('key-list')
     template_name = 'borghive/key_delete.html'
 
 
-class SSHPublicKeyUpdateView(UpdateView):
+class SSHPublicKeyUpdateView(OwnerFilterMixin, UpdateView):
 
     model = SSHPublicKey
     success_url = reverse_lazy('key-list')
     form_class = SSHPublicKeyUpdateForm
     template_name = 'borghive/key_update.html'
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.add_message(self.request, messages.SUCCESS, 'Updated SSH-Key: {}'.format(form.instance.name))
+        return super().form_valid(form)
 
-class SSHPublicKeyCreateView(CreateView):
+    def form_invalid(self, form):
+        for field in form._errors:
+            message = ''
+            for msg in form._errors[field]:
+                message += '<p>' + msg + '</p>'
+            messages.add_message(self.request, messages.ERROR, message)
+        return redirect(reverse('key-list'))
+
+
+class SSHPublicKeyCreateView(OwnerFilterMixin, CreateView):
 
     model = SSHPublicKey
     form_class = SSHPublicKeyCreateForm
     template_name = 'borghive/key_create.html'
 
     def get_success_url(self):
-        return redirect(reverse('key-list'))
+        return reverse('key-list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.add_message(self.request, messages.SUCCESS, 'Added SSH-Key: {}'.format(form.instance.name))
+        return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.add_message(self.request, messages.ERROR, "Form is invalid")
+        for field in form._errors:
+            message = ''
+            for msg in form._errors[field]:
+                message += '<p>' + msg + '</p>'
+            messages.add_message(self.request, messages.ERROR, message)
         return redirect(reverse('key-list'))
