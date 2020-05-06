@@ -1,9 +1,12 @@
 from django.urls import path
-
-from borghive.views import RepositoryListView, RepositoryDetailView, RepositoryCreateView, RepositoryDeleteView, RepositoryUpdateView
-from borghive.views import SSHPublicKeyListView, SSHPublicKeyDetailView, SSHPublicKeyCreateView, SSHPublicKeyDeleteView, SSHPublicKeyUpdateView
-from borghive.views import NotificationListView
 from django.views.generic.base import RedirectView
+
+from borghive.views import (NotificationListView, RepositoryCreateView,
+                            RepositoryDeleteView, RepositoryDetailView,
+                            RepositoryListView, RepositoryUpdateView,
+                            SSHPublicKeyCreateView, SSHPublicKeyDeleteView,
+                            SSHPublicKeyDetailView, SSHPublicKeyListView,
+                            SSHPublicKeyUpdateView)
 
 urlpatterns = [
     path('', RedirectView.as_view(url='repository/list', permanent=False), name='index'),

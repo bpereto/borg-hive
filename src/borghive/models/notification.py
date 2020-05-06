@@ -1,10 +1,12 @@
-from django.db import models
+import logging
+
 from django.conf import settings
-from django.core.validators import MaxValueValidator
-from borghive.models.base import BaseModel
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-import logging
+from django.core.validators import MaxValueValidator
+from django.db import models
+
+from borghive.models.base import BaseModel
 
 LOGGER = logging.getLogger(__name__)
 

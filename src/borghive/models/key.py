@@ -1,13 +1,13 @@
-from django.db import models
-from django.conf import settings
-from django.core.validators import RegexValidator
-from django.contrib.auth.models import User
-import sshpubkeys
 import logging
 
+import sshpubkeys
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+from django.db import models
 
-from borghive.models.base import BaseModel
 from borghive.lib.validators import ssh_public_key_validator
+from borghive.models.base import BaseModel
 
 LOGGER = logging.getLogger(__name__)
 

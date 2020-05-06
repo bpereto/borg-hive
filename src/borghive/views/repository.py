@@ -1,22 +1,21 @@
-from django.shortcuts import render, redirect, reverse
-from django.urls import reverse_lazy
-from django.contrib import messages
-from django.db.models import Avg
-from django.utils.dateformat import format
-from django.conf import settings
+import datetime
 import logging
 
-from django.views.generic.list import ListView
+from django.conf import settings
+from django.contrib import messages
+from django.db.models import Avg
+from django.shortcuts import redirect, render, reverse
+from django.urls import reverse_lazy
+from django.utils import timezone
+from django.utils.dateformat import format
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
 
-from borghive.models import Repository, RepositoryUser
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
-from borghive.mixins import OwnerFilterMixin
 from borghive.lib.keys import get_ssh_host_key_infos
-
-from django.utils import timezone
-import datetime
+from borghive.mixins import OwnerFilterMixin
+from borghive.models import Repository, RepositoryUser
 
 LOGGER = logging.getLogger(__name__)
 

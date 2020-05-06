@@ -1,13 +1,14 @@
 import os
-from core.celery import app
-from borghive.models import RepositoryUser, Repository
-from django.conf import settings
+import subprocess
 
 from celery.utils.log import get_task_logger
+from django.conf import settings
+
+from borghive.models import Repository, RepositoryUser
+from core.celery import app
 
 LOGGER = get_task_logger(__name__)
 
-import subprocess
 
 @app.task
 def create_repo_statistic(repo_id=None):

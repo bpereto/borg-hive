@@ -1,13 +1,13 @@
+import datetime
+import logging
 import os
-from core.celery import app
+
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.utils import timezone
-import datetime
-from celery.utils.log import get_task_logger
-import logging
 
-from borghive.models import Repository, RepositoryEvent
-from borghive.models import EmailNotification
+from borghive.models import EmailNotification, Repository, RepositoryEvent
+from core.celery import app
 
 LOGGER = get_task_logger(__name__)
 

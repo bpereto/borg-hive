@@ -1,10 +1,11 @@
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from django.dispatch import receiver
-from borghive.models import RepositoryEvent, RepositoryUser
-from borghive.models import AlertPreference
-import borghive.tasks
 import logging
+
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+import borghive.tasks
+from borghive.models import AlertPreference, RepositoryEvent, RepositoryUser
 
 LOGGER = logging.getLogger(__name__)
 

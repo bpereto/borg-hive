@@ -1,6 +1,6 @@
-import sshpubkeys
 import logging
 
+import sshpubkeys
 from django.core.exceptions import ValidationError
 
 LOGGER = logging.getLogger(__name__)

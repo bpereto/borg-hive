@@ -1,12 +1,13 @@
-import os
 import logging
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
-from django import db
-from borghive.models import Repository, RepositoryEvent
-import borghive.signals
+import os
 
+from django import db
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
+
+import borghive.signals
 import inotify.adapters
+from borghive.models import Repository, RepositoryEvent
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)

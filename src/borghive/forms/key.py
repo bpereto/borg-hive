@@ -1,7 +1,7 @@
 from django import forms
 
-from borghive.models import SSHPublicKey
 from borghive.forms import BaseForm
+from borghive.models import SSHPublicKey
 
 
 class SSHPublicKeyCreateForm(BaseForm):

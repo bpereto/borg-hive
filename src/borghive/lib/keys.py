@@ -1,6 +1,7 @@
-import sshpubkeys
-import os
 import logging
+import os
+
+import sshpubkeys
 
 LOGGER = logging.getLogger(__name__)
 

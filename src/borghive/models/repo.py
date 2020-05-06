@@ -1,17 +1,16 @@
-import os
+import datetime
 import glob
+import logging
+import os
 import random
 import string
 import subprocess
 
-import logging
-
-from django.db import models
 from django.conf import settings
-from django.utils.timezone import make_aware
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils import timezone
-import datetime
+from django.utils.timezone import make_aware
 
 from borghive.exceptions import RepositoryNotCreated
 from borghive.models.base import BaseModel
