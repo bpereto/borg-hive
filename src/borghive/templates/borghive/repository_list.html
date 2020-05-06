@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load helpers %}
+{% load humanize %}
 
 {% block 'breadcrumb' %}
 {{ block.super }}
@@ -18,10 +19,7 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-sm-6">
-            <h4>Total Usage: {{current_total_usage|humanmegabytes}}</h4>
-          </div>
-          <div class="col-sm-6 text-right">
+          <div class="col-sm-12 text-right">
             <button class="btn btn-primary btn-sm" data-url="{% url 'repository-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
             </svg> New Repo</button>
@@ -29,6 +27,7 @@
         </div>
       </div>
       <div class="card-body">
+        <h5 class="mb-4">Total Usage: {{current_total_usage|humanmegabytes}}</h5>
         <table class="table table-responsive-sm">
           <thead>
             <th>Name</th>
@@ -59,8 +58,8 @@
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.is_encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
             </svg>
             </td>
-            <td>{{object.get_last_access}}</td>
-            <td>{{object.get_last_updated}}</td>
+            <td>{{object.get_last_access|naturaltime}}</td>
+            <td>{{object.get_last_updated|naturaltime}}</td>
             <td class="text-right"><button class="btn btn-secondary btn-sm" data-url="{% url 'repository-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
             </svg></button>

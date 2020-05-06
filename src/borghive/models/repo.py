@@ -123,13 +123,18 @@ class Repository(BaseModel):
         return self.repositorystatistic_set.last()
 
     def refresh(self):
+        '''
+        persistens recent repo statistic
+        '''
 
         if self.is_created():
+            LOGGER.info('refresh: %s', self.name)
             stats = {
                 'repo_size': self.get_repo_size(),
                 'last_update': self.get_last_updated(),
                 'last_access': self.get_last_access()
             }
+            LOGGER.debug(stats)
             statistic = RepositoryStatistic(**stats)
             statistic.repo = self
             statistic.save()
@@ -146,3 +151,12 @@ class RepositoryStatistic(BaseModel):
 
     def __str__(self):
         return 'RepositoryStatistic: {} for {}'.format(self.created, self.repo)
+
+
+class RepositoryEvent(BaseModel):
+    event_type = models.CharField(max_length=20)
+    message = models.TextField(max_length=200)
+    repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'RepositoryEvent: {}: {}'.format(self.event_type, self.message)

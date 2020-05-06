@@ -1,12 +1,15 @@
 Django==3.0.5
 djangorestframework==3.11.0
-environs
-mysqlclient==1.4.6
 django-extensions
 django-crispy-forms
 django-login-required-middleware
-sshpubkeys
 django-extensions
 django-celery-beat
+
+environs
+mysqlclient==1.4.6
+sshpubkeys
+redis
+inotify
 
 celery

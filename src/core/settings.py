@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_extensions',
+    'django_celery_beat',
     'crispy_forms',
     'borghive'
 ]
@@ -119,10 +121,6 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
     'admin:login',
 ]
 
-AUTHENTICATION_BACKENDS = (
-    'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -148,6 +146,9 @@ STATICFILES_DIRS = ['static']
 # Celery
 #
 CELERY_TASK_ALWAYS_EAGER=True
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND','redis://redis:6379/0')
+
 
 LOGGING = {
     'version': 1,

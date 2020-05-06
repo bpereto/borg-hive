@@ -29,16 +29,30 @@ services:
 
   worker:
     build: .
-    command: celery worker -A core -l DEBUG
+    command: celery worker -A core -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
       - MYSQL_HOST=db
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
     volumes:
-      - ./src:/code
-    ports:
-      - "8000:8000"
+      - ./src:/app
+      - borg-repos:/repos:ro
+    depends_on:
+      - db
+
+  watcher:
+    build: .
+    command: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
+    environment:
+      - REPO_PATH=/repos
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - ./src:/app
+      - borg-repos:/repos:ro
     depends_on:
       - db
 
@@ -60,8 +74,8 @@ services:
     ports:
       - "22:22"
 
-  rabbitmq:
-    image: rabbitmq:latest
+  redis:
+    image: redis:latest
 
 volumes:
   mariadb-data:

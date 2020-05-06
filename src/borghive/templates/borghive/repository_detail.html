@@ -99,7 +99,22 @@ $ borg init --encryption=repokey-blake2 {{object.repo_user.name}}@{{request.get_
 Events</a></h4>
       </div>
       <div id="events" class="card-body collapse">
-          Todo
+          <table class="table table-responsive-sm">
+            <thead>
+              <th>Timestamp</th>
+              <th>Event Type</th>
+              <th>Message</th>
+            </thead>
+            <tbody>
+              {% for event in object.repositoryevent_set.all %}
+              <tr>
+                <td>{{event.created}}</td>
+                <td>{{event.event_type}}</td>
+                <td>{{event.message}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
       </div>
     </div>
   </div>
