@@ -1,11 +1,22 @@
 # Borg Hive
 
-Borg Hive - a Borgbackup Server Interface
+Borg Hive - manage borgbackups
 
 **This is under active development. It's Alpha State!**
 
 I backup my peripherals at home with borgbackup, which works nice on my servers, android phones, laptops, worktsations and so on.   
 To keep the overview over my backups and which device haven't done one in a while I decided to write a dashboard for it. The focus is for backups at home, but Borghive should also work in the cloud.
+
+## Features
+* Repository Managment
+* Repository Statistics
+* SSH-Key Management
+* Notifications of stale backups
+* Partially Repository Events
+
+## What it should also have in the Future / Todo
+* REST API (Django Rest Framework)
+
 
 ## Get started
 ```
