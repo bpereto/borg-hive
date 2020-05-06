@@ -1,12 +1,10 @@
-import logging
-
+from django.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator
+from borghive.models.base import BaseModel
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.core.validators import MaxValueValidator
-from django.db import models
-
-from borghive.models.base import BaseModel
+import logging
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,8 +28,8 @@ class NotificationBase(BaseModel):
 class AlertPreference(models.Model):
 
     user            = models.OneToOneField(User, on_delete=models.CASCADE)
-    alert_interval  = models.PositiveIntegerField(default=12)  # in hours
-    alert_expiration = models.PositiveIntegerField(default=5)  # in days
+    alert_interval  = models.PositiveIntegerField(default=12, validators=[MaxValueValidator(48)])  # in hours
+    alert_expiration = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(30)])  # in days
 
 
 class EmailNotification(BaseModel):
