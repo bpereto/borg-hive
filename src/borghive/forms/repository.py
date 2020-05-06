@@ -17,4 +17,4 @@ class RepositoryUpdateForm(BaseForm):
 
     class Meta:
         model = Repository
-        fields = ('ssh_keys',)
+        fields = ('ssh_keys','alert_after_days',)

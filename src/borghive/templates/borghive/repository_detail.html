@@ -31,13 +31,13 @@
           <div class="col-sm-3">
             <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
               <small class="text-muted">Last Access</small><br>
-              <strong class="h4">{{object.get_last_repository_statistic.last_access}}</strong>
+              <strong class="h4">{{object.last_access}}</strong>
             </div>
           </div><!--/.col-->
           <div class="col-sm-3">
             <div class="c-callout c-callout-secondary mt-0 mb-0 b-t-1 b-r-1 b-b-1">
               <small class="text-muted">Last Modified</small><br>
-              <strong class="h4">{{object.get_last_repository_statistic.last_update}}</strong>
+              <strong class="h4">{{object.last_updated}}</strong>
             </div>
           </div><!--/.col-->
           <div class="col-sm-4 text-right">
@@ -106,7 +106,7 @@ Events</a></h4>
               <th>Message</th>
             </thead>
             <tbody>
-              {% for event in object.repositoryevent_set.all %}
+              {% for event in events %}
               <tr>
                 <td>{{event.created}}</td>
                 <td>{{event.event_type}}</td>

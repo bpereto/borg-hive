@@ -2,6 +2,7 @@ import os
 import logging
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from django import db
 from borghive.models import Repository, RepositoryEvent
 import borghive.signals
 
@@ -20,6 +21,7 @@ class Command(BaseCommand):
     def get_repo_by_path(self, path):
         repo_name = path.split('/')[-1]
         repo_user = path.split('/')[-2]
+        db.close_old_connections()
         repo = Repository.objects.get(name=repo_name, repo_user__name=repo_user)
         LOGGER.debug('get_repo_by_path: %s', repo)
         return repo
@@ -43,8 +45,6 @@ class Command(BaseCommand):
                 LOGGER.debug("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(
                   path, filename, type_names))
 
-                # check if repo - replace repo path and there should only be the user dir
-                #is_repo_path = len(path.replace(options['repo_path'], '').split('/')) == 2
 
                 # Event handling
                 if filename == 'lock.exclusive':

@@ -14,7 +14,7 @@ def get_ssh_host_key_infos():
     for key_type in KEY_TYPES:
         file = os.path.join('/config', 'ssh_host_{}_key.pub'.format(key_type))
         if os.path.isfile(file):
-            LOGGER.debug('found %', file)
+            LOGGER.debug('found %s', file)
             with open(file) as f:
                 key = sshpubkeys.SSHKey(f.read())
                 key.parse()

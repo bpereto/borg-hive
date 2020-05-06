@@ -28,7 +28,7 @@
       </div>
       <div class="card-body">
         <h5 class="mb-4">Total Usage: {{current_total_usage|humanmegabytes}}</h5>
-        <table class="table table-responsive-sm">
+        <table class="table table-responsive-sm table-hover">
           <thead>
             <th>Name</th>
             <th>Usage</th>
@@ -40,7 +40,7 @@
           </thead>
           <tbody>
             {% for object in object_list %}
-            <tr>
+            <tr {% if object.should_alert.0 %}class="table-danger"{% endif %}>
             <td>
               <strong><a href="{% url 'repository-detail' object.id %}">{{object.name}}</a></strong>
               {% if not object.is_created %}
@@ -58,8 +58,8 @@
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.is_encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
             </svg>
             </td>
-            <td>{{object.get_last_access|naturaltime}}</td>
-            <td>{{object.get_last_updated|naturaltime}}</td>
+            <td>{{object.last_access|naturaltime}}</td>
+            <td>{{object.last_updated|naturaltime}}</td>
             <td class="text-right"><button class="btn btn-secondary btn-sm" data-url="{% url 'repository-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
             </svg></button>

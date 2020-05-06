@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
+import os, socket
 from environs import Env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,7 +27,7 @@ SECRET_KEY = env('SECRET_KEY', '++apz(*cojac+1u$io&w)wg^r5vgaon%@wvpd#@j5iv9!9#l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', socket.getfqdn()]
 
 
 # Application definition
@@ -145,7 +145,7 @@ STATICFILES_DIRS = ['static']
 #
 # Celery
 #
-CELERY_TASK_ALWAYS_EAGER=True
+CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', False)
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND','redis://redis:6379/0')
 
@@ -177,6 +177,10 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
 
+handler404 = 'borghive.views.error.error404'
+handler500 = 'borghive.views.error.error505'
+
+
 
 #
 # APP
@@ -186,3 +190,14 @@ BORGHIVE = {
     'LOGIN_CONFIG_PATH': env('LOGIN_CONFIG_PATH', '/config'),
     'SSH_PUBLIC_KEY_REGEX': 'ssh-([a-zA-Z0-9]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@]+)?'
 }
+
+#
+# NOTIFICATION SETTINGS
+#
+EMAIL_HOST = env('EMAIL_HOST', 'localhost')
+EMAIL_PORT = env('EMAIL_PORT', '465')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'root')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'password')
+EMAIL_USE_TLS = True  # disallow unsecure communication!
+EMAIL_FROM = env('EMAIL_FROM', 'borghive@{}'.format(socket.getfqdn()))
+if DEBUG: EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

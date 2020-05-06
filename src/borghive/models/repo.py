@@ -4,19 +4,19 @@ import random
 import string
 import subprocess
 
-from datetime import datetime
 import logging
 
 from django.db import models
 from django.conf import settings
 from django.utils.timezone import make_aware
 from django.contrib.auth.models import User
+from django.utils import timezone
+import datetime
 
 from borghive.exceptions import RepositoryNotCreated
 from borghive.models.base import BaseModel
 
 from .key import SSHPublicKey
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -53,6 +53,11 @@ class Repository(BaseModel):
     repo_user   = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
     owner       = models.ForeignKey(User, on_delete=models.PROTECT)
 
+    last_updated = models.DateTimeField(null=True)
+    last_access  = models.DateTimeField(null=True)
+
+    alert_after_days  = models.IntegerField(null=True, blank=True)  # days
+
 
     def __str__(self):
         return 'Repository: {}'.format(self.name)
@@ -84,17 +89,17 @@ class Repository(BaseModel):
                 return'key =' in f.read()
         return False
 
-    def get_last_access(self):
+    def get_last_access_by_fs(self):
         '''
         get last repository access
         estimated on last change of nonce file in repository
         '''
         if self.is_created():
             last_access = os.path.getmtime(self.get_repo_path())
-            return make_aware(datetime.fromtimestamp(last_access))
+            return make_aware(datetime.datetime.fromtimestamp(last_access))
         return None
 
-    def get_last_updated(self):
+    def get_last_updated_by_fs(self):
         '''
         get last repository update
         as every thing is encrypted, the modification is estimated on
@@ -105,7 +110,7 @@ class Repository(BaseModel):
             if len(index_file) != 1:
                 raise Exception('Too many index files found')
             last_updated = os.path.getmtime(index_file[0])
-            return make_aware(datetime.fromtimestamp(last_updated))
+            return make_aware(datetime.datetime.fromtimestamp(last_updated))
         return None
 
     def get_repo_size(self):
@@ -129,15 +134,68 @@ class Repository(BaseModel):
 
         if self.is_created():
             LOGGER.info('refresh: %s', self.name)
-            stats = {
-                'repo_size': self.get_repo_size(),
-                'last_update': self.get_last_updated(),
-                'last_access': self.get_last_access()
-            }
-            LOGGER.debug(stats)
-            statistic = RepositoryStatistic(**stats)
+            self.last_updated = self.get_last_updated_by_fs()
+            self.last_access = self.get_last_access_by_fs()
+            self.save()
+            statistic = RepositoryStatistic(repo_size=self.get_repo_size())
             statistic.repo = self
             statistic.save()
+
+    def should_alert(self):
+        '''
+        check if alert should be fired
+
+        firing : update time is older than alert time
+        alert  : should alert, considered alert expiration and interval
+        '''
+        alert = False
+        firing = False
+
+        if not self.last_updated or not self.alert_after_days:
+            return firing, alert
+
+        # calculate point in time to fire alert
+        alert_time = self.last_updated + datetime.timedelta(days=self.alert_after_days)
+
+        if alert_time <= timezone.now():
+            LOGGER.debug('Alert Time hit: last update %s is older than %s', self.last_updated, alert_time)
+            firing = True
+            alert = True
+
+            #
+            # check alert interval
+            #
+            last_alert = self.repositoryevent_set.filter(event_type=RepositoryEvent.ALERT, created__gte=self.last_updated).last()
+
+            if last_alert:
+                next_alert_interval = last_alert.created + datetime.timedelta(hours=self.owner.alertpreference.alert_interval)
+                if timezone.now() < next_alert_interval:
+                    LOGGER.debug('Last alert was not too long ago: %s, alert interval is set to: %s', last_alert.created, self.owner.alertpreference.alert_interval)
+                    alert = False
+
+                #
+                # check alert expiration
+                #
+                alert_expired_time = self.last_updated + datetime.timedelta(days=self.owner.alertpreference.alert_expiration)
+                if alert_expired_time < timezone.now():
+                    LOGGER.debug('Alert expired: last alert %s is older than set alert expiration: %s', last_alert, self.owner.alertpreference.alert_expiration)
+                    alert = False
+        return firing, alert
+
+    def alert(self):
+        '''
+        alert owner for missing backups
+        notify via configured notifications
+        '''
+        import borghive.tasks.alert
+
+        LOGGER.info('%s: alerting', self)
+        delta = timezone.now()-self.last_updated
+        alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message='Last backup of {} is older than {} days'.format(self.name, delta.days), repo=self)
+        alert.save()
+
+        borghive.tasks.alert.fire_alert.delay(repo_id=self.id, alert_id=alert.id)
+
 
     class Meta():
         verbose_name_plural = 'Repositories'
@@ -145,8 +203,6 @@ class Repository(BaseModel):
 
 class RepositoryStatistic(BaseModel):
     repo_size = models.IntegerField()  # mega bytes
-    last_update = models.DateTimeField()
-    last_access = models.DateTimeField()
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -154,7 +210,16 @@ class RepositoryStatistic(BaseModel):
 
 
 class RepositoryEvent(BaseModel):
-    event_type = models.CharField(max_length=20)
+
+    WATCHER = 'watcher'
+    ALERT   = 'alert'
+
+    EVENT_TYPES = [
+        (WATCHER, 'watcher'),
+        (ALERT, 'alert'),
+    ]
+
+    event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
     message = models.TextField(max_length=200)
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
 

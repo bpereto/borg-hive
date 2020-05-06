@@ -1,14 +1,33 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% crispy alert_preference_form alert_preference_form.helper %}
 
 {% block 'breadcrumb' %}
 {{ block.super }}
-<li class="breadcrumb-item active">SSH Keys</li>
+<li class="breadcrumb-item active">Notification</li>
 {% endblock %}
 
 {% block 'content' %}
 <div class="row">
   <div class="col-sm-12 mb-3">
-    <h1>SSH Keys</h1>
+    <h1>Notifications</h1>
+  </div>
+</div>
+<div class="fade-in row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h3>Alert Preferences</h3>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {{alert_preference_form|crispy}}
+        <button type="submit" name="alert-pref" class="btn btn-primary btn-sm">Save</button>
+        {{alert_preference_form.errors}}
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 <div class="fade-in row">
@@ -21,35 +40,31 @@
           <div class="col-sm-6 text-right">
             <button class="btn btn-primary btn-sm" data-url="{% url 'key-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
-            </svg> Add Key</button>
+            </svg> Add Notification</button>
           </div>
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-responsive-sm table-hover">
+        <table class="table table-responsive-sm">
           <thead>
-            <th>Name</th>
             <th>Type</th>
-            <th>Fingerprint</th>
-            <th>Created</th>
+            <th></th>
             <th style="width: 200px">Actions</th>
           </thead>
           <tbody>
             {% for object in object_list %}
             <tr>
             <td>
-              {{object.name}}
+              {{object}}
             </td>
-            <td>{{object.type}} ({{object.bits}})</td>
-            <td><span class="badge badge-pill badge-light" style="font-size: 0.85em">{{object.fingerprint}}</span></td>
-            <td>{{object.created}}</td>
+            <td></td>
             <td><button class="btn btn-secondary btn-sm" data-url="{% url 'key-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
             </svg></button>
             <button class="btn btn-secondary btn-sm" data-url="{% url 'key-delete' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
             </svg></button>
-          </td>
+            </td>
           </tr>
           {% endfor %}
           </tbody>
