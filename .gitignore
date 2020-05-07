@@ -116,3 +116,4 @@ dmypy.json
 
 *.pyc
 __pycache__
+.dev

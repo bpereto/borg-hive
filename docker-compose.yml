@@ -5,54 +5,41 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
-      - MYSQL_DATABASE=borghive
-      - MYSQL_USER=borghive
-      - MYSQL_PASSWORD=borghive
       - MYSQL_RANDOM_ROOT_PASSWORD=1
+    env_file:
+      - .env
 
   app:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      - DEBUG
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=borghive
-      - MYSQL_USER=borghive
-      - MYSQL_PASSWORD=borghive
+    env_file:
+      - .env
     volumes:
-      - ./src:/app
       - borg-config:/config
       - borg-repos:/repos
+      - static:/static
     ports:
-      - "8000:8000"
+      - "8000"
     depends_on:
       - db
 
   worker:
     build: .
-    command: celery worker -A core -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    environment:
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=borghive
-      - MYSQL_USER=borghive
-      - MYSQL_PASSWORD=borghive
+    entrypoint: celery worker -A core -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
     volumes:
-      - ./src:/app
       - borg-repos:/repos:ro
     depends_on:
       - db
 
   watcher:
     build: .
-    command: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
+    entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
     environment:
       - REPO_PATH=/repos
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=borghive
-      - MYSQL_USER=borghive
-      - MYSQL_PASSWORD=borghive
+    env_file:
+      - .env
     volumes:
-      - ./src:/app
       - borg-repos:/repos:ro
     depends_on:
       - db
@@ -63,17 +50,24 @@ services:
       dockerfile: Dockerfile.borg
     depends_on:
       - db
-    environment:
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=borghive
-      - MYSQL_USER=borghive
-      - MYSQL_PASSWORD=borghive
+    env_file:
+      - .env
     volumes:
       - borg-repos:/repos
       - borg-config:/config
-      - ./src:/app
     ports:
       - "22:22"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    volumes:
+      - static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - app
 
   redis:
     image: redis:latest
@@ -82,3 +76,4 @@ volumes:
   mariadb-data:
   borg-repos:
   borg-config:
+  static:

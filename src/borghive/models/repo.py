@@ -133,9 +133,13 @@ class Repository(BaseModel):
 
         if self.is_created():
             LOGGER.info('refresh: %s', self.name)
+
+            # update acess infos
             self.last_updated = self.get_last_updated_by_fs()
             self.last_access = self.get_last_access_by_fs()
             self.save()
+
+            # create statistic
             statistic = RepositoryStatistic(repo_size=self.get_repo_size())
             statistic.repo = self
             statistic.save()

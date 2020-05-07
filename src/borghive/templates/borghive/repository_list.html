@@ -58,8 +58,8 @@
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-{% if object.is_encrypted %}lock-locked{% else %}lock-unlocked{% endif %}"></use>
             </svg>
             </td>
-            <td>{{object.last_access|naturaltime}}</td>
-            <td>{{object.last_updated|naturaltime}}</td>
+            <td><span data-toggle="tooltip" data-placement="top" data-original-title="{{object.last_access}}">{{object.last_access|naturaltime}}</span></td>
+            <td><span data-toggle="tooltip" data-placement="top" data-original-title="{{object.last_updated}}">{{object.last_updated|naturaltime}}</span></td>
             <td class="text-right"><button class="btn btn-secondary btn-sm" data-url="{% url 'repository-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
             </svg></button>

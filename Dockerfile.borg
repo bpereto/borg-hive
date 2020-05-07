@@ -2,7 +2,7 @@ FROM python:3.8-slim
 MAINTAINER bpereto
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTEapp 1
+ENV PYTHONDONTWRITEBYTE 1
 ENV PYTHONUNBUFFERED 1
 
 # Install Borg & SSH
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openss
 
 RUN useradd -rm -u 1000 borg && \
     mkdir /repos /run/sshd && \
-    chown borg.borg /repos
+    chown -R borg.borg /repos
 ADD borg/sshd_config /etc/ssh/sshd_config
 ADD borg/pam-sshd.conf /etc/pam.d/sshd
 

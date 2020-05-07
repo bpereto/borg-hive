@@ -1,0 +1,91 @@
+version: '3'
+services:
+  db:
+    image: mariadb:10.5
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DEBUG=True
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    env_file:
+      - .dev
+    volumes:
+      - ./src:/app
+      - borg-config:/config
+      - borg-repos:/repos
+      - static:/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  worker:
+    build: .
+    entrypoint: celery worker -A core -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    environment:
+      - DEBUG=True
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - ./src:/app
+      - borg-repos:/repos:ro
+    depends_on:
+      - db
+
+  watcher:
+    build: .
+    entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
+    environment:
+      - APP_LOG_LEVEL=DEBUG
+      - REPO_PATH=/repos
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - ./src:/app
+      - borg-repos:/repos:ro
+    depends_on:
+      - db
+
+  borg:
+    build:
+      context: .
+      dockerfile: Dockerfile.borg
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=borghive
+      - MYSQL_USER=borghive
+      - MYSQL_PASSWORD=borghive
+    volumes:
+      - borg-repos:/repos
+      - borg-config:/config
+      - ./src:/app
+    ports:
+      - "22:22"
+
+  redis:
+    image: redis:latest
+
+volumes:
+  mariadb-data:
+  borg-repos:
+  borg-config:
+  static:
