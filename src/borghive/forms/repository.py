@@ -7,12 +7,9 @@ class RepositoryCreateForm(BaseForm):
     form to create repository
     """
 
-    # pylint: disable=modelform-uses-exclude
-
     class Meta:
         model = Repository
-        fields = '__all__'
-        exclude = ('repo_user', 'owner')
+        fields = ('name','ssh_keys','alert_after_days',)
 
 
 class RepositoryUpdateForm(BaseForm):

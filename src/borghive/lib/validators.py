@@ -10,9 +10,9 @@ def ssh_public_key_validator(public_key):
     '''
     validate public key string
     '''
-    key = sshpubkeys.SSHKey(public_key)
     try:
+        key = sshpubkeys.SSHKey(public_key)
         key.parse()
-    except sshpubkeys.InvalidKeyError as exc:
+    except (sshpubkeys.InvalidKeyError, sshpubkeys.exceptions.MalformedDataError, UnicodeEncodeError) as exc:
         LOGGER.exception(exc)
         raise ValidationError('Malformed SSH Public Key')

@@ -26,10 +26,10 @@ class SSHPublicKey(BaseModel):
     public_key = models.TextField(max_length=2048, validators=[RegexValidator(
         regex=settings.BORGHIVE['SSH_PUBLIC_KEY_REGEX'], message="SSH Public Key should match format: ssh-xxx AAAA... comment"), ssh_public_key_validator])
 
-    type = models.CharField(max_length=15)
+    type = models.CharField(max_length=50) 
     bits = models.IntegerField()
     fingerprint = models.CharField(max_length=256)
-    comment = models.CharField(max_length=256)
+    comment = models.CharField(max_length=256, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.PROTECT)

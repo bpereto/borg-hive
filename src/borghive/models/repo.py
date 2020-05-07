@@ -7,6 +7,7 @@ import string
 import subprocess
 
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -70,14 +71,15 @@ class Repository(BaseModel):
     * refresh statistics
     """
 
-    name = models.CharField(max_length=30, unique=True)
+    #name = models.CharField(max_length=256, validators=[RegexValidator(regex=r'[\w-.]+')])
+    name = models.CharField(max_length=256)
     ssh_keys = models.ManyToManyField(SSHPublicKey)
     #    append_only_keys = models.ManyToManyField(SSHPublicKey)
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
-    last_updated = models.DateTimeField(null=True)
-    last_access = models.DateTimeField(null=True)
+    last_updated = models.DateTimeField(null=True, blank=True)
+    last_access = models.DateTimeField(null=True, blank=True)
 
     alert_after_days = models.IntegerField(null=True, blank=True)  # days
 
@@ -240,6 +242,7 @@ class Repository(BaseModel):
 
     class Meta():
         verbose_name_plural = 'Repositories'
+        unique_together = ['name', 'repo_user']
 
 
 class RepositoryStatistic(BaseModel):
