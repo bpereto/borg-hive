@@ -35,7 +35,26 @@ At the moment the following is detected:
 
 A future enhancement could be a plugin to `borgmatic <https://torsion.org/borgmatic/docs/how-to/monitor-your-backups>`_ to submit the information and logs via API to Borg Hive.
 
+The management command :code:`watch_repositories` runs inotify on the repository directory and a combination of files and paths results in repository events.
+
 Repository Statistic
 --------------------
 
 The Repository Statistic is obtained each day, when a repsitory is refreshed and after a "Repository Updated" Event is emitted.
+
+SSH Authentication
+--------------------
+
+To prevent managing the ssh keys in authorized keys files per repo user on the filesystem, the ssh-keys are retrieved from the database.
+When the User logs in, the management command :code:`authorized_keys_check` is executed by the sshd-server trough the statement: :code:`AuthorizedKeysCommand`
+
+.. code-block:: bash
+
+  Match User *
+    AuthorizedKeysCommand /app/manage.py authorized_keys_check --user %u
+    AuthorizedKeysCommandUser borg
+
+The command expects on stdout lines of the format of the authorized keys.
+
+After SSH-Key authentication, the user must be allowed through PAM. To ensure this, the repository user must exist in the passwd and shadow file.
+To eliminate the need of the passwd and shadow file, an alternative PAM module could be used to retrieve the users.

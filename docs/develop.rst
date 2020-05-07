@@ -3,6 +3,8 @@
 Development
 ------------
 
+Setup the Development Docker Containers:
+
 .. code-block:: bash
 
    docker-compose -f docker-compose.dev.yml up
