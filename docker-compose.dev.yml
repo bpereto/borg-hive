@@ -19,8 +19,6 @@ services:
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
-    env_file:
-      - .dev
     volumes:
       - ./src:/app
       - borg-config:/config
