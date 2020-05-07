@@ -15,7 +15,14 @@ To keep the overview over my backups and which device haven't done one in a whil
 * Partially Repository Events
 
 ## What it should also have in the Future / Todo
+* More Notification Types
+  * GET/POST Webhooks
+  * Pushover
+  * https://github.com/jazzband/django-push-notifications
 * REST API (Django Rest Framework)
+* Better Documentation
+* CI
+* Container Image Generation
 
 
 ## Get started
