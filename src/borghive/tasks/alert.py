@@ -1,9 +1,5 @@
-import datetime
-import logging
-import os
 
 from celery.utils.log import get_task_logger
-from django.conf import settings
 from django.utils import timezone
 
 from borghive.models import EmailNotification, Repository, RepositoryEvent

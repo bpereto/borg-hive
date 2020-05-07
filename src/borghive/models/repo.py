@@ -12,7 +12,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.timezone import make_aware
 
-from borghive.exceptions import RepositoryNotCreated
 from borghive.models.base import BaseModel
 
 from .key import SSHPublicKey

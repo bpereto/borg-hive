@@ -1,12 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render, reverse
-from django.urls import reverse_lazy
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.shortcuts import redirect, reverse
 from django.views.generic.list import ListView
 
 from borghive.forms import AlertPreference
-from borghive.mixins import OwnerFilterMixin
 from borghive.models import EmailNotification
 
 

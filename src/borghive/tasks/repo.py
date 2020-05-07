@@ -1,10 +1,8 @@
-import os
 import subprocess
 
 from celery.utils.log import get_task_logger
-from django.conf import settings
 
-from borghive.models import Repository, RepositoryUser
+from borghive.models import Repository
 from core.celery import app
 
 LOGGER = get_task_logger(__name__)

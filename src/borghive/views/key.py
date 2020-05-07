@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView

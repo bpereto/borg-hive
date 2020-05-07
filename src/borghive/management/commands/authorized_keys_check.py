@@ -1,10 +1,8 @@
 import logging
-import os
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from borghive.models import RepositoryUser, SSHPublicKey
+from borghive.models import RepositoryUser
 
 LOGGER = logging.getLogger(__name__)
 

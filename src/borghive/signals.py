@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 import borghive.tasks
-from borghive.models import AlertPreference, RepositoryEvent, RepositoryUser
+from borghive.models import RepositoryEvent, RepositoryUser
 
 LOGGER = logging.getLogger(__name__)
 

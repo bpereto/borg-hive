@@ -1,7 +1,6 @@
-from django import forms
 
 from borghive.forms import BaseForm
-from borghive.models import Repository, SSHPublicKey
+from borghive.models import Repository
 
 
 class RepositoryCreateForm(BaseForm):

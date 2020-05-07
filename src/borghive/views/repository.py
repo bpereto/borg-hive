@@ -1,13 +1,9 @@
-import datetime
 import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Avg
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.utils import timezone
-from django.utils.dateformat import format
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView

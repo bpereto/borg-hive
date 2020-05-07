@@ -1,5 +1,4 @@
 from crispy_forms.helper import FormHelper
-from django import forms
 
 from borghive.forms import BaseForm
 from borghive.models import AlertPreference
