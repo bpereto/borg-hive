@@ -9,19 +9,24 @@ from borghive.forms import SSHPublicKeyCreateForm, SSHPublicKeyUpdateForm
 from borghive.mixins import OwnerFilterMixin
 from borghive.models import SSHPublicKey
 
+# pylint: disable=too-many-ancestors,protected-access
+
 
 class SSHPublicKeyListView(OwnerFilterMixin, ListView):
+    """ssh public key list"""
 
     model = SSHPublicKey
     template_name = 'borghive/key_list.html'
 
 
 class SSHPublicKeyDetailView(OwnerFilterMixin, DetailView):
+    """ssh public key detail"""
 
     model = SSHPublicKey
 
 
 class SSHPublicKeyDeleteView(OwnerFilterMixin, DeleteView):
+    """ssh public key delete"""
 
     model = SSHPublicKey
     success_url = reverse_lazy('key-list')
@@ -29,6 +34,7 @@ class SSHPublicKeyDeleteView(OwnerFilterMixin, DeleteView):
 
 
 class SSHPublicKeyUpdateView(OwnerFilterMixin, UpdateView):
+    """ssh public key update - handle parse errors"""
 
     model = SSHPublicKey
     success_url = reverse_lazy('key-list')
@@ -51,6 +57,7 @@ class SSHPublicKeyUpdateView(OwnerFilterMixin, UpdateView):
 
 
 class SSHPublicKeyCreateView(OwnerFilterMixin, CreateView):
+    """ssh public key create view - handle parse errors"""
 
     model = SSHPublicKey
     form_class = SSHPublicKeyCreateForm

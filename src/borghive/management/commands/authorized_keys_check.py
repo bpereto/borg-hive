@@ -11,6 +11,10 @@ KEY_CMD_POSTFIX = '",restrict '
 
 
 class Command(BaseCommand):
+    '''
+    django management command to present the ssh-keys from the database
+    as authorized_keys format
+    '''
     help = 'Get Authorized Keys from Database'
 
     def add_arguments(self, parser):

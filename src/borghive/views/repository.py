@@ -17,13 +17,16 @@ LOGGER = logging.getLogger(__name__)
 
 
 class RepositoryListView(OwnerFilterMixin, ListView):
+    """repository list"""
 
     model = Repository
 
     def get_queryset(self):
+        """get only repos related to owner"""
         return super().get_queryset().filter(owner=self.request.user)
 
-    def get_total_usage(self):
+    def get_total_usage(self):  # pylint: disable=no-self-use
+        """get total usage from repostatistic of all repos"""
         total_size = 0
         for repo in Repository.objects.all():
             stat = repo.get_last_repository_statistic()
@@ -32,12 +35,14 @@ class RepositoryListView(OwnerFilterMixin, ListView):
         return total_size
 
     def get_context_data(self, **kwargs):
+        """get context for repositories"""
         context = super().get_context_data(**kwargs)
         context['current_total_usage'] = self.get_total_usage()
         return context
 
 
 class RepositoryDetailView(OwnerFilterMixin, DetailView):
+    """repository details"""
 
     model = Repository
 
@@ -56,6 +61,7 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
         return {'chart_repo_usage_data': data, 'chart_repo_usage_labels': labels, 'chart_date_format': settings.DATETIME_FORMAT}
 
     def get_context_data(self, **kwargs):
+        """get context for repository detail"""
         context = super().get_context_data(**kwargs)
         context.update(self.chart_data_usage())
         context['key_info'] = get_ssh_host_key_infos()
@@ -63,8 +69,8 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
             '-created')
         return context
 
-    def post(self, request, pk, **kwargs):
-
+    def post(self, request, pk):
+        """handle refresh for repository"""
         if 'refresh' in request.POST:
             repo = Repository.objects.get(id=pk)
             repo.refresh()
@@ -72,6 +78,7 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
 
 
 class RepositoryUpdateView(OwnerFilterMixin, UpdateView):
+    """repository update"""
 
     model = Repository
     success_url = reverse_lazy('repository-list')
@@ -80,6 +87,7 @@ class RepositoryUpdateView(OwnerFilterMixin, UpdateView):
 
 
 class RepositoryDeleteView(OwnerFilterMixin, DeleteView):
+    """repository delete"""
 
     model = Repository
     success_url = reverse_lazy('repository-list')
@@ -87,15 +95,18 @@ class RepositoryDeleteView(OwnerFilterMixin, DeleteView):
 
 
 class RepositoryCreateView(OwnerFilterMixin, CreateView):
+    """repository create"""
 
     model = Repository
     form_class = RepositoryCreateForm
     template_name = 'borghive/repository_create.html'
 
     def get_success_url(self):
+        """redirect url"""
         return reverse('repository-detail', args=[self.object.id])
 
     def form_valid(self, form):
+        """handle form valid"""
         repo_user = RepositoryUser()
         repo_user.save()
         form.instance.repo_user = repo_user
@@ -103,5 +114,6 @@ class RepositoryCreateView(OwnerFilterMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        """handle from invalid"""
         messages.add_message(self.request, messages.ERROR, "Form is invalid")
         return redirect(reverse('repository-list'))

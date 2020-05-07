@@ -11,12 +11,15 @@ LOGGER = get_task_logger(__name__)
 
 @app.task
 def generate_login_config():
+    """
+    generate passwd & shadow file with available users
+    """
+
     PASSWD = \
         '''root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
-man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
 nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 sshd:x:22:22:sshd:/dev/null:/sbin/nologin
 borg:x:1000:1000:Borghive User:/home/borg:/bin/bash
@@ -26,14 +29,10 @@ borg:x:1000:1000:Borghive User:/home/borg:/bin/bash
 daemon:*:18374:0:99999:7:::
 bin:*:18374:0:99999:7:::
 sys:*:18374:0:99999:7:::
-man:*:18374:0:99999:7:::
 nobody:*:18374:0:99999:7:::
 sshd:*:18384:0:99999:7:::
 borg:*:18384:0:99999:7:::
 '''
-
-    PASSWD_LINE_PATTERN = '{}:x:{}:{}:Borghive Repository User:{}:/bin/bash\n'
-    SHADOW_LINE_PATTERN = '{}:*:18384:0:99999:7:::\n'
 
     for user in RepositoryUser.objects.all():  # filter(repository__isnull=False):
         LOGGER.debug(user)
@@ -41,8 +40,6 @@ borg:*:18384:0:99999:7:::
         PASSWD += user.get_passwd_line()
         SHADOW += user.get_shadow_line()
 
-    print(PASSWD.strip())
-    print(SHADOW.strip())
     LOGGER.debug(PASSWD)
     LOGGER.debug(SHADOW)
 
@@ -54,6 +51,7 @@ borg:*:18384:0:99999:7:::
 
 @app.task
 def create_repo_user(user_id):
+    """create for sshd: add repository user to passwd and shadow"""
     user = RepositoryUser.objects.get(id=user_id)
     with open(os.path.join(settings.BORGHIVE['LOGIN_CONFIG_PATH'], 'passwd'), 'a') as f_passwd:
         f_passwd.write(user.get_passwd_line())

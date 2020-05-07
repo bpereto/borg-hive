@@ -10,6 +10,9 @@ LOGGER = get_task_logger(__name__)
 
 @app.task
 def alert_guard_tour(repo_id=None):
+    """
+    check if an owner should be notified about a repository
+    """
     if repo_id:
         repos = Repository.objects.filter(
             id=repo_id, alert_after_days__isnull=False)
@@ -27,9 +30,9 @@ def alert_guard_tour(repo_id=None):
 
 @app.task
 def fire_alert(repo_id, alert_id):
-    '''
+    """
     fire outdated backup alert
-    '''
+    """
     repo = Repository.objects.get(id=repo_id)
     alert = RepositoryEvent.objects.get(id=alert_id)
     owner = repo.owner

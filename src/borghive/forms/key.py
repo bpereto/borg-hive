@@ -1,9 +1,12 @@
 
-from borghive.forms import BaseForm
+from borghive.forms.base import BaseForm
 from borghive.models import SSHPublicKey
 
 
 class SSHPublicKeyCreateForm(BaseForm):
+    """
+    form to create an ssh public key
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,6 +18,9 @@ class SSHPublicKeyCreateForm(BaseForm):
 
 
 class SSHPublicKeyUpdateForm(BaseForm):
+    """
+    form to update ssh public key
+    """
 
     class Meta:
         model = SSHPublicKey

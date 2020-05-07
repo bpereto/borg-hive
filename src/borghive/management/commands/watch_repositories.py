@@ -1,25 +1,30 @@
 import logging
 import os
 
-from django import db
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
-
-import borghive.signals
 import inotify.adapters
-from borghive.models import Repository, RepositoryEvent
+from django import db
+from django.core.management.base import BaseCommand
+
+# used for singal activation
+import borghive.signals  # pylint: disable=unused-import
+from borghive.models.repo import Repository, RepositoryEvent
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)
 
 
 class Command(BaseCommand):
+    '''
+    django management command to watch borg repository changes on fs with inotify
+    '''
     help = 'Watch Repositories for changes'
 
     def add_arguments(self, parser):
+        """arguments parser"""
         parser.add_argument('--repo-path', type=str)
 
-    def get_repo_by_path(self, path):
+    def get_repo_by_path(self, path):  # pylint: disable=no-self-use
+        """distill repo name from inotify path"""
         repo_name = path.split('/')[-1]
         repo_user = path.split('/')[-2]
         db.close_old_connections()
@@ -45,8 +50,7 @@ class Command(BaseCommand):
             try:
                 (_, type_names, path, filename) = event
 
-                LOGGER.debug("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(
-                    path, filename, type_names))
+                LOGGER.debug("PATH=[%s] FILENAME=[%s] EVENT_TYPES=%s", path, filename, type_names)
 
                 # Event handling
                 if filename == 'lock.exclusive':
@@ -93,12 +97,11 @@ class Command(BaseCommand):
                         options['repo_path'], '').split('/')) == 2
                     if is_repo_path:
                         repo = self.get_repo_by_path(path)
-                        LOGGER.info('repo deleted: %', repo)
+                        LOGGER.info('repo deleted: %s', repo)
 
                         log_event = RepositoryEvent(
                             event_type='watcher', message='Repository deleted', repo=repo)
                         log_event.save()
 
-            except Exception as exc:
-                print(exc)
+            except Exception as exc:  # pylint: disable=broad-except
                 LOGGER.exception(exc)

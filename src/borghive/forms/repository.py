@@ -1,9 +1,13 @@
-
-from borghive.forms import BaseForm
+from borghive.forms.base import BaseForm
 from borghive.models import Repository
 
 
 class RepositoryCreateForm(BaseForm):
+    """
+    form to create repository
+    """
+
+    # pylint: disable=modelform-uses-exclude
 
     class Meta:
         model = Repository
@@ -12,6 +16,9 @@ class RepositoryCreateForm(BaseForm):
 
 
 class RepositoryUpdateForm(BaseForm):
+    """
+    form to update repository
+    """
 
     class Meta:
         model = Repository

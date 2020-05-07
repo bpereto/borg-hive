@@ -1,11 +1,13 @@
 from crispy_forms.helper import FormHelper
 
-from borghive.forms import BaseForm
+from borghive.forms.base import BaseForm
 from borghive.models import AlertPreference
 
 
 class AlertPreference(BaseForm):
-
+    """
+    alert preference tied to a user
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -17,4 +19,3 @@ class AlertPreference(BaseForm):
     class Meta:
         model = AlertPreference
         fields = ('alert_interval', 'alert_expiration',)
-        exclude = ('user',)

@@ -1,19 +1,21 @@
-from django.db import models
+import logging
+
 from django.conf import settings
-from django.core.validators import MaxValueValidator
-from borghive.models.base import BaseModel
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-import logging
+from django.core.validators import MaxValueValidator
+from django.db import models
+
+from borghive.models.base import BaseModel
 
 LOGGER = logging.getLogger(__name__)
 
 
 class NotificationBase(BaseModel):
-    '''
-    notifcation types
+    """
+    notifcation base class for notification types
     email, pushover, get/post webhooks
-    '''
+    """
 
     def notify(self, *args, **kwargs):
         '''
@@ -26,7 +28,9 @@ class NotificationBase(BaseModel):
 
 
 class AlertPreference(models.Model):
-
+    """
+    alert preference per user/owner
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     alert_interval = models.PositiveIntegerField(
         default=12, validators=[MaxValueValidator(48)])  # in hours
@@ -35,7 +39,9 @@ class AlertPreference(models.Model):
 
 
 class EmailNotification(BaseModel):
-
+    """
+    email notification
+    """
     email = models.EmailField()
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
@@ -43,6 +49,7 @@ class EmailNotification(BaseModel):
         return 'EmailNotification: {}'.format(self.email)
 
     def notify(self, subject, message):
+        """send email"""
         LOGGER.debug('send email notification: "%s" to %s',
                      subject, self.email)
         send_mail(

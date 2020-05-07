@@ -13,6 +13,14 @@ LOGGER = logging.getLogger(__name__)
 
 
 class SSHPublicKey(BaseModel):
+    """
+    represents a ssh public key
+
+    initially, the public key is provided by the user and checked against the
+    regex pattern SSH_PUBLIC_KEY_REGEX.
+    if valid, the key is parsed by "sshpublickeys" library and the different
+    fields (comment, bits, type etc.) of this model are updated.
+    """
 
     name = models.CharField(max_length=256)
     public_key = models.TextField(max_length=2048, validators=[RegexValidator(
@@ -27,16 +35,16 @@ class SSHPublicKey(BaseModel):
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
+        """representation"""
         return 'SSHPublicKey: {}'.format(self.name)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=signature-differs
+        """override save to parse public key"""
         self._parse_public_key()
         super().save(*args, **kwargs)
 
     def _parse_public_key(self):
-        '''
-        parse publickey and update fiels
-        '''
+        """parse publickey and update fiels"""
         key = sshpubkeys.SSHKey(self.public_key)
         key.parse()
 

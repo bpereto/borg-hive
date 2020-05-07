@@ -1,4 +1,5 @@
 [MASTER]
+init-hook='import sys; sys.path.append("src")'
 
 # A comma-separated list of package or module names from where C extensions may
 # be loaded. Extensions are loading into the active Python interpreter and may
@@ -10,7 +11,7 @@ fail-under=10
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=CVS
+ignore=CVS,migrations,fixtures,tests,manage.py
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
@@ -141,7 +142,9 @@ disable=print-statement,
         comprehension-escape,
         line-too-long, # my extensions
         wildcard-import,
-        missing-module-docstring
+        missing-module-docstring,
+        invalid-name,
+        too-many-ancestors
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -425,7 +428,7 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Ignore imports when computing similarities.
-ignore-imports=no
+ignore-imports=yes
 
 # Minimum lines number of a similarity.
 min-similarity-lines=4

@@ -21,4 +21,5 @@ app.autodiscover_tasks()
 
 @app.task(bind=True)
 def debug(self):
+    """debug task"""
     print('Request: {0!r}'.format(self.request))

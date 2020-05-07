@@ -5,8 +5,7 @@ from borghive.views import (NotificationListView, RepositoryCreateView,
                             RepositoryDeleteView, RepositoryDetailView,
                             RepositoryListView, RepositoryUpdateView,
                             SSHPublicKeyCreateView, SSHPublicKeyDeleteView,
-                            SSHPublicKeyDetailView, SSHPublicKeyListView,
-                            SSHPublicKeyUpdateView)
+                            SSHPublicKeyListView, SSHPublicKeyUpdateView)
 
 urlpatterns = [
     path('', RedirectView.as_view(

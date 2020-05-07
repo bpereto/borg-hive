@@ -5,19 +5,22 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 import borghive.tasks
-from borghive.models import RepositoryEvent, RepositoryUser
+from borghive.models import RepositoryEvent, RepositoryUser, AlertPreference
 
 LOGGER = logging.getLogger(__name__)
 
+# pylint: disable=unused-argument
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """create alert preference when a user is created"""
     if created:
-        AlertPreferences.objects.create(user=instance)
+        AlertPreference.objects.create(user=instance)
 
 
 @receiver(post_save, sender=RepositoryUser)
 def repository_user_created(sender, instance, created, **kwargs):
+    """create passwd & shadow entries for sshd when a user is created"""
     LOGGER.debug('repository_user_created: %s, %s, %s, %s',
                  sender, instance, created, kwargs)
     if created:
@@ -26,6 +29,8 @@ def repository_user_created(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=RepositoryEvent)
 def handle_repository_event(sender, instance, created, **kwargs):
+    """filter emitted repository events and take actions"""
+
     LOGGER.debug('handle_repository_event: %s, %s, %s, %s',
                  sender, instance, created, kwargs)
 

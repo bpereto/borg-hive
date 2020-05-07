@@ -20,31 +20,55 @@ LOGGER = logging.getLogger(__name__)
 
 
 def generate_userid(uid_length):
+    """generate random userid with ascii letters and digits"""
     letters = string.ascii_lowercase + string.digits
     return ''.join(random.choice(letters) for i in range(uid_length))
 
 
 class RepositoryUser(BaseModel):
+    """
+    repository user model
+
+    represents a uniq user related to one repository
+    """
     name = models.CharField(max_length=8, unique=True,
                             default=generate_userid(8))
 
     def __str__(self):
+        """representation"""
         return 'RepositoryUser: {}'.format(self.name)
 
     def get_passwd_line(self):
+        """compile passwd line"""
+
         PASSWD_LINE_PATTERN = '{}:x:{}:{}:Borghive Repository User:{}:/bin/bash\n'
+
         homedir = os.path.join(settings.BORGHIVE['REPO_PATH'], self.name)
         LOGGER.debug('get_passwd_line: homedir: %s', homedir)
+
         return PASSWD_LINE_PATTERN.format(self.name, self.id, self.id, homedir)
 
     def get_shadow_line(self):
+        """compile shadow line"""
+
         SHADOW_LINE_PATTERN = '{}:*:18384:0:99999:7:::\n'
+
         shadow_line = SHADOW_LINE_PATTERN.format(self.name)
         LOGGER.debug('get_shadow_line: %s', shadow_line)
+
         return shadow_line
 
 
 class Repository(BaseModel):
+    """
+    repository model
+
+    core of borghive and does a lot of things.
+
+    * repo status
+    * alert check/alerting
+    * refresh statistics
+    """
 
     name = models.CharField(max_length=30, unique=True)
     ssh_keys = models.ManyToManyField(SSHPublicKey)
@@ -58,6 +82,7 @@ class Repository(BaseModel):
     alert_after_days = models.IntegerField(null=True, blank=True)  # days
 
     def __str__(self):
+        """representation"""
         return 'Repository: {}'.format(self.name)
 
     def get_repo_path(self):
@@ -124,6 +149,7 @@ class Repository(BaseModel):
         return None
 
     def get_last_repository_statistic(self):
+        """get last saved repository statistic for this repo"""
         return self.repositorystatistic_set.last()
 
     def refresh(self):
@@ -151,6 +177,8 @@ class Repository(BaseModel):
         firing : update time is older than alert time
         alert  : should alert, considered alert expiration and interval
         '''
+        # pylint: disable=no-member
+
         alert = False
         firing = False
 
@@ -199,7 +227,7 @@ class Repository(BaseModel):
         alert owner for missing backups
         notify via configured notifications
         '''
-        import borghive.tasks.alert
+        import borghive.tasks.alert  # pylint: disable=import-outside-toplevel
 
         LOGGER.info('%s: alerting', self)
         delta = timezone.now()-self.last_updated
@@ -215,14 +243,21 @@ class Repository(BaseModel):
 
 
 class RepositoryStatistic(BaseModel):
+    """
+    repository statistic
+    """
     repo_size = models.IntegerField()  # mega bytes
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
 
     def __str__(self):
+        """representation"""
         return 'RepositoryStatistic: {} for {}'.format(self.created, self.repo)
 
 
 class RepositoryEvent(BaseModel):
+    """
+    represents an event happened in relation to a repository
+    """
 
     WATCHER = 'watcher'
     ALERT = 'alert'

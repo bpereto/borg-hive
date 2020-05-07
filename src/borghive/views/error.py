@@ -1,16 +1,15 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 
 
-def error404(request, *args, **argv):
-    response = render_to_response('404.html', {},
-                                  context_instance=RequestContext(request))
+def error404(request):
+    """render error 404 page"""
+    response = render(request, '404.html')
     response.status_code = 404
     return response
 
 
-def error500(request, *args, **argv):
-    response = render_to_response('500.html', {},
-                                  context_instance=RequestContext(request))
+def error500(request):
+    """render error 500 page"""
+    response = render(request, '500.html')
     response.status_code = 500
     return response
