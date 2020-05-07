@@ -9,15 +9,21 @@ from borghive.views import (NotificationListView, RepositoryCreateView,
                             SSHPublicKeyUpdateView)
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='repository/list', permanent=False), name='index'),
+    path('', RedirectView.as_view(
+        url='repository/list', permanent=False), name='index'),
     path('repository/list/', RepositoryListView.as_view(), name='repository-list'),
-    path('repository/detail/<int:pk>', RepositoryDetailView.as_view(), name='repository-detail'),
-    path('repository/create/', RepositoryCreateView.as_view(), name='repository-create'),
-    path('repository/delete/<int:pk>', RepositoryDeleteView.as_view(), name='repository-delete'),
-    path('repository/update/<int:pk>', RepositoryUpdateView.as_view(), name='repository-update'),
+    path('repository/detail/<int:pk>',
+         RepositoryDetailView.as_view(), name='repository-detail'),
+    path('repository/create/', RepositoryCreateView.as_view(),
+         name='repository-create'),
+    path('repository/delete/<int:pk>',
+         RepositoryDeleteView.as_view(), name='repository-delete'),
+    path('repository/update/<int:pk>',
+         RepositoryUpdateView.as_view(), name='repository-update'),
     path('keys/list/', SSHPublicKeyListView.as_view(), name='key-list'),
     path('keys/create/', SSHPublicKeyCreateView.as_view(), name='key-create'),
     path('keys/delete/<int:pk>', SSHPublicKeyDeleteView.as_view(), name='key-delete'),
     path('keys/update/<int:pk>', SSHPublicKeyUpdateView.as_view(), name='key-update'),
-    path('notifications/list/', NotificationListView.as_view(), name='notification-list'),
+    path('notifications/list/', NotificationListView.as_view(),
+         name='notification-list'),
 ]

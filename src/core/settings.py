@@ -25,7 +25,8 @@ env = Env()
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', '++apz(*cojac+1u$io&w)wg^r5vgaon%@wvpd#@j5iv9!9#lsg')
+SECRET_KEY = env(
+    'SECRET_KEY', '++apz(*cojac+1u$io&w)wg^r5vgaon%@wvpd#@j5iv9!9#lsg')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', True)
@@ -151,7 +152,7 @@ STATICFILES_DIRS = ['static']
 #
 CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', False)
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', 'redis://redis:6379/0')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND','redis://redis:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
 
 LOGGING = {
@@ -184,7 +185,6 @@ handler404 = 'borghive.views.error.error404'
 handler500 = 'borghive.views.error.error505'
 
 
-
 #
 # APP
 #
@@ -203,4 +203,5 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'root')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'password')
 EMAIL_USE_TLS = True  # disallow unsecure communication!
 EMAIL_FROM = env('EMAIL_FROM', 'borghive@{}'.format(socket.getfqdn()))
-if DEBUG: EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

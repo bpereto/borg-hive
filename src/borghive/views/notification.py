@@ -17,7 +17,8 @@ class NotificationListView(ListView):
     def get_context_data(self):
         context = super().get_context_data()
         alert_preference = self.request.user.alertpreference
-        context['alert_preference_form'] = AlertPreference(instance=alert_preference)
+        context['alert_preference_form'] = AlertPreference(
+            instance=alert_preference)
         return context
 
     def get_queryset(self):
@@ -30,8 +31,10 @@ class NotificationListView(ListView):
             alert_preference = AlertPreference(data=request.POST, instance=obj)
             if alert_preference.is_valid():
                 alert_preference.save()
-                messages.add_message(self.request, messages.SUCCESS, "Alert preference saved")
+                messages.add_message(
+                    self.request, messages.SUCCESS, "Alert preference saved")
             else:
-                messages.add_message(self.request, messages.ERROR, "Alert preference save failed")
+                messages.add_message(
+                    self.request, messages.ERROR, "Alert preference save failed")
 
             return redirect(reverse('notification-list'))

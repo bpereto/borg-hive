@@ -12,11 +12,11 @@ class SSHPublicKeyCreateForm(BaseForm):
 
     class Meta:
         model = SSHPublicKey
-        fields = ('public_key','name',)
+        fields = ('public_key', 'name',)
 
 
 class SSHPublicKeyUpdateForm(BaseForm):
 
     class Meta:
         model = SSHPublicKey
-        fields = ('public_key','name',)
+        fields = ('public_key', 'name',)

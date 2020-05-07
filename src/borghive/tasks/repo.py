@@ -21,7 +21,8 @@ def create_repo_statistic(repo_id=None):
     for repo in repos:
         repo.refresh()
 
+
 @app.task
 def get_repo_size(repo_id):
     repo = Repository.objects.get(id=repo_id)
-    return subprocess.check_output(['du','-sm', repo.get_repo_path()]).split()[0].decode('utf-8')
+    return subprocess.check_output(['du', '-sm', repo.get_repo_path()]).split()[0].decode('utf-8')

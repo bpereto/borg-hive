@@ -7,7 +7,7 @@ class BorgHiveConfig(AppConfig):
 
     def ready(self):
         import borghive.signals
-        
+
         models = apps.get_models()
         for model in models:
             try:

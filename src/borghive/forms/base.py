@@ -14,7 +14,8 @@ class BaseForm(forms.ModelForm):
                 model = field_type._queryset.model
                 try:
                     if model._meta.get_field('owner'):
-                        self.fields[field_name].queryset = model.objects.filter(owner=owner)
+                        self.fields[field_name].queryset = model.objects.filter(
+                            owner=owner)
                 except FieldDoesNotExist:
                     pass
 

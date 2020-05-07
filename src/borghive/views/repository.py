@@ -51,7 +51,7 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
         use resolution to calculate average repo size
         '''
         labels = []
-        data   = []
+        data = []
 
         for stat in self.object.repositorystatistic_set.all():
             labels.append(stat.created.isoformat())
@@ -63,7 +63,8 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context.update(self.chart_data_usage())
         context['key_info'] = get_ssh_host_key_infos()
-        context['events'] = self.object.repositoryevent_set.order_by('-created')
+        context['events'] = self.object.repositoryevent_set.order_by(
+            '-created')
         return context
 
     def post(self, request, pk, **kwargs):

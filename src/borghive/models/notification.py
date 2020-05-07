@@ -27,21 +27,24 @@ class NotificationBase(BaseModel):
 
 class AlertPreference(models.Model):
 
-    user            = models.OneToOneField(User, on_delete=models.CASCADE)
-    alert_interval  = models.PositiveIntegerField(default=12, validators=[MaxValueValidator(48)])  # in hours
-    alert_expiration = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(30)])  # in days
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    alert_interval = models.PositiveIntegerField(
+        default=12, validators=[MaxValueValidator(48)])  # in hours
+    alert_expiration = models.PositiveIntegerField(
+        default=5, validators=[MaxValueValidator(30)])  # in days
 
 
 class EmailNotification(BaseModel):
 
-    email       = models.EmailField()
-    owner       = models.ForeignKey(User, on_delete=models.PROTECT)
+    email = models.EmailField()
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return 'EmailNotification: {}'.format(self.email)
 
     def notify(self, subject, message):
-        LOGGER.debug('send email notification: "%s" to %s', subject, self.email)
+        LOGGER.debug('send email notification: "%s" to %s',
+                     subject, self.email)
         send_mail(
             subject=subject,
             message=message,

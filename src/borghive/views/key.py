@@ -37,7 +37,8 @@ class SSHPublicKeyUpdateView(OwnerFilterMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        messages.add_message(self.request, messages.SUCCESS, 'Updated SSH-Key: {}'.format(form.instance.name))
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Updated SSH-Key: {}'.format(form.instance.name))
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -60,7 +61,8 @@ class SSHPublicKeyCreateView(OwnerFilterMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        messages.add_message(self.request, messages.SUCCESS, 'Added SSH-Key: {}'.format(form.instance.name))
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Added SSH-Key: {}'.format(form.instance.name))
         return super().form_valid(form)
 
     def form_invalid(self, form):

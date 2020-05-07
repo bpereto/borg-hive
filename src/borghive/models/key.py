@@ -14,16 +14,17 @@ LOGGER = logging.getLogger(__name__)
 
 class SSHPublicKey(BaseModel):
 
-    name        = models.CharField(max_length=256)
-    public_key  = models.TextField(max_length=2048, validators=[RegexValidator(regex=settings.BORGHIVE['SSH_PUBLIC_KEY_REGEX'], message="SSH Public Key should match format: ssh-xxx AAAA... comment"), ssh_public_key_validator])
+    name = models.CharField(max_length=256)
+    public_key = models.TextField(max_length=2048, validators=[RegexValidator(
+        regex=settings.BORGHIVE['SSH_PUBLIC_KEY_REGEX'], message="SSH Public Key should match format: ssh-xxx AAAA... comment"), ssh_public_key_validator])
 
-    type        = models.CharField(max_length=15)
-    bits        = models.IntegerField()
+    type = models.CharField(max_length=15)
+    bits = models.IntegerField()
     fingerprint = models.CharField(max_length=256)
-    comment     = models.CharField(max_length=256)
+    comment = models.CharField(max_length=256)
 
-    created     = models.DateTimeField(auto_now_add=True)
-    owner       = models.ForeignKey(User, on_delete=models.PROTECT)
+    created = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return 'SSHPublicKey: {}'.format(self.name)

@@ -13,7 +13,7 @@ LOGGER = get_task_logger(__name__)
 @app.task
 def generate_login_config():
     PASSWD = \
-'''root:x:0:0:root:/root:/bin/bash
+        '''root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
@@ -23,7 +23,7 @@ sshd:x:22:22:sshd:/dev/null:/sbin/nologin
 borg:x:1000:1000:Borghive User:/home/borg:/bin/bash
 '''
     SHADOW = \
-'''root:*:18374:0:99999:7:::
+        '''root:*:18374:0:99999:7:::
 daemon:*:18374:0:99999:7:::
 bin:*:18374:0:99999:7:::
 sys:*:18374:0:99999:7:::
@@ -36,7 +36,7 @@ borg:*:18384:0:99999:7:::
     PASSWD_LINE_PATTERN = '{}:x:{}:{}:Borghive Repository User:{}:/bin/bash\n'
     SHADOW_LINE_PATTERN = '{}:*:18384:0:99999:7:::\n'
 
-    for user in RepositoryUser.objects.all(): # filter(repository__isnull=False):
+    for user in RepositoryUser.objects.all():  # filter(repository__isnull=False):
         LOGGER.debug(user)
         # @TODO: homepath from settings
         PASSWD += user.get_passwd_line()

@@ -5,6 +5,7 @@ import sshpubkeys
 
 LOGGER = logging.getLogger(__name__)
 
+
 def get_ssh_host_key_infos():
     '''
     get fingerprints of ssh host keys

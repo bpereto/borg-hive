@@ -26,7 +26,8 @@ def generate_userid(uid_length):
 
 
 class RepositoryUser(BaseModel):
-    name = models.CharField(max_length=8, unique=True, default=generate_userid(8))
+    name = models.CharField(max_length=8, unique=True,
+                            default=generate_userid(8))
 
     def __str__(self):
         return 'RepositoryUser: {}'.format(self.name)
@@ -46,17 +47,16 @@ class RepositoryUser(BaseModel):
 
 class Repository(BaseModel):
 
-    name        = models.CharField(max_length=30, unique=True)
-    ssh_keys    = models.ManyToManyField(SSHPublicKey)
+    name = models.CharField(max_length=30, unique=True)
+    ssh_keys = models.ManyToManyField(SSHPublicKey)
     #    append_only_keys = models.ManyToManyField(SSHPublicKey)
-    repo_user   = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
-    owner       = models.ForeignKey(User, on_delete=models.PROTECT)
+    repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
 
     last_updated = models.DateTimeField(null=True)
-    last_access  = models.DateTimeField(null=True)
+    last_access = models.DateTimeField(null=True)
 
-    alert_after_days  = models.IntegerField(null=True, blank=True)  # days
-
+    alert_after_days = models.IntegerField(null=True, blank=True)  # days
 
     def __str__(self):
         return 'Repository: {}'.format(self.name)
@@ -105,7 +105,8 @@ class Repository(BaseModel):
         the last change of the index.x file
         '''
         if self.is_created():
-            index_file = glob.glob(os.path.join(self.get_repo_path(), 'index.*'))
+            index_file = glob.glob(os.path.join(
+                self.get_repo_path(), 'index.*'))
             if len(index_file) != 1:
                 raise Exception('Too many index files found')
             last_updated = os.path.getmtime(index_file[0])
@@ -120,7 +121,7 @@ class Repository(BaseModel):
         '''
         if self.is_created():
             data_path = os.path.join(self.get_repo_path(), 'data')
-            return subprocess.check_output(['du','-sm', data_path]).split()[0].decode('utf-8')
+            return subprocess.check_output(['du', '-sm', data_path]).split()[0].decode('utf-8')
         return None
 
     def get_last_repository_statistic(self):
@@ -158,30 +159,39 @@ class Repository(BaseModel):
             return firing, alert
 
         # calculate point in time to fire alert
-        alert_time = self.last_updated + datetime.timedelta(days=self.alert_after_days)
+        alert_time = self.last_updated + \
+            datetime.timedelta(days=self.alert_after_days)
 
         if alert_time <= timezone.now():
-            LOGGER.debug('Alert Time hit: last update %s is older than %s', self.last_updated, alert_time)
+            LOGGER.debug('Alert Time hit: last update %s is older than %s',
+                         self.last_updated, alert_time)
             firing = True
             alert = True
 
             #
             # check alert interval
             #
-            last_alert = self.repositoryevent_set.filter(event_type=RepositoryEvent.ALERT, created__gte=self.last_updated).last()
+            last_alert = self.repositoryevent_set.filter(
+                event_type=RepositoryEvent.ALERT, created__gte=self.last_updated).last()
 
             if last_alert:
-                next_alert_interval = last_alert.created + datetime.timedelta(hours=self.owner.alertpreference.alert_interval)
+                next_alert_interval = last_alert.created + \
+                    datetime.timedelta(
+                        hours=self.owner.alertpreference.alert_interval)
                 if timezone.now() < next_alert_interval:
-                    LOGGER.debug('Last alert was not too long ago: %s, alert interval is set to: %s', last_alert.created, self.owner.alertpreference.alert_interval)
+                    LOGGER.debug('Last alert was not too long ago: %s, alert interval is set to: %s',
+                                 last_alert.created, self.owner.alertpreference.alert_interval)
                     alert = False
 
                 #
                 # check alert expiration
                 #
-                alert_expired_time = self.last_updated + datetime.timedelta(days=self.owner.alertpreference.alert_expiration)
+                alert_expired_time = self.last_updated + \
+                    datetime.timedelta(
+                        days=self.owner.alertpreference.alert_expiration)
                 if alert_expired_time < timezone.now():
-                    LOGGER.debug('Alert expired: last alert %s is older than set alert expiration: %s', last_alert, self.owner.alertpreference.alert_expiration)
+                    LOGGER.debug('Alert expired: last alert %s is older than set alert expiration: %s',
+                                 last_alert, self.owner.alertpreference.alert_expiration)
                     alert = False
         return firing, alert
 
@@ -194,11 +204,12 @@ class Repository(BaseModel):
 
         LOGGER.info('%s: alerting', self)
         delta = timezone.now()-self.last_updated
-        alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message='Last backup of {} is older than {} days'.format(self.name, delta.days), repo=self)
+        alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message='Last backup of {} is older than {} days'.format(
+            self.name, delta.days), repo=self)
         alert.save()
 
-        borghive.tasks.alert.fire_alert.delay(repo_id=self.id, alert_id=alert.id)
-
+        borghive.tasks.alert.fire_alert.delay(
+            repo_id=self.id, alert_id=alert.id)
 
     class Meta():
         verbose_name_plural = 'Repositories'
@@ -215,7 +226,7 @@ class RepositoryStatistic(BaseModel):
 class RepositoryEvent(BaseModel):
 
     WATCHER = 'watcher'
-    ALERT   = 'alert'
+    ALERT = 'alert'
 
     EVENT_TYPES = [
         (WATCHER, 'watcher'),
