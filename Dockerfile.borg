@@ -6,16 +6,16 @@ ENV PYTHONDONTWRITEBYTE 1
 ENV PYTHONUNBUFFERED 1
 
 # Install Borg & SSH
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup acl
 
-RUN useradd -rm -u 1000 borg && \
+RUN groupadd -g 1000 borg && \
+    useradd -rm -u 1000 -g 1000 borg && \
     mkdir /repos /run/sshd && \
-    chown -R borg.borg /repos
+    chown -R borg.borg /repos && \
+    setfacl -R -d -m u:borg:rwx /repos
+    
 ADD borg/sshd_config /etc/ssh/sshd_config
 ADD borg/pam-sshd.conf /etc/pam.d/sshd
-
-ADD borg/authorized-keys-check /sbin/
-RUN chown root.root /sbin/authorized-keys-check
 
 RUN ln -sf /config/passwd /etc/passwd
 RUN ln -sf /config/shadow /etc/shadow
@@ -27,7 +27,11 @@ WORKDIR /app
 COPY requirements.txt /app/
 COPY borg/requirements.txt /app/borg/requirements.txt
 RUN pip install -r requirements.txt -r borg/requirements.txt
+
 COPY src /app/
+
+# Authorized Keys Command needs these settings
+RUN chown root:root /app/manage.py && chmod 755 /app/manage.py
 
 EXPOSE 22
 VOLUME ["/repos"]

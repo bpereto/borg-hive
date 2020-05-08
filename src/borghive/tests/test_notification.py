@@ -39,6 +39,17 @@ class AlertPrefernceTest(TestCase):
         self.assertEqual(User.objects.get(username='admin').alertpreference.alert_interval, 13)
         self.assertEqual(User.objects.get(username='admin').alertpreference.alert_expiration, 30)
 
+    def test_update_invalid_alertpref(self):
+        data = {
+            'alert-pref': '',
+            'alert_interval': '200',
+            'alert_expiration': '9999'
+        }
+        response = self.client.post(reverse('notification-list'), data=data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(User.objects.get(username='admin').alertpreference.alert_interval, 12)
+        self.assertEqual(User.objects.get(username='admin').alertpreference.alert_expiration, 5)
+
 
 class EmailNotificationTest(TestCase):
 

@@ -28,7 +28,7 @@ services:
       - ./src:/app
       - borg-config:/config
       - borg-repos:/repos
-      - static:/static
+      - static:/staticfiles
     ports:
       - "8000:8000"
     depends_on:
@@ -50,6 +50,7 @@ services:
       - EMAIL_BACKEND
     volumes:
       - ./src:/app
+      - borg-config:/config
       - borg-repos:/repos:ro
     depends_on:
       - db

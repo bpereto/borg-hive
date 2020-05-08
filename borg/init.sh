@@ -25,6 +25,7 @@ sshd:x:22:22:sshd:/dev/null:/sbin/nologin
 borg:x:1000:1000:Borghive User:/home/borg:/bin/bash
 EOF
 fi
+chown borg:borg /config/passwd
 
 if [[ ! -f /config/shadow ]]; then
 cat << EOF > /config/shadow
@@ -37,6 +38,9 @@ sshd:*:18384:0:99999:7:::
 borg:*:18384:0:99999:7:::
 EOF
 fi
+chown borg:borg /config/shadow
+
+setfacl -R -d -m u:borg:rwx /repos
 
 # -D in CMD below prevents sshd from becoming a daemon. -e is to log everything to stderr.
 /usr/sbin/sshd -D -e

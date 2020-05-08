@@ -39,7 +39,7 @@ class RepositoryUser(BaseModel):
         homedir = os.path.join(settings.BORGHIVE['REPO_PATH'], self.name)
         LOGGER.debug('get_passwd_line: homedir: %s', homedir)
 
-        return PASSWD_LINE_PATTERN.format(self.name, self.id, self.id, homedir)
+        return PASSWD_LINE_PATTERN.format(self.name, self.id, 1000, homedir)
 
     def get_shadow_line(self):
         """compile shadow line"""

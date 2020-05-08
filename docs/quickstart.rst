@@ -9,7 +9,21 @@ Quick Start
 This chapter will get you started with Borg Hive.
 
 Get started
-----------------------
+-------------
+For development Setup look into :ref:development
+
+Prerequisites: You should have Docker installed and Running.
+
+.. code-block:: bash
+
+   # start app
+   docker-compose up
+
+   # change into app container
+   docker exec -it borg-hive_app_1 /bin/bash
+
+   # create superuser
+   ./manage.py createsuperuser
 
 
 -----------------------------------------------------------------------------

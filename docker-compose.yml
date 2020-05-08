@@ -16,7 +16,7 @@ services:
     volumes:
       - borg-config:/config
       - borg-repos:/repos
-      - static:/static
+      - static:/staticfiles
     ports:
       - "8000"
     depends_on:
@@ -28,6 +28,7 @@ services:
     env_file:
       - .env
     volumes:
+      - borg-config:/config
       - borg-repos:/repos:ro
     depends_on:
       - db
@@ -63,7 +64,7 @@ services:
       context: .
       dockerfile: Dockerfile.nginx
     volumes:
-      - static:/static
+      - static:/staticfiles
     ports:
       - 80:80
     depends_on:

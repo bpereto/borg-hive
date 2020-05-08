@@ -56,6 +56,6 @@ PermitUserEnvironment no
 UseDNS no
 PermitTunnel no
 
-Match User *    # End match, settings apply to all users again
+Match User *    # match all users
   AuthorizedKeysCommand /app/manage.py authorized_keys_check --user %u
-  AuthorizedKeysCommandUser borg
+  AuthorizedKeysCommandUser root

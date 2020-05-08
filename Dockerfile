@@ -7,7 +7,8 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip
 
-RUN mkdir /app /static && useradd -rm -u 1000 borg && chown -R borg:borg /app /static
+RUN mkdir /app /staticfiles && groupadd -g 1000 borg && \
+    useradd -rm -u 1000 -g 1000 borg && chown -R borg:borg /app /staticfiles
 WORKDIR /app
 COPY requirements.txt /app/
 
@@ -20,7 +21,7 @@ COPY src /app/
 COPY scripts/init.sh /
 COPY uwsgi.ini /
 
-VOLUME ["/static"]
+VOLUME ["/staticfiles"]
 
 USER borg
 

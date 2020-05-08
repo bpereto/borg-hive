@@ -88,18 +88,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if env('MYSQL_DATABASE', None):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': env('MYSQL_DATABASE', 'borghive'),
-            'USER': env('MYSQL_USER', 'borghive'),
-            'PASSWORD': env('MYSQL_PASSWORD', 'borghive'),
-            'HOST': env('MYSQL_HOST', 'db'),
-            'PORT': env.int('MYSQL_PORT', 3306)
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('MYSQL_DATABASE', 'borghive'),
+        'USER': env('MYSQL_USER', 'borghive'),
+        'PASSWORD': env('MYSQL_PASSWORD', 'borghive'),
+        'HOST': env('MYSQL_HOST', 'db'),
+        'PORT': env.int('MYSQL_PORT', 3306)
     }
-else:
+}
+
+if env('TEST_MODE', False):
     DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.sqlite3',
@@ -150,7 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static'
+STATIC_ROOT = '/staticfiles'
 STATICFILES_DIRS = ['static']
 
 #
