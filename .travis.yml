@@ -2,6 +2,10 @@ language: python
 python:
   - "3.8"
 
+cache:
+  directories:
+    - $HOME/.cache/pip
+
 env:
   - DEBUG=True CELERY_TASK_ALWAYS_EAGER=True
 
@@ -10,4 +14,7 @@ install:
   - cd src
 
 script:
-  - ./manage.py test
+  - DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run ./manage.py test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

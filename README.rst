@@ -29,3 +29,21 @@ What it should also have in the Future / Todo
 * Permission Modeling (Multiple Users Access to same Keys and Repos)
 * REST API (Django Rest Framework)
 * Send Logs from borg client / borgmatic to API
+
+.. start-badges
+
+|doc| |build| |coverage| |bestpractices| |bounties|
+
+.. |doc| image:: https://readthedocs.org/projects/borg-hive/badge/?version=latest
+        :alt: Documentation
+        :target: https://borg-hive.readthedocs.org/en/latest/
+
+.. |build| image:: https://api.travis-ci.com/bpereto/borg-hive.svg?branch=master
+        :alt: Build Status
+        :target: https://travis-ci.com/bpereto/borg-hive
+
+.. |coverage| image:: https://codecov.io/github/bpereto/borg-hive/coverage.svg?branch=master
+        :alt: Test Coverage
+        :target: https://codecov.io/github/bpereto/borg-hive?branch=master
+
+.. end-badges

@@ -3,3 +3,4 @@ sphinx-rtd-theme
 recommonmark
 pylint
 pylint-django
+coverage
