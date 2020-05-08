@@ -2,7 +2,6 @@ import datetime
 import glob
 import logging
 import os
-import random
 import subprocess
 
 from django.conf import settings
@@ -223,7 +222,7 @@ class Repository(BaseModel):
         alert owner for missing backups
         notify via configured notifications
         '''
-        import borghive.tasks.alert  # pylint: disable=import-outside-toplevel
+        import borghive.tasks.alert  # pylint: disable=import-outside-toplevel,redefined-outer-name
 
         LOGGER.info('%s: alerting', self)
         delta = timezone.now()-self.last_updated

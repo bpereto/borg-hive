@@ -19,6 +19,11 @@ services:
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
+      - EMAIL_HOST
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_HOST_USER
+      - EMAIL_FROM
+      - EMAIL_BACKEND
     volumes:
       - ./src:/app
       - borg-config:/config
@@ -38,6 +43,11 @@ services:
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
+      - EMAIL_HOST
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_HOST_USER
+      - EMAIL_FROM
+      - EMAIL_BACKEND
     volumes:
       - ./src:/app
       - borg-repos:/repos:ro

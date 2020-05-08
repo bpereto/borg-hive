@@ -63,8 +63,12 @@ class RepositoryTest(TestCase):
         'testing/repositories.yaml',
     ]
 
-    def test_refresh(self):
-
+    def test_refresh_exception(self):
         repo = Repository.objects.first()
         with self.assertRaises(borghive.exceptions.RepositoryNotCreated):
             repo.refresh()
+
+    #def test_valid_refresh(self):
+    #    repo = Repository.objects.first()
+    #    repo_size_before = repo.
+    #    repo.refresh()

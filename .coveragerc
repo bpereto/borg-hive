@@ -3,6 +3,7 @@ branch = True
 disable_warnings = module-not-measured
 source = src
 omit =
+    src/__init__.py
     */manage.py
     */core/wsgi.py
     */core/asgi.py
