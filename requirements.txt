@@ -11,5 +11,6 @@ mysqlclient==1.4.6
 sshpubkeys
 redis
 inotify
+pyyaml
 
 celery

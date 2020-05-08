@@ -6,16 +6,17 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
-from borghive.models import Repository
 
+import borghive.exceptions
+from borghive.models import Repository
 from borghive.forms import RepositoryCreateForm
 
 
 class RepositoryCreateTest(TestCase):
 
     fixtures = [
-        'testing/users.json',
-        'testing/sshpubkeys.json'
+        'testing/users.yaml',
+        'testing/sshpubkeys.yaml'
     ]
     def setUp(self):
         self.client = Client()
@@ -51,3 +52,19 @@ class RepositoryCreateTest(TestCase):
         response = self.client.post(reverse('repository-create'), data=data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Repository.objects.count(), 0)
+
+
+class RepositoryTest(TestCase):
+
+    fixtures = [
+        'testing/users.yaml',
+        'testing/sshpubkeys.yaml',
+        'testing/repositoryusers.yaml',
+        'testing/repositories.yaml',
+    ]
+
+    def test_refresh(self):
+
+        repo = Repository.objects.first()
+        with self.assertRaises(borghive.exceptions.RepositoryNotCreated):
+            repo.refresh()

@@ -1,5 +1,6 @@
 import logging
 import os
+from django.conf import settings
 
 import sshpubkeys
 
@@ -14,7 +15,7 @@ def get_ssh_host_key_infos():
 
     data = {}
     for key_type in KEY_TYPES:
-        file = os.path.join('/config', 'ssh_host_{}_key.pub'.format(key_type))
+        file = os.path.join(settings.BORGHIVE['CONFIG_PATH'], 'ssh_host_{}_key.pub'.format(key_type))
         if os.path.isfile(file):
             LOGGER.debug('found %s', file)
             with open(file) as f:

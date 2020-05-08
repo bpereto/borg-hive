@@ -3,7 +3,6 @@ import glob
 import logging
 import os
 import random
-import string
 import subprocess
 
 from django.conf import settings
@@ -13,17 +12,12 @@ from django.db import models
 from django.utils import timezone
 from django.utils.timezone import make_aware
 
+import borghive.exceptions
 from borghive.models.base import BaseModel
 
 from .key import SSHPublicKey
 
 LOGGER = logging.getLogger(__name__)
-
-
-def generate_userid(uid_length):
-    """generate random userid with ascii letters and digits"""
-    letters = string.ascii_lowercase + string.digits
-    return ''.join(random.choice(letters) for i in range(uid_length))
 
 
 class RepositoryUser(BaseModel):
@@ -169,6 +163,8 @@ class Repository(BaseModel):
             statistic = RepositoryStatistic(repo_size=self.get_repo_size())
             statistic.repo = self
             statistic.save()
+        else:
+            raise borghive.exceptions.RepositoryNotCreated()
 
     def should_alert(self):
         '''

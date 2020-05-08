@@ -10,8 +10,11 @@ from django.views.generic.list import ListView
 
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
 from borghive.lib.keys import get_ssh_host_key_infos
+from borghive.lib.user import generate_userid
 from borghive.mixins import OwnerFilterMixin
 from borghive.models import Repository, RepositoryUser
+import borghive.exceptions
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -73,7 +76,10 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
         """handle refresh for repository"""
         if 'refresh' in request.POST:
             repo = Repository.objects.get(id=pk)
-            repo.refresh()
+            try:
+                repo.refresh()
+            except borghive.exceptions.RepositoryNotCreated:
+                messages.add_message(self.request, messages.WARNING, "Repository not yet created.")
         return redirect(reverse('repository-detail', args=[pk]))
 
 
@@ -107,7 +113,7 @@ class RepositoryCreateView(OwnerFilterMixin, CreateView):
 
     def form_valid(self, form):
         """handle form valid"""
-        repo_user = RepositoryUser()
+        repo_user = RepositoryUser(name=generate_userid(8))
         repo_user.save()
         form.instance.repo_user = repo_user
         form.instance.owner = self.request.user

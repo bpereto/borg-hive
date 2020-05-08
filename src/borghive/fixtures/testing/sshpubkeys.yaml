@@ -1,0 +1,47 @@
+- model: borghive.sshpublickey
+  pk: 1
+  fields:
+    name: test
+    public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgVj9SNVtvP4W7VoA0P2OfVFT9BDAfJn1yR1Nb1b981QSP5rpCImls3eOrNgUSa9fDj5JJbdqBCKLQYKClGlYVdJlA4f2wI3uXXA4WbUrfOQxuggYqrV6t6NtYhBxTI2KRGT/A2d4xpQn0MD/TLQi+JoKVDhfL6Zfw5Yw2F0H/p0QWzv6VbaLox8xI666Q56SDOipIMacvQdOOlWqqvj3sJxsFbJlI99xd69xKKEHV3K+FrseyyUCENYnzn/f6lXwbXYwLp0G22YieBlOFUePHYAFMYCvgZ2s1DwH3cR4XC4aA49L7obilpVNj01kep8HgMgWmQz8vBG6fq3vVnkP7
+    type: rsa
+    bits: 2048
+    fingerprint: SHA256:rSMKUgIOn09GCnjmK7qBxmPzSSIGtK7Z4hf9sczbTKs
+    comment: null
+    created: 2020-05-08 13:02:32.623800+00:00
+    owner: 1
+- model: borghive.sshpublickey
+  pk: 2
+  fields:
+    name: rsa-key
+    public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxBMQZrHb9cKtyOhiGo8s7JhCLYyUV/vUhiPzKMcm3f95E/hFchdaetjRUH1d/hWllRkOc/2lCBXF91QLL1Iykt22ocyuWxFdy+gGCVGImUeHycOT1oUpZv1uwiCEX2lzMOqDQT9utQt3uklkVlY7omReUtr8cFIIOAJLHjKBrLTTFr7jCLhoAU53XD2VPgWOoJDtUR9lWxAzks0A3RYJw8LNkcPWRXOGLL8yLWFtSs3pFEZLR/6JayT1CPSh2h4Ruk1Q7TC1qu1cNW2h9PcDVPAI+3pV7C606pQzynCqryhEI0IZQUUoxLgjUFpOZk5Pcbkmv/TyWWQxY+T6w0fvXsX0IP6zivELinRTkNXKfk0Qyiw84iorIYRrwlV4e+HpHQ26iQoYtbOV7/F85j/7fHCzQcFZH+HuKPG157cgNIBwRpAzFAyNJ5CjNpLj9lHTiujBMAyYYg7u8zp20kTOagjvJjfjTChGB7GxGYLGf0w+zkEqoF1T7RI2fNsFz7AM=
+      comment
+    type: rsa
+    bits: 3072
+    fingerprint: SHA256:YOa7jsT9T7pUYtnVr+QhrEwDdrBIPQhv0MDm0dEFQtY
+    comment: comment
+    created: 2020-05-07 17:46:47.840000+00:00
+    owner: 1
+- model: borghive.sshpublickey
+  pk: 3
+  fields:
+    name: ecdsa-key
+    public_key: ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOltDNue+Pa939EWFoTJAEAbXfrD92mVsVut8TQZh4/zyQEOP5M2bK+KFbEKal9lALiGLIJbz/7tS13Td6KYqrA=
+      comment
+    type: ecdsa-sha2-nistp256
+    bits: 256
+    fingerprint: SHA256:otT76caUnukCJbAFowCruZ4MkOMciPBUNJ0smO5pzQ8
+    comment: comment
+    created: 2020-05-07 18:50:34.690000+00:00
+    owner: 1
+- model: borghive.sshpublickey
+  pk: 4
+  fields:
+    name: ed25519-key
+    public_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJy2GMJLrWk7AiHWRA8crkfxcbqGfx8mCR4/ox3C9pZe
+      comment
+    type: ed25519
+    bits: 256
+    fingerprint: SHA256:Wh1CCbBcB+TDwv16rdu9IGbfAXD/KLyUvUaDTmy4IvU
+    comment: comment
+    created: 2020-05-07 19:27:46.861000+00:00
+    owner: 1

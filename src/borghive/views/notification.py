@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, reverse
 from django.views.generic.list import ListView
 
-from borghive.forms import AlertPreference
+from borghive.forms import AlertPreferenceForm
 from borghive.models import EmailNotification
 
 
@@ -19,7 +19,7 @@ class NotificationListView(ListView):
         """get context for notification list"""
         context = super().get_context_data(*args, **kwargs)
         alert_preference = self.request.user.alertpreference
-        context['alert_preference_form'] = AlertPreference(
+        context['alert_preference_form'] = AlertPreferenceForm(
             instance=alert_preference)
         return context
 
@@ -32,7 +32,7 @@ class NotificationListView(ListView):
 
         if 'alert-pref' in self.request.POST:
             obj = request.user.alertpreference
-            alert_preference = AlertPreference(data=request.POST, instance=obj)
+            alert_preference = AlertPreferenceForm(data=request.POST, instance=obj)
             if alert_preference.is_valid():
                 alert_preference.save()
                 messages.add_message(

@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 
 # used for singal activation
 import borghive.signals  # pylint: disable=unused-import
-from borghive.models.repo import Repository, RepositoryEvent
+from borghive.models.repository import Repository, RepositoryEvent
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)

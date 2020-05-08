@@ -43,9 +43,9 @@ borg:*:18384:0:99999:7:::
     LOGGER.debug(PASSWD)
     LOGGER.debug(SHADOW)
 
-    with open(os.path.join(settings.BORGHIVE['LOGIN_CONFIG_PATH'], 'passwd'), 'w') as f_passwd:
+    with open(os.path.join(settings.BORGHIVE['CONFIG_PATH'], 'passwd'), 'w') as f_passwd:
         f_passwd.write(PASSWD)
-    with open(os.path.join(settings.BORGHIVE['LOGIN_CONFIG_PATH'], 'shadow'), 'w') as f_shadow:
+    with open(os.path.join(settings.BORGHIVE['CONFIG_PATH'], 'shadow'), 'w') as f_shadow:
         f_shadow.write(SHADOW)
 
 
@@ -53,7 +53,7 @@ borg:*:18384:0:99999:7:::
 def create_repo_user(user_id):
     """create for sshd: add repository user to passwd and shadow"""
     user = RepositoryUser.objects.get(id=user_id)
-    with open(os.path.join(settings.BORGHIVE['LOGIN_CONFIG_PATH'], 'passwd'), 'a') as f_passwd:
+    with open(os.path.join(settings.BORGHIVE['CONFIG_PATH'], 'passwd'), 'a') as f_passwd:
         f_passwd.write(user.get_passwd_line())
-    with open(os.path.join(settings.BORGHIVE['LOGIN_CONFIG_PATH'], 'shadow'), 'a') as f_shadow:
+    with open(os.path.join(settings.BORGHIVE['CONFIG_PATH'], 'shadow'), 'a') as f_shadow:
         f_shadow.write(user.get_shadow_line())

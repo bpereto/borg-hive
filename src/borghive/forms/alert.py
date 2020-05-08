@@ -4,7 +4,7 @@ from borghive.forms.base import BaseForm
 from borghive.models import AlertPreference
 
 
-class AlertPreference(BaseForm):
+class AlertPreferenceForm(BaseForm):
     """
     alert preference tied to a user
     """
