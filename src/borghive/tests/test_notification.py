@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
-from borghive.models import Repository
+from borghive.models import Repository, EmailNotification
 
 from borghive.forms import AlertPreferenceForm
 
@@ -38,3 +38,14 @@ class AlertPrefernceTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(User.objects.get(username='admin').alertpreference.alert_interval, 13)
         self.assertEqual(User.objects.get(username='admin').alertpreference.alert_expiration, 30)
+
+
+class EmailNotificationTest(TestCase):
+
+    fixtures = [
+        'testing/users.yaml'
+    ]
+
+    def test_send_email_notification(self):
+        notification = EmailNotification.objects.create(email='hohoho@northpole.local', owner=User.objects.get(username='admin'))
+        notification.notify('test subject', 'test message')

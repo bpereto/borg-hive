@@ -4,15 +4,9 @@ from io import StringIO
 import sys
 import os
 
-from django.test import Client
 from django.test import TestCase
-from django.urls import reverse
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.core import management
 
-from borghive.models import Repository
-from borghive.forms import AlertPreferenceForm
+from django.core import management
 
 
 class CommandTest(TestCase):
