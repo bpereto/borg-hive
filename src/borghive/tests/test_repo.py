@@ -34,6 +34,15 @@ class RepositoryCreateTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Repository.objects.count(), 1)
 
+    def test_injection(self):
+        data = {
+            'name': 'asdf"asd\'l\'\""fk',
+            'ssh_keys': '2'
+        }
+        response = self.client.post(reverse('repository-create'), data=data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Repository.objects.count(), 0)
+
     def test_create_crazy_repo(self):
         data = {
             'name': '$6ç342lA/%=075akse!!½%#@',

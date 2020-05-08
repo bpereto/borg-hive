@@ -32,8 +32,7 @@ class RepositoryUser(BaseModel):
 
     represents a uniq user related to one repository
     """
-    name = models.CharField(max_length=8, unique=True,
-                            default=generate_userid(8))
+    name = models.CharField(max_length=8, unique=True)
 
     def __str__(self):
         """representation"""
@@ -71,8 +70,7 @@ class Repository(BaseModel):
     * refresh statistics
     """
 
-    #name = models.CharField(max_length=256, validators=[RegexValidator(regex=r'[\w-.]+')])
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, validators=[RegexValidator(regex=r'^[\w\-\.]+$')])
     ssh_keys = models.ManyToManyField(SSHPublicKey)
     #    append_only_keys = models.ManyToManyField(SSHPublicKey)
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
@@ -242,6 +240,8 @@ class Repository(BaseModel):
 
     class Meta():
         verbose_name_plural = 'Repositories'
+
+        # user and reponame should be unique
         unique_together = ['name', 'repo_user']
 
 
