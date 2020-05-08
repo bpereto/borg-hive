@@ -32,7 +32,7 @@ What it should also have in the Future / Todo
 
 .. start-badges
 
-|doc| |build| |coverage| |bestpractices| |bounties|
+|doc| |build| |coverage|
 
 .. |doc| image:: https://readthedocs.org/projects/borg-hive/badge/?version=latest
         :alt: Documentation
