@@ -13,8 +13,8 @@ install:
   - pip install -r requirements.txt -r requirements-dev.txt
 
 script:
-  - pylint src
-  - DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run src/manage.py test src
+  - TEST_MODE=True DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run src/manage.py test src
+  - touch src/__init__.py && pylint src
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
