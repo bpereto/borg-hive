@@ -11,10 +11,9 @@ env:
 
 install:
   - pip install -r requirements.txt -r requirements-dev.txt
-  - cd src
 
 script:
-  - DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run ./manage.py test
+  - DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run src/manage.py test src
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

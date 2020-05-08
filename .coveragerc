@@ -1,0 +1,18 @@
+[run]
+branch = True
+disable_warnings = module-not-measured
+source = src
+omit =
+    */manage.py
+    */core/wsgi.py
+    */core/asgi.py
+    */tests/*
+
+[report]
+exclude_lines =
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+ignore_errors = True
