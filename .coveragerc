@@ -6,6 +6,7 @@ omit =
     */manage.py
     */core/wsgi.py
     */core/asgi.py
+    */core/settings.py
     */tests/*
 
 [report]
