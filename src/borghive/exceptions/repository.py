@@ -1,6 +1,7 @@
 
 # pylint: disable=unused-argument
 
+
 class RepositoryNotCreated(Exception):
     """raise repository not created exception"""
 

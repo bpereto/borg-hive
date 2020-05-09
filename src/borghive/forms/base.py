@@ -2,6 +2,7 @@ from django import forms
 from django.forms.models import ModelChoiceField, ModelMultipleChoiceField
 from django.core.exceptions import FieldDoesNotExist
 
+
 class BaseForm(forms.ModelForm):
     '''
     base form to handle complex owner filter

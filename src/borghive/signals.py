@@ -11,6 +11,7 @@ LOGGER = logging.getLogger(__name__)
 
 # pylint: disable=unused-argument
 
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     """create alert preference when a user is created"""

@@ -14,7 +14,7 @@ install:
 
 script:
   - TEST_MODE=True DEBUG=True CELERY_TASK_ALWAYS_EAGER=True coverage run src/manage.py test src
-  - touch src/__init__.py && pylint src
+  - pylama src
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

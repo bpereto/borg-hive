@@ -25,5 +25,6 @@ def humanmegabytes(MB):
 
     return MB
 
+
 register = template.Library()
 register.filter('humanmegabytes', humanmegabytes)
