@@ -10,6 +10,7 @@ class BorgHiveConfig(AppConfig):
     def ready(self):
         """initialize borghive config"""
         import borghive.signals  # pylint: disable=unused-import,import-outside-toplevel
+        import borghive.lib.rules  # pylint: disable=unused-import,import-outside-toplevel
 
         models = apps.get_models()
         for model in models:

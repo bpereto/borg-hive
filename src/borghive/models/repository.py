@@ -3,15 +3,18 @@ import glob
 import logging
 import os
 import subprocess
+import rules
+
 
 from django.conf import settings
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.utils import timezone
 from django.utils.timezone import make_aware
 
 import borghive.exceptions
+import borghive.lib.rules
 from borghive.lib.user import generate_userid
 from borghive.models.base import BaseModel
 
@@ -72,7 +75,9 @@ class Repository(BaseModel):
     ssh_keys = models.ManyToManyField(SSHPublicKey)
     #    append_only_keys = models.ManyToManyField(SSHPublicKey)
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
+
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    group = models.ManyToManyField(Group, blank=True)
 
     last_updated = models.DateTimeField(null=True, blank=True)
     last_access = models.DateTimeField(null=True, blank=True)
@@ -241,11 +246,19 @@ class Repository(BaseModel):
 
         return True
 
-    class Meta():
+    class Meta:
         verbose_name_plural = 'Repositories'
 
         # user and reponame should be unique
         unique_together = ['name', 'repo_user']
+
+        rules_permissions = {
+            'add': rules.is_authenticated,
+            'view': borghive.lib.rules.is_owner | borghive.lib.rules.owned_by_group,
+            'change': borghive.lib.rules.is_owner | borghive.lib.rules.owned_by_group,
+            'delete': borghive.lib.rules.is_owner | borghive.lib.rules.owned_by_group,
+            'list': rules.is_authenticated,
+        }
 
 
 class RepositoryStatistic(BaseModel):
@@ -267,10 +280,13 @@ class RepositoryEvent(BaseModel):
 
     WATCHER = 'watcher'
     ALERT = 'alert'
+    NOTIFY = 'notification'
 
     EVENT_TYPES = [
         (WATCHER, 'watcher'),
         (ALERT, 'alert'),
+        (NOTIFY, 'notification'),
+
     ]
 
     event_type = models.CharField(max_length=20, choices=EVENT_TYPES)

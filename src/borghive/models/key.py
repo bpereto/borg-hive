@@ -2,7 +2,7 @@ import logging
 
 import sshpubkeys
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -32,7 +32,9 @@ class SSHPublicKey(BaseModel):
     comment = models.CharField(max_length=256, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
+
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    group = models.ManyToManyField(Group, blank=True)
 
     def __str__(self):
         """representation"""
