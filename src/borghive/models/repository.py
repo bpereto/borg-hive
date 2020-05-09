@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.timezone import make_aware
 
 import borghive.exceptions
+from borghive.lib.user import generate_userid
 from borghive.models.base import BaseModel
 
 from .key import SSHPublicKey
@@ -26,6 +27,10 @@ class RepositoryUser(BaseModel):
     represents a uniq user related to one repository
     """
     name = models.CharField(max_length=8, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = generate_userid(8)
 
     def __str__(self):
         """representation"""
@@ -177,6 +182,7 @@ class Repository(BaseModel):
         alert = False
         firing = False
 
+        # stop if no alert time is defined or repository was never modified
         if not self.last_updated or not self.alert_after_days:
             return firing, alert
 
@@ -225,13 +231,15 @@ class Repository(BaseModel):
         import borghive.tasks.alert  # pylint: disable=import-outside-toplevel,redefined-outer-name
 
         LOGGER.info('%s: alerting', self)
-        delta = timezone.now()-self.last_updated
+        delta = timezone.now() - self.last_updated
         alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message='Last backup of {} is older than {} days'.format(
             self.name, delta.days), repo=self)
         alert.save()
 
         borghive.tasks.alert.fire_alert.delay(
             repo_id=self.id, alert_id=alert.id)
+
+        return True
 
     class Meta():
         verbose_name_plural = 'Repositories'

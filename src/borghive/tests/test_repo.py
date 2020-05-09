@@ -1,6 +1,8 @@
 import datetime
 
 import unittest
+from unittest import skip
+
 from django.test import Client
 from django.test import TestCase
 from django.urls import reverse
@@ -8,7 +10,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 import borghive.exceptions
-from borghive.models import Repository
+from borghive.models import Repository, RepositoryEvent, RepositoryStatistic
 from borghive.forms import RepositoryCreateForm
 
 
@@ -68,7 +70,28 @@ class RepositoryTest(TestCase):
         with self.assertRaises(borghive.exceptions.RepositoryNotCreated):
             repo.refresh()
 
-    #def test_valid_refresh(self):
-    #    repo = Repository.objects.first()
-    #    repo_size_before = repo.
-    #    repo.refresh()
+    @skip("TODO")
+    def test_valid_refresh(self):
+        repo = Repository.objects.first()
+        repo_size_before = None
+        repo.refresh()
+
+
+class RepositoryEventTest(TestCase):
+
+    fixtures = [
+        'testing/users.yaml',
+        'testing/sshpubkeys.yaml',
+        'testing/repositoryusers.yaml',
+        'testing/repositories.yaml',
+    ]
+
+    @skip("TODO")
+    def test_event_repo_statistic_create(self):
+        import borghive.signals
+        repo = Repository.objects.first()
+        log_event = RepositoryEvent(event_type='watcher', message='Repository updated', repo=repo)
+        log_event.save()
+        print(RepositoryStatistic.objects.all())
+
+        self.assertEqual(RepositoryStatistic.objects.filter(repo=repo).count(), 1)

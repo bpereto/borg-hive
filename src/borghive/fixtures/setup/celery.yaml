@@ -1,0 +1,106 @@
+- model: django_celery_beat.crontabschedule
+  pk: 1
+  fields:
+    minute: '0'
+    hour: '4'
+    day_of_week: '*'
+    day_of_month: '*'
+    month_of_year: '*'
+    timezone: UTC
+- model: django_celery_beat.crontabschedule
+  pk: 2
+  fields:
+    minute: '0'
+    hour: '*'
+    day_of_week: '*'
+    day_of_month: '*'
+    month_of_year: '*'
+    timezone: UTC
+- model: django_celery_beat.crontabschedule
+  pk: 3
+  fields:
+    minute: '0'
+    hour: '12'
+    day_of_week: '*'
+    day_of_month: '*'
+    month_of_year: '*'
+    timezone: UTC
+- model: django_celery_beat.periodictasks
+  pk: 1
+  fields:
+    last_update: 2020-05-09 08:32:25.854601+00:00
+- model: django_celery_beat.periodictask
+  pk: 1
+  fields:
+    name: celery.backend_cleanup
+    task: celery.backend_cleanup
+    interval: null
+    crontab: 1
+    solar: null
+    clocked: null
+    args: '[]'
+    kwargs: '{}'
+    queue: null
+    exchange: null
+    routing_key: null
+    headers: '{}'
+    priority: null
+    expires: null
+    expire_seconds: 43200
+    one_off: false
+    start_time: null
+    enabled: true
+    last_run_at: null
+    total_run_count: 0
+    date_changed: 2020-05-06 16:51:57.098000+00:00
+    description: ''
+- model: django_celery_beat.periodictask
+  pk: 2
+  fields:
+    name: Guard Tour
+    task: borghive.tasks.alert.alert_guard_tour
+    interval: null
+    crontab: 2
+    solar: null
+    clocked: null
+    args: '[]'
+    kwargs: '{}'
+    queue: null
+    exchange: null
+    routing_key: null
+    headers: '{}'
+    priority: null
+    expires: null
+    expire_seconds: null
+    one_off: false
+    start_time: null
+    enabled: true
+    last_run_at: null
+    total_run_count: 0
+    date_changed: 2020-05-06 20:28:45.667000+00:00
+    description: Check Repos for pending Alerts
+- model: django_celery_beat.periodictask
+  pk: 3
+  fields:
+    name: Create Repository Statistic
+    task: borghive.tasks.repo.create_repo_statistic
+    interval: null
+    crontab: 3
+    solar: null
+    clocked: null
+    args: '[]'
+    kwargs: '{}'
+    queue: null
+    exchange: null
+    routing_key: null
+    headers: '{}'
+    priority: null
+    expires: null
+    expire_seconds: null
+    one_off: false
+    start_time: null
+    enabled: true
+    last_run_at: null
+    total_run_count: 0
+    date_changed: 2020-05-06 20:22:53.767000+00:00
+    description: Get Statistic of the repositories

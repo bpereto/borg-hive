@@ -21,7 +21,8 @@ def alert_guard_tour(repo_id=None):
 
     for repo in repos:
         LOGGER.debug('alert checking: %s', repo)
-        if repo.should_alert():
+        _, alert = repo.should_alert()
+        if alert:
             delta = timezone.now() - repo.last_updated
             LOGGER.warning(
                 'Alert: %s last backup was %s days ago', repo, delta.days)

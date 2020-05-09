@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core import mail
 from django.core.validators import MaxValueValidator
 from django.db import models
 
@@ -52,7 +52,8 @@ class EmailNotification(BaseModel):
         """send email"""
         LOGGER.debug('send email notification: "%s" to %s',
                      subject, self.email)
-        send_mail(
+
+        mail.send_mail(
             subject=subject,
             message=message,
             from_email=settings.EMAIL_FROM,

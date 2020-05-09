@@ -10,7 +10,6 @@ from django.views.generic.list import ListView
 
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
 from borghive.lib.keys import get_ssh_host_key_infos
-from borghive.lib.user import generate_userid
 from borghive.mixins import OwnerFilterMixin
 from borghive.models import Repository, RepositoryUser
 import borghive.exceptions
@@ -113,7 +112,7 @@ class RepositoryCreateView(OwnerFilterMixin, CreateView):
 
     def form_valid(self, form):
         """handle form valid"""
-        repo_user = RepositoryUser(name=generate_userid(8))
+        repo_user = RepositoryUser()
         repo_user.save()
         form.instance.repo_user = repo_user
         form.instance.owner = self.request.user

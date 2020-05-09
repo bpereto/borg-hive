@@ -207,7 +207,7 @@ EMAIL_HOST = env('EMAIL_HOST', 'localhost')
 EMAIL_PORT = env('EMAIL_PORT', '465')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'root')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'password')
-EMAIL_USE_TLS = True  # disallow unsecure communication!
+EMAIL_USE_SSL = True  # disallow unsecure communication!
 EMAIL_FROM = env('EMAIL_FROM', 'borghive@{}'.format(socket.getfqdn()))
 if DEBUG:
     EMAIL_BACKEND = env('EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')

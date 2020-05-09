@@ -2,6 +2,7 @@ import logging
 import os
 
 import inotify.adapters
+from inotify.calls import InotifyError
 from django import db
 from django.core.management.base import BaseCommand
 
@@ -11,6 +12,8 @@ from borghive.models.repository import Repository, RepositoryEvent
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)
+
+# pylint: disable=too-many-nested-blocks
 
 
 class Command(BaseCommand):
@@ -45,63 +48,67 @@ class Command(BaseCommand):
 
         i = inotify.adapters.InotifyTree(options['repo_path'])
 
-        for event in i.event_gen(yield_nones=False):
-
+        while True:
             try:
-                (_, type_names, path, filename) = event
+                for event in i.event_gen(yield_nones=False):
 
-                LOGGER.debug("PATH=[%s] FILENAME=[%s] EVENT_TYPES=%s", path, filename, type_names)
+                    try:
+                        (_, type_names, path, filename) = event
 
-                # Event handling
-                if filename == 'lock.exclusive':
-                    LOGGER.info('lock detected: repo access')
+                        LOGGER.debug("PATH=[%s] FILENAME=[%s] EVENT_TYPES=%s", path, filename, type_names)
 
-                    repo = self.get_repo_by_path(path)
+                        # Event handling
+                        if filename == 'lock.exclusive':
+                            LOGGER.info('lock detected: repo access')
 
-                    # repo open
-                    if 'IN_CREATE' in type_names:
-                        LOGGER.info('lock created: repo open: %s', repo)
+                            repo = self.get_repo_by_path(path)
 
-                        log_event = RepositoryEvent(
-                            event_type='watcher', message='Repository open', repo=repo)
-                        log_event.save()
+                            # repo open
+                            if 'IN_CREATE' in type_names:
+                                LOGGER.info('lock created: repo open: %s', repo)
 
-                    # repo close
-                    if 'IN_DELETE' in type_names:
-                        LOGGER.info('lock deleted: repo close: %s', repo)
-                        log_event = RepositoryEvent(
-                            event_type='watcher', message='Repository closed', repo=repo)
-                        log_event.save()
+                                log_event = RepositoryEvent(
+                                    event_type='watcher', message='Repository open', repo=repo)
+                                log_event.save()
 
-                # repo created
-                if filename == 'README' and 'IN_CREATE' in type_names:
-                    repo = self.get_repo_by_path(path)
-                    LOGGER.info(
-                        'repo created: readme created - indicates repo creation: %s', repo)
+                            # repo close
+                            if 'IN_DELETE' in type_names:
+                                LOGGER.info('lock deleted: repo close: %s', repo)
+                                log_event = RepositoryEvent(
+                                    event_type='watcher', message='Repository closed', repo=repo)
+                                log_event.save()
 
-                    log_event = RepositoryEvent(
-                        event_type='watcher', message='Repository created', repo=repo)
-                    log_event.save()
+                        # repo created
+                        if filename == 'README' and 'IN_CREATE' in type_names:
+                            repo = self.get_repo_by_path(path)
+                            LOGGER.info(
+                                'repo created: readme created - indicates repo creation: %s', repo)
 
-                # repo updated: there is no clear indicator what is done
-                if filename.startswith('index.') and 'IN_MOVED_TO' in type_names:
-                    repo = self.get_repo_by_path(path)
-                    LOGGER.info('repo updated: %s', repo)
+                            log_event = RepositoryEvent(
+                                event_type='watcher', message='Repository created', repo=repo)
+                            log_event.save()
 
-                    log_event = RepositoryEvent(
-                        event_type='watcher', message='Repository updated', repo=repo)
-                    log_event.save()
+                        # repo updated: there is no clear indicator what is done
+                        if filename.startswith('index.') and 'IN_MOVED_TO' in type_names:
+                            repo = self.get_repo_by_path(path)
+                            LOGGER.info('repo updated: %s', repo)
 
-                if 'IN_DELETE_SELF' in type_names:
-                    is_repo_path = len(path.replace(
-                        options['repo_path'], '').split('/')) == 2
-                    if is_repo_path:
-                        repo = self.get_repo_by_path(path)
-                        LOGGER.info('repo deleted: %s', repo)
+                            log_event = RepositoryEvent(
+                                event_type='watcher', message='Repository updated', repo=repo)
+                            log_event.save()
 
-                        log_event = RepositoryEvent(
-                            event_type='watcher', message='Repository deleted', repo=repo)
-                        log_event.save()
+                        if 'IN_DELETE_SELF' in type_names:
+                            is_repo_path = len(path.replace(
+                                options['repo_path'], '').split('/')) == 2
+                            if is_repo_path:
+                                repo = self.get_repo_by_path(path)
+                                LOGGER.info('repo deleted: %s', repo)
 
-            except Exception as exc:  # pylint: disable=broad-except
+                                log_event = RepositoryEvent(
+                                    event_type='watcher', message='Repository deleted', repo=repo)
+                                log_event.save()
+
+                    except Exception as exc:  # pylint: disable=broad-except
+                        LOGGER.exception(exc)
+            except InotifyError as exc:
                 LOGGER.exception(exc)

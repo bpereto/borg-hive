@@ -10,7 +10,7 @@ This chapter will get you started with Borg Hive.
 
 Get started
 -------------
-For development Setup look into :ref:development
+For development Setup look into :ref:`Development`
 
 Prerequisites: You should have Docker installed and Running.
 
@@ -25,6 +25,7 @@ Prerequisites: You should have Docker installed and Running.
    # create superuser
    ./manage.py createsuperuser
 
+Open the browser and navigate to your host: ex. http://localhost:80
 
 -----------------------------------------------------------------------------
 
