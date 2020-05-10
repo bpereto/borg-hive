@@ -1,7 +1,7 @@
 import logging
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core import mail
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -44,6 +44,7 @@ class EmailNotification(BaseModel):
     """
     email = models.EmailField()
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    group = models.ManyToManyField(Group, blank=True)
 
     def __str__(self):
         return 'EmailNotification: {}'.format(self.email)

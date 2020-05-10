@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_celery_beat',
     'crispy_forms',
-    'borghive'
+    'rules',
+    'borghive',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 LOGIN_REDIRECT_URL = '/'
 LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
     'login',
@@ -180,6 +187,11 @@ LOGGING = {
             'propagate': True,
             'level': env('APP_LOG_LEVEL', 'DEBUG')
         },
+        'rules': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': env('DJANGO_LOG_LEVEL', 'INFO')
+        }
     },
 }
 
@@ -187,6 +199,7 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
 
+handler403 = 'borghive.views.error.error403'
 handler404 = 'borghive.views.error.error404'
 handler500 = 'borghive.views.error.error505'
 

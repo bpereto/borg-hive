@@ -9,7 +9,7 @@ class RepositoryCreateForm(BaseForm):
 
     class Meta:
         model = Repository
-        fields = ('name', 'ssh_keys', 'alert_after_days',)
+        fields = ('name', 'ssh_keys', 'alert_after_days', 'group',)
 
 
 class RepositoryUpdateForm(BaseForm):
@@ -19,4 +19,4 @@ class RepositoryUpdateForm(BaseForm):
 
     class Meta:
         model = Repository
-        fields = ('ssh_keys', 'alert_after_days',)
+        fields = ('ssh_keys', 'alert_after_days', 'group',)

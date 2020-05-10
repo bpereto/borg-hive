@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}Borg Hive - Permission denied.{% endblock %}
+
+{% block 'base' %}
+  <body class="c-app flex-row align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="clearfix">
+            <h1 class="float-left display-3 mr-4">403</h1>
+            <h4 class="pt-3">You can't do that.</h4>
+            <p class="text-muted">No permission.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CoreUI and necessary plugins-->
+    <script src="/static/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+    <!--[if IE]><!-->
+    <script src="/static/vendors/@coreui/icons/js/svgxuse.min.js"></script>
+    <!--<![endif]-->
+
+  </body>
+{% endblock %}

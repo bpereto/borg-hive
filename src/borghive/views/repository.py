@@ -8,9 +8,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from borghive.views.base import BaseView
 from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
 from borghive.lib.keys import get_ssh_host_key_infos
-from borghive.mixins import OwnerFilterMixin
 from borghive.models import Repository, RepositoryUser
 import borghive.exceptions
 
@@ -18,14 +18,10 @@ import borghive.exceptions
 LOGGER = logging.getLogger(__name__)
 
 
-class RepositoryListView(OwnerFilterMixin, ListView):
+class RepositoryListView(BaseView, ListView):
     """repository list"""
 
     model = Repository
-
-    def get_queryset(self):
-        """get only repos related to owner"""
-        return super().get_queryset().filter(owner=self.request.user)
 
     def get_total_usage(self):  # pylint: disable=no-self-use
         """get total usage from repostatistic of all repos"""
@@ -43,7 +39,7 @@ class RepositoryListView(OwnerFilterMixin, ListView):
         return context
 
 
-class RepositoryDetailView(OwnerFilterMixin, DetailView):
+class RepositoryDetailView(BaseView, DetailView):
     """repository details"""
 
     model = Repository
@@ -78,11 +74,11 @@ class RepositoryDetailView(OwnerFilterMixin, DetailView):
             try:
                 repo.refresh()
             except borghive.exceptions.RepositoryNotCreated:
-                messages.add_message(self.request, messages.WARNING, "Repository not yet created.")
+                messages.add_message(self.request, messages.WARNING, "Repository not yet initialized.")
         return redirect(reverse('repository-detail', args=[pk]))
 
 
-class RepositoryUpdateView(OwnerFilterMixin, UpdateView):
+class RepositoryUpdateView(BaseView, UpdateView):
     """repository update"""
 
     model = Repository
@@ -91,7 +87,7 @@ class RepositoryUpdateView(OwnerFilterMixin, UpdateView):
     template_name = 'borghive/repository_update.html'
 
 
-class RepositoryDeleteView(OwnerFilterMixin, DeleteView):
+class RepositoryDeleteView(BaseView, DeleteView):
     """repository delete"""
 
     model = Repository
@@ -99,7 +95,7 @@ class RepositoryDeleteView(OwnerFilterMixin, DeleteView):
     template_name = 'borghive/repository_delete.html'
 
 
-class RepositoryCreateView(OwnerFilterMixin, CreateView):
+class RepositoryCreateView(BaseView, CreateView):
     """repository create"""
 
     model = Repository
