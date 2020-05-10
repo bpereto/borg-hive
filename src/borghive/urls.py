@@ -1,11 +1,13 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
 
-from borghive.views import (NotificationListView, RepositoryCreateView,
-                            RepositoryDeleteView, RepositoryDetailView,
-                            RepositoryListView, RepositoryUpdateView,
-                            SSHPublicKeyCreateView, SSHPublicKeyDeleteView,
-                            SSHPublicKeyListView, SSHPublicKeyUpdateView)
+from borghive.views import (NotificationCreateView, NotificationDeleteView,
+                            NotificationListView, NotificationUpdateView,
+                            RepositoryCreateView, RepositoryDeleteView,
+                            RepositoryDetailView, RepositoryListView,
+                            RepositoryUpdateView, SSHPublicKeyCreateView,
+                            SSHPublicKeyDeleteView, SSHPublicKeyListView,
+                            SSHPublicKeyUpdateView)
 
 urlpatterns = [
     path('', RedirectView.as_view(
@@ -25,4 +27,7 @@ urlpatterns = [
     path('keys/update/<int:pk>', SSHPublicKeyUpdateView.as_view(), name='key-update'),
     path('notifications/list/', NotificationListView.as_view(),
          name='notification-list'),
+    path('notification/create/', NotificationCreateView.as_view(), name='notification-create'),
+    path('notification/delete/<int:pk>', NotificationDeleteView.as_view(), name='notification-delete'),
+    path('notification/update/<int:pk>', NotificationUpdateView.as_view(), name='notification-update')
 ]

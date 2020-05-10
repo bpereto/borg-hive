@@ -38,7 +38,7 @@
           <div class="col-sm-6">
           </div>
           <div class="col-sm-6 text-right">
-            <button class="btn btn-primary btn-sm" data-url="{% url 'key-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
+            <button class="btn btn-primary btn-sm" data-url="{% url 'notification-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
             </svg> Add Notification</button>
           </div>
@@ -58,10 +58,10 @@
               {{object}}
             </td>
             <td></td>
-            <td><button class="btn btn-secondary btn-sm" data-url="{% url 'key-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
+            <td><button class="btn btn-secondary btn-sm" data-url="{% url 'notification-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
             </svg></button>
-            <button class="btn btn-secondary btn-sm" data-url="{% url 'key-delete' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
+            <button class="btn btn-secondary btn-sm" data-url="{% url 'notification-delete' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
             </svg></button>
             </td>
