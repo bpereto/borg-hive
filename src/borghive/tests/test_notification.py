@@ -31,6 +31,10 @@ class AlertPrefernceTest(TestCase):
         response = self.client.get(reverse('notification-list'))
         self.assertEqual(response.status_code, 200)
 
+    def test_post(self):
+        response = self.client.get(reverse('notification-list'))
+        self.assertEqual(response.status_code, 200)
+
     def test_init_alertform(self):
         form = AlertPreferenceForm()
 
