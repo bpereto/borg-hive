@@ -101,7 +101,8 @@ DATABASES = {
     }
 }
 
-if env('TEST_MODE', False):
+TEST_MODE = env('TEST_MODE', False)
+if TEST_MODE:
     DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.sqlite3',

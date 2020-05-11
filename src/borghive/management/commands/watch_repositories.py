@@ -5,6 +5,7 @@ import inotify.adapters
 from inotify.calls import InotifyError
 from django import db
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 # used for singal activation
 import borghive.signals  # pylint: disable=unused-import
@@ -48,7 +49,7 @@ class Command(BaseCommand):
 
         i = inotify.adapters.InotifyTree(options['repo_path'])
 
-        while True:
+        while True and not settings.TEST_MODE:
             try:
                 for event in i.event_gen(yield_nones=False):
 
