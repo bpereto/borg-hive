@@ -25,7 +25,8 @@ def repository_user_created(sender, instance, created, **kwargs):
     LOGGER.debug('repository_user_created: %s, %s, %s, %s',
                  sender, instance, created, kwargs)
     if created:
-        borghive.tasks.create_repo_user.delay(instance.id)
+        # countdown to give db time to save user to db
+        borghive.tasks.create_repo_user.apply_async((instance.id,), countdown=2)
 
 
 @receiver(post_save, sender=RepositoryEvent)

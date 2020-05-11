@@ -32,9 +32,8 @@ class BaseForm(forms.ModelForm):
                 except FieldDoesNotExist:
                     pass
                 try:
-                    if model == Group and user:
+                    if user and model == Group and not user.is_superuser:
                         LOGGER.debug('field: group - filtering')
-                        print(user.groups.all())
                         self.fields[field_name].queryset = user.groups.all()
                 except FieldDoesNotExist:
                     pass
