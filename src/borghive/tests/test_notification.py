@@ -90,7 +90,7 @@ class PushoverNotificationTest(TestCase):
 class AlertTest(TestCase):
 
     fixtures = [
-        'testing/users.yaml'
+        'testing/users.yaml',
     ]
 
     def test_alert_should_not_1d_23h(self):

@@ -9,6 +9,7 @@
     comment: null
     created: 2020-05-08 13:02:32.623800+00:00
     owner: 1
+    group: []
 - model: borghive.sshpublickey
   pk: 2
   fields:
@@ -21,6 +22,7 @@
     comment: comment
     created: 2020-05-07 17:46:47.840000+00:00
     owner: 1
+    group: []
 - model: borghive.sshpublickey
   pk: 3
   fields:
@@ -33,6 +35,7 @@
     comment: comment
     created: 2020-05-07 18:50:34.690000+00:00
     owner: 1
+    group: []
 - model: borghive.sshpublickey
   pk: 4
   fields:
@@ -45,3 +48,5 @@
     comment: comment
     created: 2020-05-07 19:27:46.861000+00:00
     owner: 1
+    group:
+    - 1

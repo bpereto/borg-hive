@@ -1,7 +1,8 @@
 from django.test import TestCase
 from borghive.templatetags.helpers import humanmegabytes
 import borghive.lib.rules
-from borghive.models import Repository
+from borghive.models import Repository, SSHPublicKey
+from django.contrib.auth.models import User
 
 
 class LibTest(TestCase):
@@ -36,9 +37,14 @@ class LibTest(TestCase):
     def test_rules(self):
 
         # is_owner
-        repo = Repository.objects.first()
+        repo = Repository.objects.get(name='test')
         owner = repo.owner
+        owner2 = User.objects.get(username='spock')
         self.assertTrue(borghive.lib.rules.is_owner(owner, repo))
+        self.assertFalse(borghive.lib.rules.is_owner(owner2, repo))
 
         # owned_by_group
-        self.assertTrue(borghive.lib.rules.owned_by_group(owner, repo))
+        key = SSHPublicKey.objects.get(name='ed25519-key')
+        user = User.objects.get(username='spock')
+        self.assertTrue(borghive.lib.rules.owned_by_group(user, key))
+        self.assertFalse(borghive.lib.rules.owned_by_group(user, repo))
