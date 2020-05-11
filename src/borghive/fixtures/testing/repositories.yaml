@@ -11,6 +11,7 @@
     ssh_keys:
     - 1
     - 2
+    group: []
 - model: borghive.repository
   pk: 3
   fields:
@@ -23,3 +24,4 @@
     alert_after_days: null
     ssh_keys:
     - 4
+    group: []

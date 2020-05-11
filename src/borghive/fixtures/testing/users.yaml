@@ -2,7 +2,7 @@
   pk: 1
   fields:
     password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
-    last_login: 2020-05-08 13:32:44.435269+00:00
+    last_login: 2020-05-11 16:27:59.501730+00:00
     is_superuser: true
     username: admin
     first_name: ''
@@ -10,6 +10,64 @@
     email: root@localhost
     is_staff: true
     is_active: true
-    date_joined: 2020-05-06 10:03:43.161000+00:00
+    date_joined: 2020-05-02 10:03:43.161000+00:00
     groups: []
     user_permissions: []
+- model: auth.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
+    last_login: null
+    is_superuser: false
+    username: spock
+    first_name: Spock
+    last_name: ''
+    email: ''
+    is_staff: false
+    is_active: true
+    date_joined: 2020-05-02 05:39:06+00:00
+    groups:
+    - 1
+    user_permissions: []
+- model: auth.user
+  pk: 3
+  fields:
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
+    last_login: null
+    is_superuser: false
+    username: kirk
+    first_name: James
+    last_name: Kirk
+    email: ''
+    is_staff: false
+    is_active: true
+    date_joined: 2020-05-02 05:39:20+00:00
+    groups:
+    - 1
+    user_permissions: []
+- model: auth.user
+  pk: 4
+  fields:
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
+    last_login: null
+    is_superuser: false
+    username: scotty
+    first_name: Montgomery
+    last_name: Scott
+    email: ''
+    is_staff: false
+    is_active: true
+    date_joined: 2020-05-02 05:39:47+00:00
+    groups:
+    - 2
+    user_permissions: []
+- model: auth.group
+  pk: 1
+  fields:
+    name: enterprise
+    permissions: []
+- model: auth.group
+  pk: 2
+  fields:
+    name: outerspace
+    permissions: []

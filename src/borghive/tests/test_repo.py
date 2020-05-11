@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 import borghive.exceptions
 from borghive.models import Repository, RepositoryEvent, RepositoryStatistic
-from borghive.forms import RepositoryCreateForm
+from borghive.forms import RepositoryForm
 
 
 class RepositoryCreateTest(TestCase):

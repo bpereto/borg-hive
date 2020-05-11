@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from borghive.views.base import BaseView
-from borghive.forms import RepositoryCreateForm, RepositoryUpdateForm
+from borghive.forms import RepositoryForm
 from borghive.lib.keys import get_ssh_host_key_infos
 from borghive.models import Repository, RepositoryUser
 import borghive.exceptions
@@ -83,7 +83,7 @@ class RepositoryUpdateView(BaseView, UpdateView):
 
     model = Repository
     success_url = reverse_lazy('repository-list')
-    form_class = RepositoryUpdateForm
+    form_class = RepositoryForm
     template_name = 'borghive/repository_update.html'
 
 
@@ -99,7 +99,7 @@ class RepositoryCreateView(BaseView, CreateView):
     """repository create"""
 
     model = Repository
-    form_class = RepositoryCreateForm
+    form_class = RepositoryForm
     template_name = 'borghive/repository_create.html'
 
     def get_success_url(self):

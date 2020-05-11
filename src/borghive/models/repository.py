@@ -29,15 +29,27 @@ class RepositoryUser(BaseModel):
 
     represents a uniq user related to one repository
     """
+    # pylint: disable=R0201,W0222
+
     name = models.CharField(max_length=8, unique=True)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.name = generate_userid(8)
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = self.generate_username()
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """representation"""
         return 'RepositoryUser: {}'.format(self.name)
+
+    def generate_username(self):
+        """generate new userid and handle duplications"""
+        existing_repo_users = RepositoryUser.objects.all()
+        new_repo_user = generate_userid(8)
+        while new_repo_user in existing_repo_users:
+            new_repo_user = generate_userid(8)
+        return new_repo_user
 
     def get_passwd_line(self):
         """compile passwd line"""
