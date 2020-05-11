@@ -139,9 +139,13 @@ class NotificationUpdateView(NotificationBaseView, UpdateView):
 class NotificationTestView(View, SingleObjectMixin):
     """notification create view - handle parse errors"""
 
+    # pylint: disable=W0703
+
     model = Notification
 
-    def get(self, *args, **kwargs):
+    object = None
+
+    def get(self, **kwargs):
         """send test notification"""
         self.object = self.get_object(queryset=self.model.objects.filter(id=kwargs['pk']))
         try:

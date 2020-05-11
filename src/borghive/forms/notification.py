@@ -19,4 +19,4 @@ class PushoverNotificationForm(BaseForm):
 
     class Meta:
         model = PushoverNotification
-        fields = ('name', 'user', 'token','group',)
+        fields = ('name', 'user', 'token', 'group',)

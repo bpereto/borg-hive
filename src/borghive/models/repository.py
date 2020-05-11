@@ -29,11 +29,13 @@ class RepositoryUser(BaseModel):
 
     represents a uniq user related to one repository
     """
+    # pylint: disable=R0201,W0222
+
     name = models.CharField(max_length=8, unique=True)
 
     def save(self, *args, **kwargs):
         if not self.name:
-            self.name = self.gemerate_username()
+            self.name = self.generate_username()
 
         super().save(*args, **kwargs)
 
@@ -41,7 +43,7 @@ class RepositoryUser(BaseModel):
         """representation"""
         return 'RepositoryUser: {}'.format(self.name)
 
-    def gemerate_username(self):
+    def generate_username(self):
         """generate new userid and handle duplications"""
         existing_repo_users = RepositoryUser.objects.all()
         new_repo_user = generate_userid(8)
