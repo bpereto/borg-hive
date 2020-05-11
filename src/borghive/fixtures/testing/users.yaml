@@ -10,13 +10,13 @@
     email: root@localhost
     is_staff: true
     is_active: true
-    date_joined: 2020-05-06 10:03:43.161000+00:00
+    date_joined: 2020-05-02 10:03:43.161000+00:00
     groups: []
     user_permissions: []
 - model: auth.user
   pk: 2
   fields:
-    password: pbkdf2_sha256$180000$F7MqIwtnpC84$pBVn4dQcgZM7mQsIIfPlNNLV4HJO+m3bflfv3K2rWSA=
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
     last_login: null
     is_superuser: false
     username: spock
@@ -25,14 +25,14 @@
     email: ''
     is_staff: false
     is_active: true
-    date_joined: 2020-05-11 05:39:06+00:00
+    date_joined: 2020-05-02 05:39:06+00:00
     groups:
     - 1
     user_permissions: []
 - model: auth.user
   pk: 3
   fields:
-    password: pbkdf2_sha256$180000$MC0UcDx7CW7h$t/AFywTl9ps6FCZC23kXBW7fDhtXM0Kn9wghQMrVaIk=
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
     last_login: null
     is_superuser: false
     username: kirk
@@ -41,14 +41,14 @@
     email: ''
     is_staff: false
     is_active: true
-    date_joined: 2020-05-11 05:39:20+00:00
+    date_joined: 2020-05-02 05:39:20+00:00
     groups:
     - 1
     user_permissions: []
 - model: auth.user
   pk: 4
   fields:
-    password: pbkdf2_sha256$180000$FbjSCouUXcJK$lPS8KQSL75r/X5Ymb1EkGCZCWj9eLb4xMtFNtdLvgMA=
+    password: pbkdf2_sha256$180000$HbuhXAMsRVyY$wcttdZZ97k9n4VGCkS72jLXaK4hRfDtAiR0W/dPl4JI=
     last_login: null
     is_superuser: false
     username: scotty
@@ -57,7 +57,7 @@
     email: ''
     is_staff: false
     is_active: true
-    date_joined: 2020-05-11 05:39:47+00:00
+    date_joined: 2020-05-02 05:39:47+00:00
     groups:
     - 2
     user_permissions: []
