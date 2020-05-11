@@ -1,5 +1,5 @@
-import requests
 import logging
+import requests
 
 LOGGER = logging.getLogger(__name__)
 
@@ -9,11 +9,12 @@ class Pushover():
     pushover notification
     https://pushover.net/
     """
+    # pylint: disable=too-few-public-methods
 
     base_uri = 'https://api.pushover.net'
     port = 443
 
-    def __init__(self, user, token, *args, **kwargs):
+    def __init__(self, user, token, **kwargs):
         self.user = user
         self.token = token
         self.base_uri = kwargs.pop('base_uri', self.base_uri)
@@ -21,12 +22,12 @@ class Pushover():
 
     def push(self, message, **kwargs):
         """pushover to the rescue"""
-        LOGGER.debug('send pushover notification: user=%s token=%', self.user, self.token)
+        LOGGER.debug('send pushover notification: user=%s token=%s', self.user, self.token)
 
         url = '{}:{}/1/messages.json'.format(self.base_uri, self.port)
 
         # parse config
-        data =  {
+        data = {
             'user': self.user,
             'token': self.token,
             'message': message

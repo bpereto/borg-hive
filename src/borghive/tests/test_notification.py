@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.core import mail
 from django.contrib.auth.models import User
 from borghive.models import Repository, RepositoryUser, RepositoryEvent
-from borghive.models import EmailNotification
+from borghive.models import EmailNotification, PushoverNotification
 from borghive.tasks import alert_guard_tour
 
 from borghive.forms import AlertPreferenceForm
@@ -71,6 +71,20 @@ class EmailNotificationTest(TestCase):
         notification = EmailNotification.objects.create(email='hohoho@northpole.local', owner=User.objects.get(username='admin'))
         notification.notify('test subject', 'test message')
         self.assertEqual(len(mail.outbox), 1)
+
+
+class PushoverNotificationTest(TestCase):
+
+    fixtures = [
+        'testing/users.yaml'
+    ]
+
+    @mock.patch('requests.post', autospec=True)
+    def test_send_pushover_notification(self, monkey):
+        notification = PushoverNotification.objects.create(name='spock an enterprise', user='abc', token='xyz', owner=User.objects.get(username='admin'))
+        notification.notify('unittest')
+        self.assertTrue(monkey.called)
+        monkey.assert_called_with('https://api.pushover.net:443/1/messages.json', data={'user': 'abc', 'token': 'xyz', 'message': 'unittest'})
 
 
 class AlertTest(TestCase):

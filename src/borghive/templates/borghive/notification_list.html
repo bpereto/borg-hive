@@ -38,9 +38,12 @@
           <div class="col-sm-6">
           </div>
           <div class="col-sm-6 text-right">
-            <button class="btn btn-primary btn-sm" data-url="{% url 'notification-create' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
+            <button class="btn btn-primary btn-sm" data-url="{% url 'notification-create' 'email' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
               <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
-            </svg> Add Notification</button>
+            </svg> Add Email</button>
+            <button class="btn btn-primary btn-sm" data-url="{% url 'notification-create' 'pushover' %}" data-toggle="modal" data-target="#modal"><svg class="c-icon">
+              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-plus"></use>
+            </svg> Add Pushover</button>
           </div>
         </div>
       </div>

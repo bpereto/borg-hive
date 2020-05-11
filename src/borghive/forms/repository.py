@@ -2,7 +2,7 @@ from borghive.forms.base import BaseForm
 from borghive.models import Repository
 
 
-class RepositoryCreateForm(BaseForm):
+class RepositoryForm(BaseForm):
     """
     form to create repository
     """
@@ -10,13 +10,3 @@ class RepositoryCreateForm(BaseForm):
     class Meta:
         model = Repository
         fields = ('name', 'ssh_keys', 'alert_after_days', 'group',)
-
-
-class RepositoryUpdateForm(BaseForm):
-    """
-    form to update repository
-    """
-
-    class Meta:
-        model = Repository
-        fields = ('ssh_keys', 'alert_after_days', 'group',)

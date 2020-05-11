@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
@@ -5,14 +7,43 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from borghive.forms import (AlertPreferenceForm, NotificationCreateForm, NotificationUpdateForm)
-from borghive.mixins import OwnerFilterMixin
-from borghive.models import EmailNotification
+import borghive.forms
+from borghive.forms import (
+    AlertPreferenceForm, EmailNotificationForm, PushoverNotificationForm)
+from borghive.views.base import BaseView
+from borghive.models import EmailNotification, PushoverNotification, Notification
 
-# pylint: disable=protected-access
+# pylint: disable=protected-access,disable=arguments-differ,no-member
 
 
-class NotificationListView(OwnerFilterMixin, ListView):
+LOGGER = logging.getLogger(__name__)
+
+
+class NotificationBaseView(BaseView):
+    """
+    Notification Base View for form views
+    """
+
+    request = None  # populated by View class
+
+    def form_valid(self, form):
+        """form valid function"""
+        form.instance.owner = self.request.user
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Added: {}'.format(form.instance))
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """form invalid function"""
+        for field in form._errors:
+            message = ''
+            for msg in form._errors[field]:
+                message += '<p>' + msg + '</p>'
+            messages.add_message(self.request, messages.ERROR, message)
+        return redirect(reverse('notification-list'))
+
+
+class NotificationListView(BaseView, ListView):
     """
     notification list and alert preference
     """
@@ -20,7 +51,7 @@ class NotificationListView(OwnerFilterMixin, ListView):
     # pylint: disable=too-many-ancestors
 
     template_name = 'borghive/notification_list.html'
-    queryset = EmailNotification.objects.all()
+    queryset = Notification.objects.all()
 
     def get_context_data(self, *args, **kwargs):
         """get context for notification list"""
@@ -48,63 +79,57 @@ class NotificationListView(OwnerFilterMixin, ListView):
         return redirect(reverse('notification-list'))
 
 
-class NotificationDetailView(OwnerFilterMixin, DetailView):
+class NotificationDetailView(BaseView, DetailView):
     """ssh public key detail"""
 
-    model = EmailNotification
+    model = Notification
 
 
-class NotificationDeleteView(OwnerFilterMixin, DeleteView):
+class NotificationDeleteView(BaseView, DeleteView):
     """ssh public key delete"""
 
-    model = EmailNotification
+    model = Notification
     success_url = reverse_lazy('notification-list')
     template_name = 'borghive/notification_delete.html'
 
 
-class NotificationUpdateView(OwnerFilterMixin, UpdateView):
-    """ssh public key update - handle parse errors"""
-
-    model = EmailNotification
-    success_url = reverse_lazy('notification-list')
-    form_class = NotificationUpdateForm
-    template_name = 'borghive/notification_update.html'
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        messages.add_message(self.request, messages.SUCCESS,
-                             'Updated notification: {}'.format(form.instance.email))
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        for field in form._errors:
-            message = ''
-            for msg in form._errors[field]:
-                message += '<p>' + msg + '</p>'
-            messages.add_message(self.request, messages.ERROR, message)
-        return redirect(reverse('notification-list'))
-
-
-class NotificationCreateView(OwnerFilterMixin, CreateView):
+class NotificationCreateView(NotificationBaseView, CreateView):
     """notification create view - handle parse errors"""
 
-    model = EmailNotification
-    form_class = NotificationCreateForm
     template_name = 'borghive/notification_create.html'
+    success_url = reverse_lazy('notification-list')
+    n_type = None
 
-    def get_success_url(self):
-        return reverse('notification-list')
+    def dispatch(self, *args, **kwargs):
+        """get notification type and init form of this type"""
+        self.n_type = kwargs.pop('n_type', 'None')
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        messages.add_message(self.request, messages.SUCCESS,
-                             'Added notification: {}'.format(form.instance.email))
-        return super().form_valid(form)
+        if self.n_type == 'email':
+            LOGGER.debug('get email form')
+            self.model = EmailNotification
+            self.form_class = EmailNotificationForm
+        elif self.n_type == 'pushover':
+            LOGGER.debug('get pushover form')
+            self.model = PushoverNotification
+            self.form_class = PushoverNotificationForm
 
-    def form_invalid(self, form):
-        for field in form._errors:
-            message = ''
-            for msg in form._errors[field]:
-                message += '<p>' + msg + '</p>'
-            messages.add_message(self.request, messages.ERROR, message)
-        return redirect(reverse('notification-list'))
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['n_type'] = self.n_type
+        return context
+
+
+class NotificationUpdateView(NotificationBaseView, UpdateView):
+    """notification create view - handle parse errors"""
+
+    template_name = 'borghive/notification_update.html'
+    success_url = reverse_lazy('notification-list')
+
+    def dispatch(self, *args, **kwargs):
+        """get notification type and init form of this type"""
+        obj = Notification.objects.get(id=kwargs['pk'])
+        self.model = obj._meta.model
+        self.form_class = getattr(borghive.forms, obj.form_class, None)
+        return super().dispatch(*args, **kwargs)

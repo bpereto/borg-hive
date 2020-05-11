@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from borghive.forms import SSHPublicKeyCreateForm, SSHPublicKeyUpdateForm
+from borghive.forms import SSHPublicKeyForm
 from borghive.mixins import OwnerFilterMixin
 from borghive.models import SSHPublicKey
 
@@ -38,7 +38,7 @@ class SSHPublicKeyUpdateView(OwnerFilterMixin, UpdateView):
 
     model = SSHPublicKey
     success_url = reverse_lazy('key-list')
-    form_class = SSHPublicKeyUpdateForm
+    form_class = SSHPublicKeyForm
     template_name = 'borghive/key_update.html'
 
     def form_valid(self, form):
@@ -60,7 +60,7 @@ class SSHPublicKeyCreateView(OwnerFilterMixin, CreateView):
     """ssh public key create view - handle parse errors"""
 
     model = SSHPublicKey
-    form_class = SSHPublicKeyCreateForm
+    form_class = SSHPublicKeyForm
     template_name = 'borghive/key_create.html'
 
     def get_success_url(self):

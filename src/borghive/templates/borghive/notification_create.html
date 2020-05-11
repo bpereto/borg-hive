@@ -1,14 +1,14 @@
 {% load crispy_forms_tags %}
-<form method="post" action="{% url 'notification-create' %}">
+<form method="post" action="{% url 'notification-create' n_type %}">
   {% csrf_token %}
   <div class="modal-header">
-   <h4 class="modal-title">Add Notification</h4>
+   <h4 class="modal-title">Add {{n_type|capfirst}} Notification</h4>
    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
   </div>
   <div id="form-modal-body" class="modal-body">
-     {{ form|crispy}}
+     {{ form|crispy }}
   </div>
   <div class="modal-footer">
-   <button type="submit" class="btn btn-primary btn-sm">Add Notification</button>
+   <button type="submit" class="btn btn-primary btn-sm">Add {{n_type|capfirst}} Notification</button>
   </div>
 </form>

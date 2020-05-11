@@ -16,7 +16,7 @@ from cryptography.hazmat.backends import default_backend
 
 from borghive.lib.keys import get_ssh_host_key_infos
 from borghive.models import SSHPublicKey
-from borghive.forms import SSHPublicKeyCreateForm
+from borghive.forms import SSHPublicKeyForm
 
 
 class SSHPublicKeyTest(TestCase):

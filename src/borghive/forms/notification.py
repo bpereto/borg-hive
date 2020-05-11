@@ -1,23 +1,22 @@
-
 from borghive.forms.base import BaseForm
-from borghive.models import EmailNotification
+from borghive.models import EmailNotification, PushoverNotification
 
 
-class NotificationCreateForm(BaseForm):
+class EmailNotificationForm(BaseForm):
     """
-    form to create a notification
-    """
-
-    class Meta:
-        model = EmailNotification
-        fields = ('email',)
-
-
-class NotificationUpdateForm(BaseForm):
-    """
-    form to update notification
+    form for a email notification
     """
 
     class Meta:
         model = EmailNotification
-        fields = ('email',)
+        fields = ('email', 'group',)
+
+
+class PushoverNotificationForm(BaseForm):
+    """
+    form for a pushover notification
+    """
+
+    class Meta:
+        model = PushoverNotification
+        fields = ('name', 'user', 'token','group',)

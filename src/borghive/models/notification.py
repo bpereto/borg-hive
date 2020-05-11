@@ -5,27 +5,34 @@ from django.contrib.auth.models import User, Group
 from django.core import mail
 from django.core.validators import MaxValueValidator
 from django.db import models
+from polymorphic.models import PolymorphicModel
 
 from borghive.models.base import BaseModel
 from borghive.lib.notification import Pushover
 
 LOGGER = logging.getLogger(__name__)
 
+# pylint: disable=arguments-differ,no-member
 
-class NotificationBase(BaseModel):
+
+class NotificationMeta(type(BaseModel), type(PolymorphicModel)):
+    """meta class to handle django inheritance"""
+
+
+class Notification(PolymorphicModel, BaseModel, metaclass=NotificationMeta):
     """
     notifcation base class for notification types
     email, pushover, get/post webhooks
     """
+
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    group = models.ManyToManyField(Group, blank=True)
 
     def notify(self, *args, **kwargs):
         '''
         execute notification
         '''
         raise NotImplementedError()
-
-    class Meta():
-        abstract = True
 
 
 class AlertPreference(models.Model):
@@ -39,13 +46,16 @@ class AlertPreference(models.Model):
         default=5, validators=[MaxValueValidator(30)])  # in days
 
 
-class EmailNotification(BaseModel):
+class EmailNotification(Notification):
     """
     email notification
     """
+    # pylint: disable=R0201
+
+    form_class = 'EmailNotificationForm'
+    n_type = 'email'
+
     email = models.EmailField()
-    owner = models.ForeignKey(User, on_delete=models.PROTECT)
-    group = models.ManyToManyField(Group, blank=True)
 
     def __str__(self):
         return 'EmailNotification: {}'.format(self.email)
@@ -68,15 +78,17 @@ class EmailNotification(BaseModel):
         )
 
 
-class PushoverNotification(BaseModel):
+class PushoverNotification(Notification):
     """
     pushover notification
     """
+    # pylint: disable=R0201
+    form_class = 'PushoverNotificationForm'
+    n_type = 'pushover'
+
     name = models.CharField(max_length=256)
     token = models.CharField(max_length=256)
     user = models.CharField(max_length=256)
-    owner = models.ForeignKey(User, on_delete=models.PROTECT)
-    group = models.ManyToManyField(Group, blank=True)
 
     def __str__(self):
         return 'PushoverNotification: {}'.format(self.name)
@@ -85,10 +97,10 @@ class PushoverNotification(BaseModel):
         """get params for test notification"""
         return {'message': 'friendly test notification from borghive'}
 
-    def notify(self, message):
+    def notify(self, message, *args, **kwargs):
         """pushover to the rescue"""
         LOGGER.debug('send pushover notification: "%s" to %s',
                      self.name, self.user)
-        
+
         pushover = Pushover(self.user, self.token)
-        pushover.push(message=message)
+        pushover.push(message=message, *args, **kwargs)
