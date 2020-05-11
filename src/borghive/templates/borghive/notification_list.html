@@ -61,12 +61,19 @@
               {{object}}
             </td>
             <td></td>
-            <td><button class="btn btn-secondary btn-sm" data-url="{% url 'notification-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
-              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-            </svg></button>
-            <button class="btn btn-secondary btn-sm" data-url="{% url 'notification-delete' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
-              <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-            </svg></button>
+            <td>
+              <form method="post">
+                {% csrf_token %}
+                <button class="btn btn-secondary btn-sm" data-url="{% url 'notification-update' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><svg class="c-icon">
+                <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                </svg></button>
+                  <a href="{% url 'notification-test' object.id %}" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="Test Notification">
+                    <ion-icon name="flash"></ion-icon>  
+                  </a>
+                <button class="btn btn-secondary btn-sm" data-url="{% url 'notification-delete' object.id %}" data-toggle="modal" data-target="#modal" data-toggle="tooltip" data-placement="top" data-original-title="Delete"><svg class="c-icon">
+                  <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                </svg></button>
+              </form>
             </td>
           </tr>
           {% endfor %}

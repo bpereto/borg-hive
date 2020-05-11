@@ -3,7 +3,8 @@ import logging
 from django.contrib import messages
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
-from django.views.generic.detail import DetailView
+from django.views.generic import View
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -133,3 +134,19 @@ class NotificationUpdateView(NotificationBaseView, UpdateView):
         self.model = obj._meta.model
         self.form_class = getattr(borghive.forms, obj.form_class, None)
         return super().dispatch(*args, **kwargs)
+
+
+class NotificationTestView(View, SingleObjectMixin):
+    """notification create view - handle parse errors"""
+
+    model = Notification
+
+    def get(self, *args, **kwargs):
+        """send test notification"""
+        self.object = self.get_object(queryset=self.model.objects.filter(id=kwargs['pk']))
+        try:
+            self.object.notify(**self.object.get_test_params())
+            messages.add_message(self.request, messages.SUCCESS, 'Sent {}'.format(self.object))
+        except Exception:
+            messages.add_message(self.request, messages.ERROR, 'Test failed.')
+        return redirect(reverse('notification-list'))

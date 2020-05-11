@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
 
-from borghive.views import (NotificationUpdateView, NotificationCreateView, NotificationDeleteView,
+from borghive.views import (NotificationTestView, NotificationUpdateView, NotificationCreateView, NotificationDeleteView,
                             NotificationListView,
                             RepositoryCreateView, RepositoryDeleteView,
                             RepositoryDetailView, RepositoryListView,
@@ -23,5 +23,6 @@ urlpatterns = [
     path('notifications/list/', NotificationListView.as_view(), name='notification-list'),
     path('notifications/create/<str:n_type>', NotificationCreateView.as_view(), name='notification-create'),
     path('notifications/update/<int:pk>', NotificationUpdateView.as_view(), name='notification-update'),
-    path('notifications/delete/<int:pk>', NotificationDeleteView.as_view(), name='notification-delete')
+    path('notifications/delete/<int:pk>', NotificationDeleteView.as_view(), name='notification-delete'),
+    path('notifications/test/<int:pk>', NotificationTestView.as_view(), name='notification-test')
 ]

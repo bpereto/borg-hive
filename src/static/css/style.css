@@ -16578,3 +16578,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 /*# sourceMappingURL=style.css.map */
+
+ion-icon {
+  font-size: 1.1rem;
+}
