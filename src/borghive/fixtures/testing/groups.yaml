@@ -1,0 +1,10 @@
+- model: auth.group
+  pk: 1
+  fields:
+    name: enterprise
+    permissions: []
+- model: auth.group
+  pk: 2
+  fields:
+    name: outerspace
+    permissions: []
