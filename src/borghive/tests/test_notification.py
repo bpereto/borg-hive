@@ -78,6 +78,13 @@ class EmailNotificationTest(TestCase):
         response = self.client.get(reverse('notification-create', kwargs={'n_type': 'email'}))
         self.assertEqual(response.status_code, 200)
 
+    def test_view_test(self):
+        self.client.force_login(User.objects.get_or_create(username='admin')[0])
+        notification = EmailNotification.objects.create(email='hohoho@northpole.local', owner=User.objects.get(username='admin'))
+        response = self.client.get(reverse('notification-test', kwargs={'pk': notification.id}))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+
 
 class PushoverNotificationTest(TestCase):
 
