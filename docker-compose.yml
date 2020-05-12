@@ -57,7 +57,7 @@ services:
       - borg-repos:/repos
       - borg-config:/config
     ports:
-      - "$BORG_SSH_PORT:22"
+      - "${BORG_SSH_PORT}:22"
 
   # nginx:
   #   build:

@@ -33,7 +33,7 @@ SECRET_KEY = env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = ['localhost', socket.getfqdn()]
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS', 'localhost').split(" ")
 
 
 # Application definition
