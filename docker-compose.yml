@@ -57,24 +57,32 @@ services:
       - borg-repos:/repos
       - borg-config:/config
     ports:
-      - "22:22"
+      - "$BORG_SSH_PORT:22"
 
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.nginx
+  #   volumes:
+  #     - static:/staticfiles
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - app
+
+  ldap:
+    image: osixia/openldap:latest
+    env_file:
+      - .env
     volumes:
-      - static:/staticfiles
-    ports:
-      - 80:80
-    depends_on:
-      - app
+      - ldap-data:/var/lib/ldap
 
   redis:
     image: redis:latest
 
 volumes:
   mariadb-data:
+  ldap-data:
   borg-repos:
   borg-config:
   static:
