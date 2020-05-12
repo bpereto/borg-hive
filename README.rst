@@ -15,18 +15,17 @@ Features
 * Repository Managment
 * Repository Statistics
 * SSH-Key Management
-* Notifications of stale backups
-* Partially Repository Events
+* Notifications of stale backups (E-Mail, Pushover)
+* Partially Repository Events (should be improved)
+* Basic Object Permissions (Owner & Group) of repositories, SSH-Keys and notifications
 
 What it should also have in the Future / Todo
 ----------------------------------------------
-* More Notification Types
+* More notification types
 
   * GET/POST Webhooks
-  * Pushover
-  * https://github.com/jazzband/django-push-notifications
+  * Other wanted notification types
 
-* Permission Modeling (Multiple Users Access to same Keys and Repos)
 * REST API (Django Rest Framework)
 * Send Logs from borg client / borgmatic to API
 
