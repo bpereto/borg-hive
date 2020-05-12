@@ -70,11 +70,19 @@ services:
   #   depends_on:
   #     - app
 
+  ldap:
+    image: osixia/openldap:latest
+    env_file:
+      - .env
+    volumes:
+      - ldap-data:/var/lib/ldap
+
   redis:
     image: redis:latest
 
 volumes:
   mariadb-data:
+  ldap-data:
   borg-repos:
   borg-config:
   static:

@@ -3,13 +3,19 @@
   fields:
     created: 2020-05-08 13:02:40.971775+00:00
     name: xhmqhnsx
+    uid: 1111
+    group: 1000
 - model: borghive.repositoryuser
   pk: 3
   fields:
     created: 2020-05-08 13:12:29.633965+00:00
     name: abulfj66
+    uid: 1112
+    group: 1000
 - model: borghive.repositoryuser
   pk: 4
   fields:
     created: 2020-05-08 13:33:45.855725+00:00
     name: 6w9646gn
+    uid: 1113
+    group: 1000

@@ -15,10 +15,11 @@ cryptography==2.9.2       # via -r requirements.txt, sshpubkeys
 django-celery-beat==2.0.0  # via -r requirements.txt
 django-crispy-forms==1.9.0  # via -r requirements.txt
 django-extensions==2.2.9  # via -r requirements.txt
+django-ldapdb==1.4.0      # via -r requirements.txt
 django-login-required-middleware==0.5.0  # via -r requirements.txt
 django-polymorphic==2.1.2  # via -r requirements.txt
 django-timezone-field==4.0  # via -r requirements.txt, django-celery-beat
-django==3.0.6             # via -r requirements.txt, django-celery-beat, django-polymorphic, django-timezone-field, djangorestframework
+django==3.0.6             # via -r requirements.txt, django-celery-beat, django-ldapdb, django-polymorphic, django-timezone-field, djangorestframework
 djangorestframework==3.11.0  # via -r requirements.txt
 ecdsa==0.15               # via -r requirements.txt, sshpubkeys
 environs==7.4.0           # via -r requirements.txt
@@ -28,10 +29,13 @@ kombu==4.6.8              # via -r requirements.txt, celery
 marshmallow==3.5.2        # via -r requirements.txt, environs
 mysqlclient==1.4.6        # via -r requirements.txt
 nose==1.3.7               # via -r requirements.txt, inotify
+pyasn1-modules==0.2.8     # via python-ldap
+pyasn1==0.4.8             # via pyasn1-modules, python-ldap
 pycparser==2.20           # via -r requirements.txt, cffi
 python-crontab==2.4.2     # via -r requirements.txt, django-celery-beat
 python-dateutil==2.8.1    # via -r requirements.txt, python-crontab
 python-dotenv==0.13.0     # via -r requirements.txt, environs
+python-ldap==3.2.0        # via django-ldapdb
 pytz==2020.1              # via -r requirements.txt, celery, django, django-timezone-field
 pyyaml==5.3.1             # via -r requirements.txt
 redis==3.5.0              # via -r requirements.txt

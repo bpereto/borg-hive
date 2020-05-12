@@ -16,6 +16,9 @@ Prerequisites: You should have Docker installed and Running.
 
 .. code-block:: bash
 
+   # Configure the Environment, set EMAIL or LDAP Settings
+   vi .env
+
    # start app
    docker-compose up
 

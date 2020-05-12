@@ -17,6 +17,7 @@ import borghive.exceptions
 import borghive.lib.rules
 from borghive.lib.user import generate_userid
 from borghive.models.base import BaseModel
+from borghive.models.ldap import RepositoryLdapUser
 
 from .key import SSHPublicKey
 
@@ -31,13 +32,21 @@ class RepositoryUser(BaseModel):
     """
     # pylint: disable=R0201,W0222
 
+    MIN_UID = 1111
+    MAX_UID = 99999
+
     name = models.CharField(max_length=8, unique=True)
+    uid = models.IntegerField(unique=True)
+    group = models.IntegerField(default=1000)
 
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.generate_username()
+        if not self.uid:
+            self.uid = self.generate_uid()
 
         super().save(*args, **kwargs)
+        self.sync_to_ldap()
 
     def __str__(self):
         """representation"""
@@ -45,31 +54,34 @@ class RepositoryUser(BaseModel):
 
     def generate_username(self):
         """generate new userid and handle duplications"""
-        existing_repo_users = RepositoryUser.objects.all()
+        existing_repo_users = RepositoryUser.objects.values_list('name', flat=True)
+
         new_repo_user = generate_userid(8)
         while new_repo_user in existing_repo_users:
             new_repo_user = generate_userid(8)
         return new_repo_user
 
-    def get_passwd_line(self):
-        """compile passwd line"""
+    def generate_uid(self):
+        """generate next free uid"""
+        latest_uid = RepositoryUser.objects.all().order_by("-uid")
 
-        PASSWD_LINE_PATTERN = '{}:x:{}:{}:Borghive Repository User:{}:/bin/bash\n'
+        if latest_uid:
+            uid = latest_uid[0].uid + 1
+        else:
+            uid = self.MIN_UID
+        if self.MIN_UID <= uid <= self.MAX_UID:
+            return uid
+        raise Exception('{} no uid found betweeen MIN_UID {} and MAX_UID {}'.format(uid, self.MIN_UID, self.MAX_UID))
 
-        homedir = os.path.join(settings.BORGHIVE['REPO_PATH'], self.name)
-        LOGGER.debug('get_passwd_line: homedir: %s', homedir)
-
-        return PASSWD_LINE_PATTERN.format(self.name, self.id, 1000, homedir)
-
-    def get_shadow_line(self):
-        """compile shadow line"""
-
-        SHADOW_LINE_PATTERN = '{}:*:18384:0:99999:7:::\n'
-
-        shadow_line = SHADOW_LINE_PATTERN.format(self.name)
-        LOGGER.debug('get_shadow_line: %s', shadow_line)
-
-        return shadow_line
+    def sync_to_ldap(self):
+        """django prevents cross db relations - sync to ldap backend"""
+        if settings.TEST_MODE:
+            return
+        try:
+            repo_ldap_user = RepositoryLdapUser.objects.get(username=self.name)
+        except RepositoryLdapUser.DoesNotExist:
+            repo_ldap_user = RepositoryLdapUser(uid=self.uid, group=self.group, username=self.name)
+            repo_ldap_user.save()
 
 
 class Repository(BaseModel):

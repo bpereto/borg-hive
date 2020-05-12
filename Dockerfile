@@ -5,7 +5,7 @@ MAINTAINER bpereto
 ENV PYTHONDONTWRITEBYTE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip libsasl2-dev python-dev libldap2-dev libssl-dev
 
 RUN mkdir /app /staticfiles && groupadd -g 1000 borg && \
     useradd -rm -u 1000 -g 1000 borg && chown -R borg:borg /app /staticfiles

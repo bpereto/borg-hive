@@ -16,8 +16,8 @@ A unique Repository User is generated per Repository to ensure that only one Rep
 So the structure on the filesystem looks like this:
 :code:`/repos/<repo user>/<repo name>`
 
-On Repository User create, a corresponding entry in passwd and shadow is generated, that sshd allows a login for this user.
-It's not optimal to write and handle the shadow and passwd files. A possible solution is to use a PAM-Module to query the users from the database, ldap or similar.
+On Repository User create, a corresponding in the ldap backend through `django-ldapdb` is generated, that sshd allows a login for this user.
+The SSHD Service queries the ldap passwd and shadow entries through the PAM ldap module.
 
 The PAM configuration creates the directories on first user login.
 
@@ -56,5 +56,4 @@ When the User logs in, the management command :code:`authorized_keys_check` is e
 
 The command expects on stdout lines of the format of the authorized keys.
 
-After SSH-Key authentication, the user must be allowed through PAM. To ensure this, the repository user must exist in the passwd and shadow file.
-To eliminate the need of the passwd and shadow file, an alternative PAM module could be used to retrieve the users.
+After SSH-Key authentication, the user must be allowed through PAM.

@@ -1,11 +1,11 @@
 import logging
 
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 import borghive.tasks
-from borghive.models import RepositoryEvent, RepositoryUser, AlertPreference
+from borghive.models import RepositoryEvent, RepositoryUser, RepositoryLdapUser, AlertPreference
 
 LOGGER = logging.getLogger(__name__)
 
@@ -21,12 +21,21 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=RepositoryUser)
 def repository_user_created(sender, instance, created, **kwargs):
-    """create passwd & shadow entries for sshd when a user is created"""
+    """sync repositoryuser to ldap sshd when a user is created"""
     LOGGER.debug('repository_user_created: %s, %s, %s, %s',
                  sender, instance, created, kwargs)
-    if created:
-        # countdown to give db time to save user to db
-        borghive.tasks.create_repo_user.apply_async((instance.id,), countdown=2)
+    instance.sync_to_ldap()
+
+
+@receiver(post_delete, sender=RepositoryUser)
+def repository_user_deleted(sender, instance, **kwargs):
+    """delete ldap user for sshd when a repo user is created"""
+    LOGGER.debug('repository_user_deleted: %s, %s, %s',
+                 sender, instance, kwargs)
+    try:
+        RepositoryLdapUser.objects.get(username=instance.name).delete()
+    except RepositoryLdapUser.DoesNotExist:
+        pass
 
 
 @receiver(post_save, sender=RepositoryEvent)
