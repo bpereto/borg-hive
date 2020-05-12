@@ -7,6 +7,7 @@ import os
 from django.test import TestCase
 
 from django.core import management
+from borghive.management.commands.authorized_keys_check import Command as ACommand
 
 
 class CommandTest(TestCase):
@@ -21,12 +22,16 @@ class CommandTest(TestCase):
     def test_run_authorized_keys_check(self):
         out = StringIO()
         sys.stdout = out
-        management.call_command("authorized_keys_check", "--user", "mhw349xu", stdout=out)
+        management.call_command("authorized_keys_check", "--user", "6w9646gn", stdout=out)
         num_keys = out.getvalue().count('\n')
         self.assertEqual(num_keys, 2)
+
+    def test_run_authorized_keys_check_cov(self):
+        cmd = ACommand()
+        cmd.handle(user='6w9646gn')
 
     def test_run_authorized_keys_check(self):
         out = StringIO()
         sys.stdout = out
         os.environ['DEBUG'] = '0'
-        # management.call_command("watch_repositories", "--repo-path", ".", stdout=out)  # @TODO: blocking command
+        management.call_command("watch_repositories", "--repo-path", ".", stdout=out)  # @TODO: blocking command
