@@ -57,18 +57,18 @@ services:
       - borg-repos:/repos
       - borg-config:/config
     ports:
-      - "22:22"
+      - "${BORG_SSH_PORT}:22"
 
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    volumes:
-      - static:/staticfiles
-    ports:
-      - 80:80
-    depends_on:
-      - app
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.nginx
+  #   volumes:
+  #     - static:/staticfiles
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - app
 
   redis:
     image: redis:latest
