@@ -1,0 +1,25 @@
+borg/archiver.py:Archiver.do_serve(RepositoryServer().serve)
+borg/remote.py:RepositoryServer.serve
+if method not in self.rpc_methods:
+
+    rpc_methods = (
+        '__len__',
+        'check',
+        'commit',
+        'delete',
+        'destroy',
+        'get',
+        'list',
+        'scan',
+        'negotiate',
+        'open',
+        'put',
+        'rollback',
+        'save_key',
+        'load_key',
+        'break_lock',
+        'get_free_nonce',
+        'commit_nonce_reservation',
+        'inject_exception',
+    )
+
