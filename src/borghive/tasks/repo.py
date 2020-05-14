@@ -1,4 +1,5 @@
 import subprocess
+import shutil
 
 from celery.utils.log import get_task_logger
 
@@ -26,3 +27,12 @@ def get_repo_size(repo_id):
     """get repo size - heavy fs operation"""
     repo = Repository.objects.get(id=repo_id)
     return subprocess.check_output(['du', '-sm', repo.get_repo_path()]).split()[0].decode('utf-8')
+
+@app.task
+def repository_delete(repo_path):
+    """delete repository on filesystem"""
+    LOGGER.info('delete repository: %s', repo_path)
+    try:
+        shutil.rmtree(repo_path)
+    except FileNotFoundError:
+        LOGGER.warning('repository path does not exist: %s', repo_path)

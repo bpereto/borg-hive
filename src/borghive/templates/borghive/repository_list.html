@@ -31,8 +31,10 @@
         <table class="table table-responsive-sm table-hover">
           <thead>
             <th>Name</th>
+            <th>Location</th>
             <th>Usage</th>
             <th>SSH-Keys</th>
+            <th>Append-only Keys</th>
             <th>Security</th>
             <th>Access</th>
             <th>Modified</th>
@@ -47,11 +49,17 @@
               <span class="badge badge-light">not created</span>
               {% endif %}
             </td>
+            <td>{{object.location}}</td>
             <td>{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</td>
             <td>
             {% for key in object.ssh_keys.all %}
               <span class="badge badge-secondary" style="font-size: 0.9em">{{key.name}}</span>
             {% endfor %}
+            </td>
+            <td>
+              {% for key in object.append_only_keys.all %}
+                <span class="badge badge-secondary" style="font-size: 0.9em">{{key.name}}</span>
+              {% endfor %}
             </td>
             <td>
             <svg class="c-icon" data-toggle="tooltip" data-placement="top" data-original-title="{% if object.is_encrypted %}encrypted{% else %}unencrypted{% endif %}">

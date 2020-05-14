@@ -5,7 +5,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 import borghive.tasks
-from borghive.models import RepositoryEvent, RepositoryUser, RepositoryLdapUser, AlertPreference
+from borghive.models import Repository, RepositoryEvent, RepositoryUser, RepositoryLdapUser, AlertPreference
 
 LOGGER = logging.getLogger(__name__)
 
@@ -29,13 +29,20 @@ def repository_user_created(sender, instance, created, **kwargs):
 
 @receiver(post_delete, sender=RepositoryUser)
 def repository_user_deleted(sender, instance, **kwargs):
-    """delete ldap user for sshd when a repo user is created"""
+    """delete ldap user for sshd when a repo user is deleted"""
     LOGGER.debug('repository_user_deleted: %s, %s, %s',
                  sender, instance, kwargs)
     try:
         RepositoryLdapUser.objects.get(username=instance.name).delete()
     except RepositoryLdapUser.DoesNotExist:
         pass
+
+@receiver(post_delete, sender=Repository)
+def repository_deleted(sender, instance, **kwargs):
+    """delete repository data on filesystem when repository is deleted"""
+    LOGGER.debug('repository_deleted: %s, %s, %s',
+                 sender, instance, kwargs)
+    borghive.tasks.repository_delete.delay(instance.get_repo_path())
 
 
 @receiver(post_save, sender=RepositoryEvent)

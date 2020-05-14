@@ -76,6 +76,7 @@ services:
       - .env
     volumes:
       - ldap-data:/var/lib/ldap
+      - ldap-config:/etc/ldap/slapd.d
 
   redis:
     image: redis:latest
@@ -83,6 +84,7 @@ services:
 volumes:
   mariadb-data:
   ldap-data:
+  ldap-config:
   borg-repos:
   borg-config:
   static:

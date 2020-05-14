@@ -31,7 +31,8 @@ class RepositoryCreateTest(TestCase):
     def test_create_repo(self):
         data = {
             'name': 'testrepo',
-            'ssh_keys': '2'
+            'ssh_keys': '2', 
+            'location': '1'
         }
         response = self.client.post(reverse('repository-create'), data=data)
         self.assertEqual(response.status_code, 302)
@@ -40,7 +41,8 @@ class RepositoryCreateTest(TestCase):
     def test_injection(self):
         data = {
             'name': 'asdf"asd\'l\'\""fk',
-            'ssh_keys': '2'
+            'ssh_keys': '2',
+            'location': '1'
         }
         response = self.client.post(reverse('repository-create'), data=data)
         self.assertEqual(response.status_code, 302)
@@ -49,7 +51,8 @@ class RepositoryCreateTest(TestCase):
     def test_create_crazy_repo(self):
         data = {
             'name': '$6ç342lA/%=075akse!!½%#@',
-            'ssh_keys': '2'
+            'ssh_keys': '2',
+            'location': '1'
         }
         response = self.client.post(reverse('repository-create'), data=data)
         self.assertEqual(response.status_code, 302)

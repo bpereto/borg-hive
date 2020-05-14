@@ -86,7 +86,7 @@ services:
       - borg-config:/config
       - ./src:/app
     ports:
-      - "2222:22"
+      - "22:22"
 
   ldap:
     image: osixia/openldap:latest
@@ -97,6 +97,7 @@ services:
       - LDAP_READONLY_USER=true
     volumes:
       - ldap-data:/var/lib/ldap
+      - ldap-config:/etc/ldap/slapd.d
 
   redis:
     image: redis:latest
@@ -106,4 +107,5 @@ volumes:
   borg-repos:
   borg-config:
   ldap-data:
+  ldap-config:
   static:

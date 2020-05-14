@@ -9,4 +9,4 @@ class RepositoryForm(BaseForm):
 
     class Meta:
         model = Repository
-        fields = ('name', 'ssh_keys', 'alert_after_days', 'group',)
+        fields = ('name', 'ssh_keys', 'append_only_keys', 'location', 'alert_after_days', 'group',)

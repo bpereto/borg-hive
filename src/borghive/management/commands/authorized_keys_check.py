@@ -30,10 +30,27 @@ class Command(BaseCommand):
             command_options = []
 
             # restrict path
-            command_options.append(
-                '--restrict-to-repository {}'.format(user.repository.get_repo_path()))
+            command_options.append('--restrict-to-repository {}'.format(user.repository.get_repo_path()))
 
             authorized_keys_line = KEY_CMD_PREFIX + \
                 ' '.join(command_options) + KEY_CMD_POSTFIX + key.public_key
             LOGGER.debug(authorized_keys_line)
+
             print(authorized_keys_line)
+
+        # add append only mode
+        for key in user.repository.append_only_keys.all():
+            LOGGER.debug(key)
+            command_options = []
+
+            command_options.append('--append-only')
+
+            # restrict path
+            command_options.append('--restrict-to-repository {}'.format(user.repository.get_repo_path()))
+
+            authorized_keys_line = KEY_CMD_PREFIX + \
+                ' '.join(command_options) + KEY_CMD_POSTFIX + key.public_key
+            LOGGER.debug(authorized_keys_line)
+
+            print(authorized_keys_line)
+    

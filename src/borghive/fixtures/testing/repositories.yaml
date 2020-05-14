@@ -5,6 +5,7 @@
     name: test
     repo_user: 3
     owner: 1
+    location: 1
     last_updated: null
     last_access: null
     alert_after_days: 1
@@ -19,9 +20,15 @@
     name: mytestrepo2.lan.local
     repo_user: 4
     owner: 1
+    location: 1
     last_updated: null
     last_access: null
     alert_after_days: null
     ssh_keys:
     - 4
     group: []
+- model: borghive.repositorylocation
+  pk: 1
+  fields:
+    created: 2020-05-14 18:53:34.989767+00:00
+    name: localhost
