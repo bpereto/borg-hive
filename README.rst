@@ -28,6 +28,7 @@ What it should also have in the Future / Todo
 
 * REST API (Django Rest Framework)
 * Send Logs from borg client / borgmatic to API
+* Backup Scheduling & Trigger with Ansible -> AWX/Tower Integration
 
 .. start-badges
 
