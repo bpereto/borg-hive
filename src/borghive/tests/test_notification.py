@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core import mail
 from django.contrib.auth.models import User
-from borghive.models import Repository, RepositoryUser, RepositoryEvent
+from borghive.models import Repository, RepositoryUser, RepositoryEvent, RepositoryLocation
 from borghive.models import EmailNotification, PushoverNotification
 from borghive.tasks import alert_guard_tour
 
@@ -125,9 +125,12 @@ class AlertTest(TestCase):
         'testing/users.yaml',
     ]
 
+    def setUp(self):
+        self.location = RepositoryLocation.objects.first()
+
     def test_alert_should_not_1d_23h(self):
         # after 1 day - 23 hours old : should not alert
-        repo1 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo1', alert_after_days=1)
+        repo1 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo1', alert_after_days=1, location=self.location)
         repo1.last_updated = timezone.now() - datetime.timedelta(hours=23)
 
         firing, alert = repo1.should_alert()
@@ -136,7 +139,7 @@ class AlertTest(TestCase):
 
     def test_alert_should_not_2d_25h(self):
         # after 2 days - 25 hours old : should not alert
-        repo2 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo2', alert_after_days=2)
+        repo2 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo2', alert_after_days=2, location=self.location)
         repo2.last_updated = timezone.now() - datetime.timedelta(hours=25)
 
         firing, alert = repo2.should_alert()
@@ -146,7 +149,7 @@ class AlertTest(TestCase):
     def test_alert_should_1d_25h(self):
 
         # after 1 day: should alert
-        repo3 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo3', alert_after_days=1)
+        repo3 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo3', alert_after_days=1, location=self.location)
         repo3.last_updated = timezone.now() - datetime.timedelta(hours=25)
 
         firing, alert = repo3.should_alert()
@@ -155,7 +158,7 @@ class AlertTest(TestCase):
 
     def test_alert_should_1d_24h(self):
         # after 1 days - 24 hours old : should alert
-        repo4 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo4', alert_after_days=1)
+        repo4 = Repository.objects.create(owner=User.objects.first(), repo_user=RepositoryUser.objects.create(), name='repo4', alert_after_days=1, location=self.location)
         repo4.last_updated = timezone.now() - datetime.timedelta(hours=24)
         repo4.save()
 
@@ -166,7 +169,7 @@ class AlertTest(TestCase):
     def test_alert_should_notify(self):
         # after 1 days - 26 hours old : should alert and notify
         user = User.objects.first()
-        repo5 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo5', alert_after_days=1)
+        repo5 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo5', alert_after_days=1, location=self.location)
         repo5.last_updated = timezone.now() - datetime.timedelta(hours=26)
         repo5.save()
         email = EmailNotification.objects.create(email='hohoho@northpole.local', owner=user)
@@ -187,7 +190,7 @@ class AlertTest(TestCase):
 
     def test_alert_guard_tour(self):
         user = User.objects.first()
-        repo6 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo6', alert_after_days=1)
+        repo6 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo6', alert_after_days=1, location=self.location)
         repo6.last_updated = timezone.now() - datetime.timedelta(hours=26)
         repo6.save()
         email = EmailNotification.objects.create(email='eltorroloco@burrito.local', owner=user)
@@ -197,7 +200,7 @@ class AlertTest(TestCase):
 
     def test_alert_interval(self):
         user = User.objects.first()
-        repo7 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo7', alert_after_days=1)
+        repo7 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo7', alert_after_days=1, location=self.location)
         repo7.last_updated = timezone.now() - datetime.timedelta(hours=26)
         repo7.save()
         email = EmailNotification.objects.create(email='eltorroloco@burrito.local', owner=user)
@@ -218,7 +221,7 @@ class AlertTest(TestCase):
 
     def test_alert_expiration(self):
         user = User.objects.first()
-        repo8 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo8', alert_after_days=1)
+        repo8 = Repository.objects.create(owner=user, repo_user=RepositoryUser.objects.create(), name='repo8', alert_after_days=1, location=self.location)
         repo8.last_updated = timezone.now() - datetime.timedelta(days=7)
         repo8.save()
         email = EmailNotification.objects.create(email='eltorroloco@burrito.local', owner=user)

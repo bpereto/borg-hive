@@ -3,20 +3,24 @@
   fields:
     created: 2020-05-08 13:12:29.742000+00:00
     name: test
+    location: 1
     repo_user: 3
     owner: 1
-    last_updated: null
-    last_access: null
+    last_updated: 2020-05-12 17:35:38.505319+00:00
+    last_access: 2020-05-12 17:35:38.521986+00:00
     alert_after_days: 1
     ssh_keys:
     - 1
     - 2
+    append_only_keys:
+    - 4
     group: []
 - model: borghive.repository
   pk: 3
   fields:
     created: 2020-05-08 13:33:45.993387+00:00
     name: mytestrepo2.lan.local
+    location: 1
     repo_user: 4
     owner: 1
     last_updated: null
@@ -24,4 +28,5 @@
     alert_after_days: null
     ssh_keys:
     - 4
+    append_only_keys: []
     group: []

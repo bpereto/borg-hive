@@ -61,6 +61,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-12 style="font-size: 1.1em">
+            <p><strong>Connection:</strong> <code style="font-size: 1.1em">{{object.repo_user.name}}@{{object.location}}:{{object.name}}</code></p>
             <p><strong>Groups:</strong>
               {% if object.group.all %}
               {% for group in object.group.all %}
@@ -72,7 +73,7 @@
             </p>
           </div>
         </div>
-          {% if not object.is_created %}
+        {% if not object.is_created %}
           <div class="col-md-12" style="font-size: 1.1em">
             <div class="card">
               <div class="card-body">
@@ -80,7 +81,7 @@
                 <p>Repository doesn't exist, initialize the repository first:</p>
 
                 <p><code>
-    $ borg init --encryption=repokey-blake2 {{object.repo_user.name}}@{{request.get_host}}:{{object.name}}
+    $ borg init --encryption=repokey-blake2 {{object.repo_user.name}}@{{object.location}}:{{object.name}}
                 </code></p>
 
                 <p>SSH-Host fingerprints to validate:</p>
@@ -93,7 +94,7 @@
               </div>
             </div>
           </div>
-          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>

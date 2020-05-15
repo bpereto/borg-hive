@@ -24,6 +24,19 @@ from .key import SSHPublicKey
 LOGGER = logging.getLogger(__name__)
 
 
+class RepositoryLocation(BaseModel):
+    """
+    repository location model
+
+    represents the location of the repository (storage node)
+    """
+
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class RepositoryUser(BaseModel):
     """
     repository user model
@@ -96,8 +109,10 @@ class Repository(BaseModel):
     """
 
     name = models.CharField(max_length=256, validators=[RegexValidator(regex=r'^[\w\-\.]+$')])
-    ssh_keys = models.ManyToManyField(SSHPublicKey)
-    #    append_only_keys = models.ManyToManyField(SSHPublicKey)
+    location = models.ForeignKey(RepositoryLocation, on_delete=models.CASCADE)
+    ssh_keys = models.ManyToManyField(SSHPublicKey, related_name='ssh_keys')
+    append_only_keys = models.ManyToManyField(SSHPublicKey, related_name='append_only_keys', blank=True)
+
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
 
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
