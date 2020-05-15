@@ -37,6 +37,7 @@ def repository_user_deleted(sender, instance, **kwargs):
     except RepositoryLdapUser.DoesNotExist:
         pass
 
+
 @receiver(post_delete, sender=Repository)
 def repository_deleted(sender, instance, **kwargs):
     """delete repository data on filesystem when repository is deleted"""

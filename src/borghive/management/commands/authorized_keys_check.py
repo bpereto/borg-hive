@@ -53,4 +53,3 @@ class Command(BaseCommand):
             LOGGER.debug(authorized_keys_line)
 
             print(authorized_keys_line)
-    

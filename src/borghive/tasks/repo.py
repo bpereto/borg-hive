@@ -28,6 +28,7 @@ def get_repo_size(repo_id):
     repo = Repository.objects.get(id=repo_id)
     return subprocess.check_output(['du', '-sm', repo.get_repo_path()]).split()[0].decode('utf-8')
 
+
 @app.task
 def repository_delete(repo_path):
     """delete repository on filesystem"""
