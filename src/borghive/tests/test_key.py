@@ -3,7 +3,7 @@ import datetime
 import unittest
 from unittest import mock
 from django.test import Client
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User

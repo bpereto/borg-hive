@@ -30,6 +30,10 @@ class CommandTest(TestCase):
         cmd = ACommand()
         cmd.handle(user='6w9646gn')
 
+    def test_run_authorized_keys_check_cov2(self):
+        cmd = ACommand()
+        cmd.handle(user='abulfj66')
+
     def test_run_authorized_keys_check(self):
         out = StringIO()
         sys.stdout = out

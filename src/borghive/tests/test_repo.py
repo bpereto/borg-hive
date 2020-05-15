@@ -1,8 +1,11 @@
 import datetime
+import os
+import tempfile
 
 import unittest
 from unittest import skip
 
+from django.conf import settings
 from django.test import Client
 from django.test import TestCase
 from django.urls import reverse
@@ -72,6 +75,41 @@ class RepositoryTest(TestCase):
         repo = Repository.objects.first()
         with self.assertRaises(borghive.exceptions.RepositoryNotCreated):
             repo.refresh()
+    
+    def test_repo_delete(self):
+        repo = Repository.objects.first()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            settings.BORGHIVE['REPO_PATH'] = temp_dir
+            path = repo.get_repo_path()
+            os.makedirs(path)
+            self.assertTrue(os.path.isdir(path))
+            repo.delete()
+            self.assertFalse(os.path.isdir(path))
+    
+    def test_repo_size(self):
+        repo = Repository.objects.first()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            settings.BORGHIVE['REPO_PATH'] = temp_dir
+            path = repo.get_repo_path()
+            os.makedirs(path + '/data')
+            with open(path + '/data/test', 'wb') as out:
+                out.seek((1024 * 1024 * 1024) - 1)
+                out.write(b'\0')
+            self.assertTrue(os.path.isdir(path))
+            size = borghive.tasks.get_repo_size(repo.id)
+            self.assertEqual(size, 1.0)
+
+    def test_repo_statistic_create(self):
+        repo = Repository.objects.first()
+        with tempfile.TemporaryDirectory() as temp_dir:
+            settings.BORGHIVE['REPO_PATH'] = temp_dir
+            path = repo.get_repo_path()
+            os.makedirs(path + '/data')
+            open(path + '/config', 'a').close()
+            open(path + '/index.1', 'a').close()
+            self.assertTrue(os.path.isdir(path))
+            borghive.tasks.create_repo_statistic(repo.id)
+            self.assertEqual(repo.repositorystatistic_set.count(), 1)
 
     @skip("TODO")
     def test_valid_refresh(self):

@@ -26,7 +26,7 @@ def create_repo_statistic(repo_id=None):
 def get_repo_size(repo_id):
     """get repo size - heavy fs operation"""
     repo = Repository.objects.get(id=repo_id)
-    return subprocess.check_output(['du', '-sm', repo.get_repo_path()]).split()[0].decode('utf-8')
+    return float(subprocess.check_output(['du', '-sm', repo.get_repo_path()]).split()[0].decode('utf-8'))
 
 
 @app.task
