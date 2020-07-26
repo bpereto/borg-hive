@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='repository',
             name='append_only_keys',
-            field=models.ManyToManyField(related_name='append_only_keys', to='borghive.SSHPublicKey'),
+            field=models.ManyToManyField(blank=True, related_name='append_only_keys', to='borghive.SSHPublicKey'),
         ),
         migrations.AlterField(
             model_name='repository',

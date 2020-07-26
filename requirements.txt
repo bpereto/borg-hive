@@ -20,6 +20,7 @@ django-login-required-middleware==0.5.0  # via -r requirements.txt
 django-polymorphic==2.1.2  # via -r requirements.txt
 django-timezone-field==4.0  # via -r requirements.txt, django-celery-beat
 django==3.0.7             # via -r requirements.txt, django-celery-beat, django-ldapdb, django-polymorphic, django-timezone-field, djangorestframework
+djangorestframework-queryfields==1.0.0  # via -r requirements.txt
 djangorestframework==3.11.0  # via -r requirements.txt
 ecdsa==0.15               # via -r requirements.txt, sshpubkeys
 environs==7.4.0           # via -r requirements.txt
