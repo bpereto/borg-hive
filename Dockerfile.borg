@@ -9,6 +9,17 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install Borg & SSH
 RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup acl  libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd
 
+RUN mkdir /app
+WORKDIR /app
+COPY requirements.txt /app/
+COPY borg/requirements.txt /app/borg/requirements.txt
+RUN pip install -r requirements.txt -r borg/requirements.txt
+
+COPY src /app/
+
+# Authorized Keys Command needs these settings
+RUN chown root:root /app/manage.py && chmod 755 /app/manage.py
+
 RUN groupadd -g 1000 borg && \
     useradd -rm -u 1000 -g 1000 borg && \
     mkdir /repos /run/sshd && \
@@ -20,17 +31,6 @@ ADD borg/pam-sshd.conf /etc/pam.d/sshd
 ADD borg/nsswitch.conf /etc/nsswitch.conf
 
 ADD borg/init.sh /init.sh
-
-RUN mkdir /app
-WORKDIR /app
-COPY requirements.txt /app/
-COPY borg/requirements.txt /app/borg/requirements.txt
-RUN pip install -r requirements.txt -r borg/requirements.txt
-
-COPY src /app/
-
-# Authorized Keys Command needs these settings
-RUN chown root:root /app/manage.py && chmod 755 /app/manage.py
 
 EXPOSE 22
 VOLUME ["/repos"]
