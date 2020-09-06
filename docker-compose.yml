@@ -10,7 +10,9 @@ services:
       - .env
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     env_file:
       - .env
     volumes:
@@ -18,12 +20,14 @@ services:
       - borg-repos:/repos
       - static:/staticfiles
     ports:
-      - "8000"
+      - "8000:8000"
     depends_on:
       - db
 
   worker:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     entrypoint: celery worker -A core -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - .env
@@ -34,7 +38,9 @@ services:
       - db
 
   watcher:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
     environment:
       - REPO_PATH=/repos
