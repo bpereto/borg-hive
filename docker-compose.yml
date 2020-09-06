@@ -71,7 +71,8 @@ services:
   #     - app
 
   ldap:
-    image: osixia/openldap:latest
+    # image: osixia/openldap:latest
+    image: osixia/openldap:1.4.0-amd64
     env_file:
       - .env
     volumes:
@@ -79,7 +80,8 @@ services:
       - ldap-config:/etc/ldap/slapd.d
 
   redis:
-    image: redis:latest
+    # image: redis:latest
+    image: redis:6.0.7-buster
 
 volumes:
   mariadb-data:
