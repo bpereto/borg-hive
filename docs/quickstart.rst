@@ -22,6 +22,12 @@ Prerequisites: You should have Docker installed and Running.
    # start app
    docker-compose up
 
+   # wait untill both the db worker complete initialization
+   # and "waiting for connections", restart the app
+   docker-compose down; docker-compose up
+
+   # wait untill the app worker is finished setting up
+
    # change into app container
    docker exec -it borg-hive_app_1 /bin/bash
 
