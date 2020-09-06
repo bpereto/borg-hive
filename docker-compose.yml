@@ -18,7 +18,7 @@ services:
       - borg-repos:/repos
       - static:/staticfiles
     ports:
-      - "8000"
+      - "8000:8000"
     depends_on:
       - db
 
