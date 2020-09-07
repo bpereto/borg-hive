@@ -149,9 +149,9 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = env('DJANGO_LANGUAGE_CODE', 'en-US')
 
-TIME_ZONE = 'Europe/Zurich'
+TIME_ZONE = env('DJANGO_TIME_ZONE', 'UTC')
 
 USE_I18N = True
 
