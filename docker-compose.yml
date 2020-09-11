@@ -17,7 +17,7 @@ services:
       - .env
     volumes:
       - borg-config:/config
-      - borg-repos:/repos
+      - borg-repos:${REPO_PATH}
       - static:/staticfiles
     ports:
       - "8000:8000"
@@ -33,7 +33,7 @@ services:
       - .env
     volumes:
       - borg-config:/config
-      - borg-repos:/repos:ro
+      - borg-repos:${REPO_PATH}:ro
     depends_on:
       - db
 
@@ -42,12 +42,10 @@ services:
       context: .
       dockerfile: Dockerfile.base
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
-    environment:
-      - REPO_PATH=/repos
     env_file:
       - .env
     volumes:
-      - borg-repos:/repos:ro
+      - borg-repos:${REPO_PATH}:ro
     depends_on:
       - db
 
@@ -60,7 +58,7 @@ services:
     env_file:
       - .env
     volumes:
-      - borg-repos:/repos
+      - borg-repos:${REPO_PATH}
       - borg-config:/config
     ports:
       - "${BORG_SSH_PORT}:22"
