@@ -28,11 +28,11 @@ echo "FIXTURES:  ${FIXTURES}"
 #
 # DB INIT
 #
-if [[ -z "$MYSQL_DATABASE" ]];
+if [[ -z "${MYSQL_DATABASE}" ]];
 then
     echo "Waiting for database..."
 
-    while ! nc -z db 3306; do
+    while ! nc -z ${MYSQL_HOST} 3306; do
       sleep 1
     done
 
