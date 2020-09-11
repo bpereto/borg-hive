@@ -1,0 +1,3 @@
+[submodule "coreui-free-bootstrap-admin-template"]
+    path = deps/coreui-free-bootstrap-admin-template
+    url = https://github.com/coreui/coreui-free-bootstrap-admin-template.git
