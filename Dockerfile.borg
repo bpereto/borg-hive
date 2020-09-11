@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 ENV DEBIAN_FRONTEND noninteractive
 # Install Borg & SSH
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup acl  libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup acl  libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat
 
 RUN mkdir /app
 WORKDIR /app
