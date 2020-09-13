@@ -42,8 +42,8 @@ EOF
 nslcd
 
 # save current environment to profile - needed by AuthorizedKeysCommand of sshd
-env > /etc/profile.d/borg
-chmod +rx /etc/profile.d/borg
+env > /etc/profile.d/borg.sh
+chmod +rx /etc/profile.d/borg.sh
 
 # -D in CMD below prevents sshd from becoming a daemon. -e is to log everything to stderr.
 /usr/sbin/sshd -D -e

@@ -57,5 +57,6 @@ UseDNS no
 PermitTunnel no
 
 Match User *    # match all users
-  AuthorizedKeysCommand /app/manage.py authorized_keys_check --user %u
+  # source stored environemnt to load the needed environment variables in the subshell AuthorizedKeysCommand creates.
+  AuthorizedKeysCommand /bin/bash -c "set -a; . /etc/profile; /app/manage.py authorized_keys_check --user %u"
   AuthorizedKeysCommandUser root
