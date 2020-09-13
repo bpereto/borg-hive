@@ -11,9 +11,6 @@ if [[ ! -f /config/${key} ]]; then
 fi
 done
 
-# make repos accessible for borg user
-setfacl -R -d -m u:borg:rwx ${REPO_PATH}
-
 # set ldap config
 cat <<EOF >> /etc/nslcd.conf
 uid nslcd
