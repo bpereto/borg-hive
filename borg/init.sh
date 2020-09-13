@@ -12,7 +12,7 @@ fi
 done
 
 # make repos accessible for borg user
-setfacl -R -d -m u:borg:rwx /repos
+setfacl -R -d -m u:borg:rwx ${REPO_PATH}
 
 # set ldap config
 cat <<EOF >> /etc/nslcd.conf
@@ -40,6 +40,10 @@ EOF
 
 # start nslcd
 nslcd
+
+# save current environment to profile - needed by AuthorizedKeysCommand of sshd
+env > /etc/profile.d/borg
+chmod +rx /etc/profile.d/borg
 
 # -D in CMD below prevents sshd from becoming a daemon. -e is to log everything to stderr.
 /usr/sbin/sshd -D -e
