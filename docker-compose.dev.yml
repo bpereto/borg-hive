@@ -11,7 +11,9 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=1
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DEBUG=True
@@ -32,7 +34,9 @@ services:
       - db
 
   worker:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     entrypoint: celery worker -A core -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
       - DEBUG=True
@@ -50,7 +54,9 @@ services:
       - db
 
   watcher:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.base
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
     environment:
       - APP_LOG_LEVEL=DEBUG
