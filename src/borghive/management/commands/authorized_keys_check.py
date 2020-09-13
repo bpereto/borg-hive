@@ -6,7 +6,7 @@ from borghive.models import RepositoryUser
 
 LOGGER = logging.getLogger(__name__)
 
-KEY_CMD_PREFIX = 'command="borg serve '
+KEY_CMD_PREFIX = 'command="borg serve --umask=0007 '
 KEY_CMD_POSTFIX = '",restrict '
 
 

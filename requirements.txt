@@ -29,13 +29,13 @@ kombu==4.6.8              # via -r requirements.txt, celery
 marshmallow==3.5.2        # via -r requirements.txt, environs
 mysqlclient==1.4.6        # via -r requirements.txt
 nose==1.3.7               # via -r requirements.txt, inotify
-pyasn1-modules==0.2.8     # via python-ldap
-pyasn1==0.4.8             # via pyasn1-modules, python-ldap
+pyasn1-modules==0.2.8     # via -r requirements.txt, python-ldap
+pyasn1==0.4.8             # via -r requirements.txt, pyasn1-modules, python-ldap
 pycparser==2.20           # via -r requirements.txt, cffi
 python-crontab==2.4.2     # via -r requirements.txt, django-celery-beat
 python-dateutil==2.8.1    # via -r requirements.txt, python-crontab
 python-dotenv==0.13.0     # via -r requirements.txt, environs
-python-ldap==3.2.0        # via django-ldapdb
+python-ldap==3.2.0        # via -r requirements.txt, django-ldapdb
 pytz==2020.1              # via -r requirements.txt, celery, django, django-timezone-field
 pyyaml==5.3.1             # via -r requirements.txt
 redis==3.5.0              # via -r requirements.txt

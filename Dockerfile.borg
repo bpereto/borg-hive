@@ -6,13 +6,20 @@ ENV PYTHONDONTWRITEBYTE 1
 ENV PYTHONUNBUFFERED 1
 
 ENV DEBIAN_FRONTEND noninteractive
-# Install Borg & SSH
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs borgbackup acl  libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat
+
+# Install SSH, Mariadb and LDAP Deps
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs acl libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat
+
+# Install dependencies for borgbackup source installation
+RUN apt-get install -y git python3-dev libssl-dev openssl libacl1-dev libacl1 build-essential pkg-config
 
 RUN mkdir /app
 WORKDIR /app
 COPY requirements.txt /app/
 COPY borg/requirements.txt /app/borg/requirements.txt
+
+# needed for borgbackup
+RUN pip install Cython pkgconfig
 RUN pip install -r requirements.txt -r borg/requirements.txt
 
 COPY src /app/
@@ -23,9 +30,8 @@ RUN chown root:root /app/manage.py && chmod 755 /app/manage.py
 RUN groupadd -g 1000 borg && \
     useradd -rm -u 1000 -g 1000 borg && \
     mkdir /repos /run/sshd && \
-    chown -R borg.borg /repos && \
-    setfacl -R -d -m u:borg:rwx /repos
-    
+    chown -R borg.borg /repos
+
 ADD borg/sshd_config /etc/ssh/sshd_config
 ADD borg/pam-sshd.conf /etc/pam.d/sshd
 ADD borg/nsswitch.conf /etc/nsswitch.conf

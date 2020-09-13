@@ -4,6 +4,10 @@
 #
 #    pip-compile borg/requirements.txt
 #
+
+# install from github until issue https://github.com/bpereto/borg-hive/issues/19 is resolved by borgbackup release 1.1.14
+git+https://github.com/borgbackup/borg@c53190176389dcbd711060a8a9f4326e66d1d533#egg=borgbackup
+
 environs==7.4.0           # via -r borg/requirements.txt
 marshmallow==3.5.2        # via environs
 mysql-connector==2.2.9    # via -r borg/requirements.txt
