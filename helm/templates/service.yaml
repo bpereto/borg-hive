@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "borg-hive.fullname" . }}-app
+  labels:
+    {{- include "borg-hive.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.app.type }}
+  ports:
+    - port: {{ .Values.service.app.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "borg-hive.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "borg-hive.fullname" . }}-borg
+  labels:
+    {{- include "borg-hive.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.borg.type }}
+  ports:
+    - port: {{ .Values.service.borg.port }}
+      targetPort: ssh
+      protocol: TCP
+      name: ssh
+  externalTrafficPolicy: Local
+  selector:
+    {{- include "borg-hive.selectorLabels" . | nindent 4 }}

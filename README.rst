@@ -19,6 +19,12 @@ Features
 * Partially Repository Events (should be improved)
 * Basic Object Permissions (Owner & Group) of repositories, SSH-Keys and notifications
 
+Quickstart
+----------
+
+Use the documentation for a quickstart and installation:
+`borg-hive.readthedocs.io <https://borg-hive.readthedocs.io/en/latest/>`_
+
 What it should also have in the Future / Todo
 ----------------------------------------------
 * More notification types

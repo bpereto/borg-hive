@@ -1,0 +1,9 @@
+db:
+  name: borghive
+  user: borghive
+
+image:
+  debug: false
+
+#master:
+#  extraFlags: "--skip-grant-tables"

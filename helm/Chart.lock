@@ -1,0 +1,9 @@
+dependencies:
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 10.8.2
+- name: openldap
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.2.5
+digest: sha256:8882fe6e9f87f03badfa06e323f444e0bf4f6a515a60adf9b4c5dc03df6c3839
+generated: "2020-09-12T21:22:15.323553887+02:00"

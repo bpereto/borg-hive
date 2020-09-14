@@ -8,34 +8,22 @@ Quick Start
 
 This chapter will get you started with Borg Hive.
 
+.. image:: img/borghive-overview.png
+
 Get started
 -------------
-For development Setup look into :ref:`Development`
 
-Prerequisites: You should have Docker installed and Running.
+**Installation**
 
-.. code-block:: bash
+- For a development setup look into :ref:`Development`
+- For a brief test or a standalone installation look into :ref:`docker`
+- For a more advanced approach or cloud installation look into the deployment to :ref:`k8s`
 
-   # Configure the Environment, set EMAIL or LDAP Settings
-   vi .env
+**First Usage**
 
-   # start app
-   docker-compose up
+Add or adjust your repository location in the admin interface, which is used to generate the borgbackup destination url: 
+http://localhost:8000/admin/borghive/repositorylocation/
 
-   # wait untill both the db worker complete initialization
-   # and "waiting for connections", restart the app
-   docker-compose down; docker-compose up
+Add an SSH-Key to borg-hive which is needed to create a repository.
 
-   # wait untill the app worker is finished setting up
-
-   # change into app container
-   docker exec -it borg-hive_app_1 /bin/bash
-
-   # create superuser
-   ./manage.py createsuperuser
-
-Open the browser and navigate to your host: ex. http://localhost:80
-
------------------------------------------------------------------------------
-
-.. image:: img/borghive-overview.png
+Create your first repository and do a backup. Besides borgbackup it also works well with `borgmatic <https://github.com/witten/borgmatic>`_ or `vorta <https://github.com/borgbase/vorta>`_.
