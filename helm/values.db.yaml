@@ -3,7 +3,7 @@ db:
   user: borghive
 
 image:
-  debug: true
+  debug: false
 
-master:
-  extraFlags: "--skip-grant-tables"
+#master:
+#  extraFlags: "--skip-grant-tables"

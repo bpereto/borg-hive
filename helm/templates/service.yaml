@@ -27,7 +27,6 @@ spec:
       targetPort: ssh
       protocol: TCP
       name: ssh
-  type: "LoadBalancer"
   externalTrafficPolicy: Local
   selector:
     {{- include "borg-hive.selectorLabels" . | nindent 4 }}

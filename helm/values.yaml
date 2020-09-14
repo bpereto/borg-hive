@@ -27,7 +27,7 @@ service:
     type: ClusterIP
     port: 8000
   borg:
-    type: ClusterIP
+    type: Loadbalancer
     port: 22
 
 ingress:
@@ -104,17 +104,6 @@ persistence:
     # subPath: ""
     # existingClaim:
 
-
-# LDAP_ORGANISATION=borghive
-# LDAP_DOMAIN=borghive.local
-# LDAP_ADMIN_PASSWORD=borghive
-# LDAP_READONLY_USER=true
-# #
-# BORG_LDAP_HOST=ldap://ldap
-# BORG_LDAP_BASE_DN=dc=borghive,dc=local
-# BORG_LDAP_READONLY_DN=cn=readonly,dc=borghive,dc=local
-# BORG_LDAP_READONLY_USER_PASSWORD=readonly
-
 redis:
   enabled: true
   fullnameOverride: redis
@@ -128,4 +117,5 @@ openldap:
     LDAP_TLS: "true"
     LDAP_TLS_ENFORCE: "false"
     LDAP_READONLY_USER: "true"
-# LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+  persistence:
+    enabled: True
