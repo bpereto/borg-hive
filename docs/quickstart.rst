@@ -26,4 +26,4 @@ http://localhost:8000/admin/borghive/repositorylocation/
 
 Add an SSH-Key to borg-hive which is needed to create a repository.
 
-Create your first repository and do a backup. Besides borgbackup it also works well with `borgmatic <https://github.com/witten/borgmatic>`_ or `vorta <https://github.com/borgbase/vorta>`_.
+Create your first repository and do a backup. Besides plain borgbackup it also works well with `borgmatic <https://github.com/witten/borgmatic>`_ or `vorta <https://github.com/borgbase/vorta>`_.

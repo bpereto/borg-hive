@@ -22,8 +22,9 @@ Features
 Quickstart
 ----------
 
-Use the documentation for a quickstart and installation:
-`borg-hive.readthedocs.io <https://borg-hive.readthedocs.io/en/latest/>`_
+Use the documentation for a quickstart and installation:   
+
+`borg-hive.readthedocs.io <https://borg-hive.readthedocs.io/en/latest/quickstart.html>`_
 
 What it should also have in the Future / Todo
 ----------------------------------------------
