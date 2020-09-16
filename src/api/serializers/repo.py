@@ -1,7 +1,9 @@
 from api.lib.serializers import SimpleHyperlinkedModelSerializer
 from api.serializers.key import SSHPublickeySerializer
 from api.serializers.user import SimpleGroupSerializer, SimpleOwnerSerializer
+from rest_framework import serializers
 from borghive.models import (Repository, RepositoryLocation, RepositoryUser)
+from borghive.models.key import SSHPublicKey
 
 
 class RepositorySerializer(SimpleHyperlinkedModelSerializer):
@@ -11,15 +13,31 @@ class RepositorySerializer(SimpleHyperlinkedModelSerializer):
     to selectively display fields use the deifned serializers
     """
 
-    owner = SimpleOwnerSerializer()
-    group = SimpleGroupSerializer(many=True)
+    owner = SimpleOwnerSerializer(read_only=True)
+    group = SimpleGroupSerializer(many=True, read_only=True)
 
-    location = SimpleHyperlinkedModelSerializer(model=RepositoryLocation, fields='__all__')
-    repo_user = SimpleHyperlinkedModelSerializer(model=RepositoryUser, fields='__all__')
+    location = SimpleHyperlinkedModelSerializer(model=RepositoryLocation, fields='__all__', read_only=True)
+    location_id = serializers.PrimaryKeyRelatedField(source='location', queryset=RepositoryLocation.objects.all(), write_only=True)
 
-    ssh_keys = SSHPublickeySerializer(many=True)
-    append_only_keys = SSHPublickeySerializer(many=True)
+    repo_user = SimpleHyperlinkedModelSerializer(model=RepositoryUser, fields='__all__', read_only=True)
+
+    ssh_keys = SSHPublickeySerializer(many=True, read_only=True)
+    ssh_keys_id = serializers.PrimaryKeyRelatedField(source='ssh_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
+
+    append_only_keys = SSHPublickeySerializer(many=True, read_only=True)
+    append_only_keys_id = serializers.PrimaryKeyRelatedField(source='append_only_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
+
+    def create(self, validated_data, *args, **kwargs):
+        """
+        override create method to generate repository user
+        and set requester as owner
+        """
+        repo_user = RepositoryUser()
+        repo_user.save()
+        validated_data['repo_user'] = repo_user
+        validated_data['owner'] = self.context['request'].user
+        return super().create(validated_data, *args, **kwargs)
 
     class Meta:
         model = Repository
-        fields = '__all__'
+        exclude = ['last_updated', 'last_access']
