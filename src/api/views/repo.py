@@ -1,5 +1,7 @@
 import logging
 
+from django.db.models import Q
+
 from api.lib.viewsets import SimpleHyperlinkedModelViewSet
 from api.router import router
 from api.serializers import RepositorySerializer
@@ -18,6 +20,9 @@ class RepositoryViewSet(SimpleHyperlinkedModelViewSet):
     serializer_class = RepositorySerializer
     model = Repository
 
+    def get_queryset(self):
+        return Repository.objects.by_owner_or_group(self.request.user)
+
 
 class RepositoryUserViewSet(SimpleHyperlinkedModelViewSet):
     """
@@ -25,6 +30,9 @@ class RepositoryUserViewSet(SimpleHyperlinkedModelViewSet):
     """
     queryset = RepositoryUser.objects.all()
     model = RepositoryUser
+
+    def get_queryset(self):
+        return RepositoryUser.objects.filter(Q(repository__owner=self.request.user) | Q(repository__group__in=self.request.user.groups.all()))
 
 
 class RepositoryLocationViewSet(SimpleHyperlinkedModelViewSet):

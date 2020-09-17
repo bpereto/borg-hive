@@ -1,4 +1,5 @@
 from django.db import models
+
 from rules.contrib.models import RulesModelBase, RulesModelMixin
 
 

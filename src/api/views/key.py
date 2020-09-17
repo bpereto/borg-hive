@@ -18,6 +18,8 @@ class SSHPublicKeyViewSet(SimpleHyperlinkedModelViewSet):
     serializer_class = SSHPublickeySerializer
     model = SSHPublicKey
 
+    def get_queryset(self):
+        return SSHPublicKey.objects.by_owner_or_group(self.request.user)
 
 router.register('sshpublickeys', SSHPublicKeyViewSet)
 

@@ -18,6 +18,7 @@ import borghive.lib.rules
 from borghive.lib.user import generate_userid
 from borghive.models.base import BaseModel
 from borghive.models.ldap import RepositoryLdapUser
+from borghive.managers import OwnerOrGroupManager
 
 from .key import SSHPublicKey
 
@@ -51,6 +52,7 @@ class RepositoryUser(BaseModel):
     name = models.CharField(max_length=8, unique=True)
     uid = models.IntegerField(unique=True)
     group = models.IntegerField(default=1000)
+
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -145,6 +147,8 @@ class Repository(BaseModel):
     last_access = models.DateTimeField(null=True, blank=True)
 
     alert_after_days = models.IntegerField(null=True, blank=True)  # days
+
+    objects = OwnerOrGroupManager()
 
     def __str__(self):
         """representation"""

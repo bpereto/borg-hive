@@ -5,6 +5,8 @@ from rest_framework import serializers
 from borghive.models import (Repository, RepositoryLocation, RepositoryUser)
 from borghive.models.key import SSHPublicKey
 
+from django.contrib.auth.models import Group
+
 
 class RepositorySerializer(SimpleHyperlinkedModelSerializer):
     """
@@ -15,6 +17,7 @@ class RepositorySerializer(SimpleHyperlinkedModelSerializer):
 
     owner = SimpleOwnerSerializer(read_only=True)
     group = SimpleGroupSerializer(many=True, read_only=True)
+    group_id = serializers.PrimaryKeyRelatedField(source='group', queryset=Group.objects.all(), write_only=True, many=True, required=False)
 
     location = SimpleHyperlinkedModelSerializer(model=RepositoryLocation, fields='__all__', read_only=True)
     location_id = serializers.PrimaryKeyRelatedField(source='location', queryset=RepositoryLocation.objects.all(), write_only=True)
