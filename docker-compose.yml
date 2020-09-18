@@ -10,9 +10,7 @@ services:
       - .env
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.base
+    image: bpereto/borg-hive:0.1
     env_file:
       - .env
     volumes:
@@ -25,9 +23,7 @@ services:
       - db
 
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile.base
+    image: bpereto/borg-hive:0.1
     entrypoint: celery worker -A core -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - .env
@@ -38,9 +34,7 @@ services:
       - db
 
   watcher:
-    build:
-      context: .
-      dockerfile: Dockerfile.base
+    image: bpereto/borg-hive:0.1
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
     env_file:
       - .env
@@ -50,9 +44,7 @@ services:
       - db
 
   borg:
-    build:
-      context: .
-      dockerfile: Dockerfile.borg
+    image: bpereto/borg-hive:borg-0.1
     depends_on:
       - db
     env_file:
