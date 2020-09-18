@@ -15,7 +15,7 @@ services:
       - .env
     volumes:
       - borg-config:/config
-      - borg-repos:${REPO_PATH}
+      - borg-repos:/repos
       - static:/staticfiles
     ports:
       - "8000:8000"
@@ -29,17 +29,19 @@ services:
       - .env
     volumes:
       - borg-config:/config
-      - borg-repos:${REPO_PATH}:ro
+      - borg-repos:/repos:ro
     depends_on:
       - db
 
   watcher:
     image: bpereto/borg-hive:0.1
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
+    environment:
+      - REPO_PATH=/repos
     env_file:
       - .env
     volumes:
-      - borg-repos:${REPO_PATH}:ro
+      - borg-repos:/repos:ro
     depends_on:
       - db
 
@@ -50,7 +52,7 @@ services:
     env_file:
       - .env
     volumes:
-      - borg-repos:${REPO_PATH}
+      - borg-repos:/repos
       - borg-config:/config
     ports:
       - "${BORG_SSH_PORT}:22"
