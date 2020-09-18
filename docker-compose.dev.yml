@@ -57,10 +57,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
+    entrypoint: /bin/bash -c "/app/manage.py watch_repositories"
     environment:
       - APP_LOG_LEVEL=DEBUG
-      - REPO_PATH=/repos
       - MYSQL_HOST=db
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
