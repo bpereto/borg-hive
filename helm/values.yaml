@@ -67,7 +67,6 @@ app:
     user: "borghive"
     name: "borghive"
   debug: 1
-  repoPath: "/repos"
   logLevel: "INFO"
   allowedHosts: "*"
   email:

@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """arguments parser"""
-        parser.add_argument('--repo-path', type=str)
+        parser.add_argument('--repo-path', type=str, default='/repos')
 
     def get_repo_by_path(self, path):  # pylint: disable=no-self-use
         """distill repo name from inotify path"""

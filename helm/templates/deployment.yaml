@@ -51,8 +51,6 @@ spec:
                   name: mariadb
             - name: "DEBUG"
               value: "{{ .Values.app.debug }}"
-            - name: "REPO_PATH"
-              value: "{{ .Values.app.repoPath }}"
             - name: "APP_LOG_LEVEL"
               value: "{{ .Values.app.logLevel }}"
             - name: "DJANGO_ALLOWED_HOSTS"
@@ -173,8 +171,6 @@ spec:
                   name: mariadb
             - name: "DEBUG"
               value: "{{ .Values.app.debug }}"
-            - name: "REPO_PATH"
-              value: "{{ .Values.app.repoPath }}"
             - name: "APP_LOG_LEVEL"
               value: "{{ .Values.app.logLevel }}"
             - name: "BORG_LDAP_HOST"
@@ -259,10 +255,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/bash", "-c"]
-          args: ["/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"]
+          args: ["/app/manage.py watch_repositories"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          env:          
+          env:
             - name: "MYSQL_DATBASE"
               value: "{{ .Values.app.db.name }}"
             - name: "MYSQL_USER"
@@ -276,8 +272,6 @@ spec:
                   name: mariadb
             - name: "DEBUG"
               value: "{{ .Values.app.debug }}"
-            - name: "REPO_PATH"
-              value: "{{ .Values.app.repoPath }}"
             - name: "APP_LOG_LEVEL"
               value: "{{ .Values.app.logLevel }}"
             - name: "CELERY_BROKER_URL"
@@ -365,8 +359,6 @@ spec:
                   name: mariadb
             - name: "DEBUG"
               value: "{{ .Values.app.debug }}"
-            - name: "REPO_PATH"
-              value: "{{ .Values.app.repoPath }}"
             - name: "APP_LOG_LEVEL"
               value: "{{ .Values.app.logLevel }}"
             - name: "CELERY_BROKER_URL"

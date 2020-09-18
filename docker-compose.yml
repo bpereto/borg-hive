@@ -35,9 +35,7 @@ services:
 
   watcher:
     image: bpereto/borg-hive:0.1
-    entrypoint: /bin/bash -c "/app/manage.py watch_repositories --repo-path=$${REPO_PATH}"
-    environment:
-      - REPO_PATH=/repos
+    entrypoint: /bin/bash -c "/app/manage.py watch_repositories"
     env_file:
       - .env
     volumes:
