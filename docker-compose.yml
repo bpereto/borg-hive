@@ -85,6 +85,28 @@ volumes:
   mariadb-data:
   ldap-data:
   ldap-config:
-  borg-repos:
   borg-config:
   static:
+  borg-repos:
+
+#
+# EXAMPLES for other repository locations (borg-repos):
+#
+# BIND MOUNT on docker host:
+#
+#  volumes:
+#    borg-repos:
+#      driver_opts:
+#        type: none
+#        o: bind
+#        device: /opt/mydata/path
+#
+# NFS MOUNT:
+#
+#   volumes:
+#     example:
+#       driver_opts:
+#         type: "nfs"
+#         o: "nfsvers=4,addr=10.40.0.199,nolock,soft,rw"
+#         device: ":/docker/example"
+#
