@@ -2,7 +2,7 @@ from api.lib.serializers import SimpleHyperlinkedModelSerializer
 from api.serializers.key import SSHPublickeySerializer
 from api.serializers.user import SimpleGroupSerializer, SimpleOwnerSerializer
 from rest_framework import serializers
-from borghive.models import (Repository, RepositoryLocation, RepositoryUser)
+from borghive.models import (Repository, RepositoryLocation, RepositoryUser, RepositoryEvent, RepositoryStatistic)
 from borghive.models.key import SSHPublicKey
 
 from django.contrib.auth.models import Group
@@ -44,3 +44,43 @@ class RepositorySerializer(SimpleHyperlinkedModelSerializer):
     class Meta:
         model = Repository
         exclude = ['last_updated', 'last_access']
+
+
+class SimpleRepositorySerializer(SimpleHyperlinkedModelSerializer):
+    """
+    show only limited fields on repository
+    """
+
+class RepositorySerializer(SimpleHyperlinkedModelSerializer):
+    """
+    serializer for repository
+
+    to selectively display fields use the deifned serializers
+    """
+ 
+    class Meta:
+        model = Repository
+        fields = ['_href', 'id', 'name']
+
+
+class RepositoryEventSerializer(SimpleHyperlinkedModelSerializer):
+    """
+    serializer for repository event
+    """
+
+    repo = RepositorySerializer(read_only=True)
+
+    class Meta:
+            model = RepositoryEvent
+            fields = '__all__'
+
+class RepositoryStatisticSerializer(SimpleHyperlinkedModelSerializer):
+    """
+    serializer for repository event
+    """
+
+    repo = RepositorySerializer(read_only=True)
+
+    class Meta:
+            model = RepositoryStatistic
+            fields = '__all__'
