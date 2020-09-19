@@ -82,5 +82,6 @@ class RepositoryStatisticSerializer(SimpleHyperlinkedModelSerializer):
     repo = RepositorySerializer(read_only=True)
 
     class Meta:
-            model = RepositoryStatistic
-            fields = '__all__'
+        model = RepositoryStatistic
+        fields = '__all__'
+        
