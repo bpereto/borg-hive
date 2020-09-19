@@ -7,8 +7,8 @@ replicaCount: 1
 image:
   repository: bpereto/borg-hive
   pullPolicy: Always
-  tag: "latest"
-  borgtag: "borg"
+  tag: "0.1.1"
+  borgtag: "borg-0.1.1"
 
 imagePullSecrets: []
 nameOverride: ""
