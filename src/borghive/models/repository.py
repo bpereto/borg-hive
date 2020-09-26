@@ -134,7 +134,6 @@ class Repository(BaseModel):
         max_length=6,
         choices=RepositoryMode.CHOICES,
         default=RepositoryMode.BORG,
-        blank=True
     )
 
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)

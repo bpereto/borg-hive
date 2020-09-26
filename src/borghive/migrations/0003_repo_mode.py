@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='repository',
             name='mode',
-            field=models.CharField(blank=True, choices=[('BORG', 'Borg'), ('IMPORT', 'Import'), ('EXPORT', 'Export')], default='BORG', max_length=6),
+            field=models.CharField(choices=[('BORG', 'Borg'), ('IMPORT', 'Import'), ('EXPORT', 'Export')], default='BORG', max_length=6),
         ),
         migrations.AlterField(
             model_name='repository',

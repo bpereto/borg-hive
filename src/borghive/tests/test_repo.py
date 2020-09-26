@@ -35,7 +35,8 @@ class RepositoryCreateTest(TestCase):
         data = {
             'name': 'testrepo',
             'ssh_keys': '2', 
-            'location': '1'
+            'location': '1',
+            'mode': 'BORG'
         }
         response = self.client.post(reverse('repository-create'), data=data)
         self.assertEqual(response.status_code, 302)
