@@ -19,3 +19,17 @@
     name: 6w9646gn
     uid: 1113
     group: 1000
+- model: borghive.repositoryuser
+  pk: 5
+  fields:
+    created: 2020-05-08 13:33:45.855725+00:00
+    name: 7w9747gn
+    uid: 1114
+    group: 1000
+- model: borghive.repositoryuser
+  pk: 6
+  fields:
+    created: 2020-05-08 13:33:45.855725+00:00
+    name: 8w9848gn
+    uid: 1115
+    group: 1000

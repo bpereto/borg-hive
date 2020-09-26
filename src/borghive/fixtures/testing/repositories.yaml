@@ -30,3 +30,35 @@
     - 4
     append_only_keys: []
     group: []
+- model: borghive.repository
+  pk: 4
+  fields:
+    created: 2020-05-08 13:33:45.993387+00:00
+    name: export
+    mode: 'EXPORT'
+    location: 1
+    repo_user: 5
+    owner: 1
+    last_updated: null
+    last_access: null
+    alert_after_days: null
+    ssh_keys:
+    - 4
+    append_only_keys: []
+    group: []
+- model: borghive.repository
+  pk: 5
+  fields:
+    created: 2020-05-08 13:33:45.993387+00:00
+    name: import
+    mode: 'IMPORT'
+    location: 1
+    repo_user: 6
+    owner: 1
+    last_updated: null
+    last_access: null
+    alert_after_days: null
+    ssh_keys:
+    - 4
+    append_only_keys: []
+    group: []
