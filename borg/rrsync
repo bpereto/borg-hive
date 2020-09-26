@@ -24,14 +24,14 @@ our $only = '';
 while (@ARGV && $ARGV[0] =~ /^-([rw])o$/) {
     my $r_or_w = $1;
     if ($only && $only ne $r_or_w) {
-	die "$0: the -ro and -wo options conflict.\n";
+	die "ERROR: the -ro and -wo options conflict.\n";
     }
     $only = $r_or_w;
     shift;
 }
 
 our $subdir = shift;
-die "$0: No subdirectory specified\n$Usage" unless defined $subdir;
+die "ERROR: No subdirectory specified\n$Usage" unless defined $subdir;
 $subdir = abs_path($subdir);
 
 # WORKAROUND: create subdir if it not exists!
@@ -164,7 +164,7 @@ $short_with_num = "[$short_with_num]" if length($short_with_num) > 1;
 
 my $write_log = -f LOGFILE && open(LOG, '>>', LOGFILE);
 
-chdir($subdir) or die "$0: Unable to chdir to restricted dir: $!\n";
+chdir($subdir) or die "ERROR: Unable to chdir to restricted dir: $!\n";
 
 my(@opts, @args);
 my $in_options = 1;
@@ -180,7 +180,7 @@ while ($command =~ /((?:[^\s\\]+|\\.[^\s\\]*)+)/g) {
     if ($_ eq '.') {
       $in_options = 0;
     } else {
-      die "$0: invalid option: '-'\n" if $_ eq '-';
+      die "ERROR: invalid option: '-'\n" if $_ eq '-';
       next if /^-$short_no_arg*(e\d*\.\w*)?$/o || /^-$short_with_num\d+$/o;
 
       my($opt,$arg) = /^--([^=]+)(?:=(.*))?$/;
@@ -207,7 +207,7 @@ while ($command =~ /((?:[^\s\\]+|\\.[^\s\\]*)+)/g) {
       }
 
       last unless $disabled; # Generate generic failure
-      die "$0: option $opt has been disabled on this server.\n";
+      die "ERROR: option $opt has been disabled on this server.\n";
     }
   } else {
     if ($subdir ne '/') {
@@ -219,10 +219,10 @@ while ($command =~ /((?:[^\s\\]+|\\.[^\s\\]*)+)/g) {
     push(@args, bsd_glob($_, GLOB_LIMIT|GLOB_NOCHECK|GLOB_BRACE|GLOB_QUOTE));
   }
 }
-die "$0: invalid rsync-command syntax or options\n" if $in_options;
+die "ERROR: invalid rsync-command syntax or options\n" if $in_options;
 
 if ($subdir ne '/') {
-    die "$0: do not use .. in any path!\n" if grep m{(^|/)\.\.(/|$)}, @args;
+    die "ERROR: do not use .. in any path!\n" if grep m{(^|/)\.\.(/|$)}, @args;
 }
 
 @args = ( '.' ) if !@args;
