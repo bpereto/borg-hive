@@ -25,6 +25,19 @@ class CommandTest(TestCase):
         management.call_command("authorized_keys_check", "--user", "6w9646gn", stdout=out)
         num_keys = out.getvalue().count('\n')
         self.assertEqual(num_keys, 2)
+        print(out.getvalue())
+
+    def test_run_authorized_keys_check_export(self):
+        out = StringIO()
+        sys.stdout = out
+        management.call_command("authorized_keys_check", "--user", "7w9747gn", stdout=out)
+        self.assertTrue('rrsync -ro' in out.getvalue())
+
+    def test_run_authorized_keys_check_import(self):
+        out = StringIO()
+        sys.stdout = out
+        management.call_command("authorized_keys_check", "--user", "8w9848gn", stdout=out)
+        self.assertTrue('rrsync -wo' in out.getvalue())
 
     def test_run_authorized_keys_check_cov(self):
         cmd = ACommand()

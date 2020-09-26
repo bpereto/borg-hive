@@ -97,6 +97,24 @@ class RepositoryUser(BaseModel):
             repo_ldap_user.save()
 
 
+class RepositoryMode:
+    """
+    desribes the repository mode
+    """
+
+    # pylint: disable=R0903
+
+    BORG = 'BORG'
+    IMPORT = 'IMPORT'
+    EXPORT = 'EXPORT'
+
+    CHOICES = [
+        (BORG, 'Borg'),
+        (IMPORT, 'Import'),
+        (EXPORT, 'Export')
+    ]
+
+
 class Repository(BaseModel):
     """
     repository model
@@ -112,6 +130,11 @@ class Repository(BaseModel):
     location = models.ForeignKey(RepositoryLocation, on_delete=models.CASCADE)
     ssh_keys = models.ManyToManyField(SSHPublicKey, related_name='ssh_keys')
     append_only_keys = models.ManyToManyField(SSHPublicKey, related_name='append_only_keys', blank=True)
+    mode = models.CharField(
+        max_length=6,
+        choices=RepositoryMode.CHOICES,
+        default=RepositoryMode.BORG,
+    )
 
     repo_user = models.OneToOneField(RepositoryUser, on_delete=models.CASCADE)
 

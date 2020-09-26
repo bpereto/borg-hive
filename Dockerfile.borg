@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install SSH, Mariadb and LDAP Deps
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs acl libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs acl libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat rsync
 
 # Install dependencies for borgbackup source installation
 RUN apt-get install -y git python3-dev libssl-dev openssl libacl1-dev libacl1 build-essential pkg-config
@@ -35,6 +35,7 @@ RUN groupadd -g 1000 borg && \
 ADD borg/sshd_config /etc/ssh/sshd_config
 ADD borg/pam-sshd.conf /etc/pam.d/sshd
 ADD borg/nsswitch.conf /etc/nsswitch.conf
+ADD borg/rrsync /usr/bin/rrsync
 
 ADD borg/init.sh /init.sh
 
