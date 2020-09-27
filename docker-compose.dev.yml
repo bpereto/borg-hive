@@ -21,7 +21,9 @@ services:
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
+      - BORGHIVE_ADMIN_PASSWORD=login
     env_file:
+      - .env
       - .dev
     volumes:
       - ./src:/app
@@ -45,6 +47,7 @@ services:
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
     env_file:
+      - .env
       - .dev
     volumes:
       - ./src:/app

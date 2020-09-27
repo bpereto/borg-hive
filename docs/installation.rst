@@ -1,6 +1,6 @@
-
+#############
 Installation
-============
+#############
 
 The application is optimized for a containerized setup.
 
@@ -12,36 +12,28 @@ There are different ways to install and run Borg-Hive:
 .. _docker:
 
 Docker
-------
+******
 
 Prerequisites: You should have docker and docker-compose installed and running.
 
 .. code-block:: bash
 
-   # Configure the environment and optionally set EMAIL or LDAP settings
+   # Configure the environment
+   # Set Admin password: BORGHIVE_ADMIN_PASSWORD=
+   # optionally set EMAIL or LDAP settings
    vi .env
 
    # start app
    docker-compose up
 
-   # wait untill both the db worker complete initialization
-   # and "waiting for connections", restart the app
-   docker-compose down; docker-compose up
-
    # wait untill the app worker is finished setting up
-
-   # change into app container
-   docker exec -it borg-hive_app_1 /bin/bash
-
-   # create superuser
-   ./manage.py createsuperuser
 
 Open the browser and navigate to your host: ex. http://localhost:8000
 
 .. _k8s:
 
 Kubernetes
-----------
+***********
 
 Prerequisites:
 
@@ -65,12 +57,13 @@ Configuration:
 
    # mariadb should be installed first
    helm install mariadb bitnami/mariadb --namespace borg-hive -f values.db.yaml
-   helm upgrade --install borg-hive . -f values.yaml --namespace borg-hive     
+   helm upgrade --install borg-hive . -f values.yaml --namespace borg-hive
 
 .. important:: :code:`helm upgrade` does regenerate the secrets (passwords) of mariadb and openldap.
                 therefore the mariadb is installed sepparate. Keep in mind: on each helm upgrade, the pods of borg-hive should be deleted (and will be recreated) to adjust the secret for openldap in the container.
 
-**Services**
+Services
+---------
 
 - The web-tier should now be accessible through the ingress.
   In this example: https://borg-hive.app.local

@@ -4,14 +4,13 @@ MAINTAINER bpereto
 # set environment variables
 ENV PYTHONDONTWRITEBYTE 1
 ENV PYTHONUNBUFFERED 1
-
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install SSH, Mariadb and LDAP Deps
-RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs acl libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat rsync
+RUN apt-get update && apt-get install -y libmariadbclient-dev python3-pip openssh-server sshfs acl libsasl2-dev python-dev libldap2-dev libssl-dev libpam-ldapd netcat rsync && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies for borgbackup source installation
-RUN apt-get install -y git python3-dev libssl-dev openssl libacl1-dev libacl1 build-essential pkg-config
+RUN apt-get update && apt-get install -y git python3-dev libssl-dev openssl libacl1-dev libacl1 build-essential pkg-config && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /app
 WORKDIR /app
@@ -19,8 +18,8 @@ COPY requirements.txt /app/
 COPY borg/requirements.txt /app/borg/requirements.txt
 
 # needed for borgbackup
-RUN pip install Cython pkgconfig
-RUN pip install -r requirements.txt -r borg/requirements.txt
+RUN pip install --no-cache Cython pkgconfig
+RUN pip install --no-cache -r requirements.txt -r borg/requirements.txt
 
 COPY src /app/
 
