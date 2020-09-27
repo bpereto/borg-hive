@@ -10,7 +10,7 @@ services:
       - .env
 
   app:
-    image: bpereto/borg-hive:0.1.1
+    image: bpereto/borg-hive:0.1.2
     env_file:
       - .env
     volumes:
@@ -23,7 +23,7 @@ services:
       - db
 
   worker:
-    image: bpereto/borg-hive:0.1.1
+    image: bpereto/borg-hive:0.1.2
     entrypoint: celery worker -A core -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - .env
@@ -34,7 +34,7 @@ services:
       - db
 
   watcher:
-    image: bpereto/borg-hive:0.1.1
+    image: bpereto/borg-hive:0.1.2
     entrypoint: /bin/bash -c "/app/manage.py watch_repositories"
     env_file:
       - .env
@@ -44,7 +44,7 @@ services:
       - db
 
   borg:
-    image: bpereto/borg-hive:borg-0.1.1
+    image: bpereto/borg-hive:borg-0.1.2
     depends_on:
       - db
     env_file:
