@@ -58,6 +58,8 @@ spec:
               value: "{{ .Values.app.logLevel }}"
             - name: "DJANGO_ALLOWED_HOSTS"
               value: "{{ .Values.app.allowedHosts }}"
+            - name: "BORGHIVE_ADMIN_USER"
+              value: {{ .Values.app.admin_user| default "admin" | quote }}
             - name: "BORGHIVE_ADMIN_PASSWORD"
               valueFrom:
                 secretKeyRef:
