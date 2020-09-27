@@ -37,6 +37,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          #envFrom:
+          #  - configMapRef:
+          #    name: app-config
           env:          
             - name: "MYSQL_DATBASE"
               value: "{{ .Values.app.db.name }}"
@@ -55,6 +58,16 @@ spec:
               value: "{{ .Values.app.logLevel }}"
             - name: "DJANGO_ALLOWED_HOSTS"
               value: "{{ .Values.app.allowedHosts }}"
+            - name: "BORGHIVE_ADMIN_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: BORGHIVE_ADMIN_PASSWORD
+                  name: borg-hive-app
+            - name: "SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  key: SECRET_KEY
+                  name: borg-hive-app
             - name: "LDAP_HOST"
               value: "ldap://borg-hive-openldap"
             - name: "LDAP_PASSWORD"
