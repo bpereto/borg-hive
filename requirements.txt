@@ -11,7 +11,7 @@ celery==4.4.2             # via -r requirements.txt, django-celery-beat
 certifi==2020.4.5.1       # via -r requirements.txt, requests
 cffi==1.14.0              # via -r requirements.txt, cryptography
 chardet==3.0.4            # via -r requirements.txt, requests
-cryptography==2.9.2       # via -r requirements.txt, sshpubkeys
+cryptography==3.2       # via -r requirements.txt, sshpubkeys
 django-celery-beat==2.0.0  # via -r requirements.txt
 django-crispy-forms==1.9.0  # via -r requirements.txt
 django-extensions==2.2.9  # via -r requirements.txt
