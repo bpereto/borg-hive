@@ -1,9 +1,16 @@
-db:
+db: # legacy
   name: borghive
   user: borghive
 
+auth:
+  database: borghive
+  username: borghive
+
 image:
   debug: false
+
+replication:
+  enabled: false
 
 #master:
 #  extraFlags: "--skip-grant-tables"

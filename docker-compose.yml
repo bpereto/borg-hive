@@ -42,6 +42,7 @@ services:
       - borg-repos:/repos:ro
     depends_on:
       - db
+    restart: 'on-failure'
 
   borg:
     image: bpereto/borg-hive:borg-0.1.2
