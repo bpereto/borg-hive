@@ -34,7 +34,7 @@ echo ""
 if [[ ! -z "${MYSQL_DATABASE}" ]]; then
   echo -n "Waiting for database"
 
-  until echo "select 1;" | ./manage.py dbshell > /dev/null
+  until echo "select 1;" | ./manage.py dbshell >/dev/null 2>&1
   do
     echo -n "."
     sleep 1

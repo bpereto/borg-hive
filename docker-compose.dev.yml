@@ -67,6 +67,7 @@ services:
       - MYSQL_DATABASE=borghive
       - MYSQL_USER=borghive
       - MYSQL_PASSWORD=borghive
+    restart: 'on-failure'
     volumes:
       - ./src:/app
       - borg-repos:/repos:ro

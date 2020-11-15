@@ -40,7 +40,7 @@ spec:
           #envFrom:
           #  - configMapRef:
           #    name: app-config
-          env:          
+          env:
             - name: "MYSQL_DATBASE"
               value: "{{ .Values.app.db.name }}"
             - name: "MYSQL_USER"
@@ -116,11 +116,21 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: {{ include "borg-hive.fullname" . }}-config
+          {{- if .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
+          {{- end}}  
         - name: {{ include "borg-hive.fullname" . }}-repos
+          {{- if .Values.persistence.repos.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.repos.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
+          {{- end}}  
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -215,11 +225,21 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: {{ include "borg-hive.fullname" . }}-config
+          {{- if .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
+          {{- end}}  
         - name: {{ include "borg-hive.fullname" . }}-repos
+          {{- if .Values.persistence.repos.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.repos.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
+          {{- end}}  
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -302,11 +322,21 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: {{ include "borg-hive.fullname" . }}-config
+          {{- if .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
+          {{- end}}  
         - name: {{ include "borg-hive.fullname" . }}-repos
+          {{- if .Values.persistence.repos.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.repos.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
+          {{- end}}  
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -403,11 +433,21 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: {{ include "borg-hive.fullname" . }}-config
+          {{- if .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
+          {{- end}}  
         - name: {{ include "borg-hive.fullname" . }}-repos
+          {{- if .Values.persistence.repos.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.repos.existingClaim }}
+          {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
+          {{- end}}  
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

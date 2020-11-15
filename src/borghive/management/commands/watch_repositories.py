@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 import inotify.adapters
 from inotify.calls import InotifyError
@@ -113,3 +114,4 @@ class Command(BaseCommand):
                         LOGGER.exception(exc)
             except InotifyError as exc:
                 LOGGER.exception(exc)
+                sys.exit(255)
