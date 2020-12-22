@@ -21,7 +21,7 @@ django-polymorphic==2.1.2  # via -r requirements.txt
 django-timezone-field==4.0  # via -r requirements.txt, django-celery-beat
 django==3.0.7             # via -r requirements.txt, django-celery-beat, django-ldapdb, django-polymorphic, django-timezone-field, djangorestframework
 djangorestframework-queryfields==1.0.0  # via -r requirements.txt
-djangorestframework==3.11.0  # via -r requirements.txt
+djangorestframework==3.12.2  # via -r requirements.txt
 ecdsa==0.15               # via -r requirements.txt, sshpubkeys
 environs==7.4.0           # via -r requirements.txt
 idna==2.9                 # via -r requirements.txt, requests
@@ -45,5 +45,6 @@ rules==2.2                # via -r requirements.txt
 six==1.14.0               # via -r requirements.txt, cryptography, django-extensions, ecdsa, python-dateutil
 sqlparse==0.3.1           # via -r requirements.txt, django
 sshpubkeys==3.1.0         # via -r requirements.txt
+uritemplate==3.0.1        # via -r requirements.txt
 urllib3==1.25.9           # via -r requirements.txt, requests
 vine==1.3.0               # via -r requirements.txt, amqp, celery
