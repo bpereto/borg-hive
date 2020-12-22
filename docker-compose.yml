@@ -24,7 +24,7 @@ services:
 
   worker:
     image: bpereto/borg-hive:0.1.2
-    entrypoint: celery worker -A core -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    entrypoint: celery -A core worker -l INFO -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - .env
     volumes:

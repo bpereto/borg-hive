@@ -39,7 +39,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    entrypoint: celery worker -A core -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    entrypoint: celery -A core worker -l DEBUG -B --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
       - DEBUG=True
       - MYSQL_HOST=db
