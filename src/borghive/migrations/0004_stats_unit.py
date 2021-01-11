@@ -7,7 +7,7 @@ import ldapdb.models.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('borghive', '0002_append_only'),
+        ('borghive', '0003_repo_mode'),
     ]
 
     operations = [
