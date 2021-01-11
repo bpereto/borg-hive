@@ -26,7 +26,7 @@ class RepositoryListView(BaseView, ListView):
     def get_total_usage(self):  # pylint: disable=no-self-use
         """get total usage from repostatistic of all repos"""
         total_size = 0
-        for repo in Repository.objects.all():
+        for repo in Repository.objects.by_owner_or_group(user=self.request.user):
             stat = repo.get_last_repository_statistic()
             if stat:
                 total_size += stat.repo_size

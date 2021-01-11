@@ -8,6 +8,7 @@ from django.db import models
 
 from borghive.lib.validators import ssh_public_key_validator
 from borghive.models.base import BaseModel
+from borghive.managers import OwnerOrGroupManager
 
 LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +36,8 @@ class SSHPublicKey(BaseModel):
 
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
     group = models.ManyToManyField(Group, blank=True)
+
+    objects = OwnerOrGroupManager()
 
     def __str__(self):
         """representation"""

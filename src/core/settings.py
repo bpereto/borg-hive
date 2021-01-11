@@ -50,8 +50,10 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_celery_beat',
     'crispy_forms',
+    'rest_framework',
     'rules',
-    'borghive',
+    'api',
+    'borghive'
 ]
 
 MIDDLEWARE = [
@@ -194,6 +196,11 @@ LOGGING = {
             'propagate': True,
             'level': env('APP_LOG_LEVEL', 'DEBUG')
         },
+        'api': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': env('APP_LOG_LEVEL', 'DEBUG')
+        },
         'rules': {
             'handlers': ['console'],
             'propagate': True,
@@ -217,7 +224,7 @@ handler500 = 'borghive.views.error.error505'
 BORGHIVE = {
     'CONFIG_PATH': env('CONFIG_PATH', '/config'),
     'REPO_PATH': env('BORGHIVE_REPO_PATH', '/repos'),
-    'SSH_PUBLIC_KEY_REGEX': r'^((ssh|ecdsa)-[a-zA-Z0-9-]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@]+)?$',
+    'SSH_PUBLIC_KEY_REGEX': r'^((ssh|ecdsa)-[a-zA-Z0-9-]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@_\.]+)?$',
     'LDAP_USER_BASEDN': env('BORGHIVE_LDAP_USER_BASEDN', 'dc=borghive,dc=local')
 }
 
@@ -232,3 +239,10 @@ EMAIL_USE_SSL = True  # disallow unsecure communication!
 EMAIL_FROM = env('EMAIL_FROM', 'borghive@{}'.format(socket.getfqdn()))
 if DEBUG:
     EMAIL_BACKEND = env('EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')
+
+#
+# DJANGO REST FRAMEWORK SETTINGS
+#
+REST_FRAMEWORK = {
+    'URL_FIELD_NAME': '_href'
+}

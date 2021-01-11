@@ -18,6 +18,7 @@ import borghive.lib.rules
 from borghive.lib.user import generate_userid
 from borghive.models.base import BaseModel
 from borghive.models.ldap import RepositoryLdapUser
+from borghive.managers import OwnerOrGroupManager
 
 from .key import SSHPublicKey
 
@@ -146,6 +147,8 @@ class Repository(BaseModel):
 
     alert_after_days = models.IntegerField(null=True, blank=True)  # days
 
+    objects = OwnerOrGroupManager()
+
     def __str__(self):
         """representation"""
         return 'Repository: {}'.format(self.name)
@@ -231,7 +234,7 @@ class Repository(BaseModel):
             self.save()
 
             # create statistic
-            statistic = RepositoryStatistic(repo_size=self.get_repo_size())
+            statistic = RepositoryStatistic(repo_size=self.get_repo_size(), repo_size_unit="MB")
             statistic.repo = self
             statistic.save()
         else:
@@ -328,6 +331,7 @@ class RepositoryStatistic(BaseModel):
     repository statistic
     """
     repo_size = models.IntegerField()  # mega bytes
+    repo_size_unit = models.CharField(max_length=3)
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
 
     def __str__(self):
