@@ -33,6 +33,7 @@ limit-inference-results=100
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
 load-plugins=pylint_django
+django-settings-module=core.settings
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -144,7 +145,8 @@ disable=print-statement,
         wildcard-import,
         missing-module-docstring,
         invalid-name,
-        too-many-ancestors
+        too-many-ancestors,
+        imported-auth-user
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
