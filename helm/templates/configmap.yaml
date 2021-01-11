@@ -1,0 +1,14 @@
+{{- $fullName := include "borg-hive.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}-app-config
+  labels:
+    app.kubernetes.io/name: {{ include "borg-hive.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "borg-hive.chart" . }}
+data:
+  MYSQL_DATBASE: {{ .Values.app.db.name }}
+  MYSQL_USER: {{ .Values.app.db.user }}
+  MYSQL_HOST: {{ .Values.app.db.host }}
