@@ -224,7 +224,7 @@ handler500 = 'borghive.views.error.error505'
 BORGHIVE = {
     'CONFIG_PATH': env('CONFIG_PATH', '/config'),
     'REPO_PATH': env('BORGHIVE_REPO_PATH', '/repos'),
-    'SSH_PUBLIC_KEY_REGEX': r'^((ssh|ecdsa)-[a-zA-Z0-9-]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@]+)?$',
+    'SSH_PUBLIC_KEY_REGEX': r'^((ssh|ecdsa)-[a-zA-Z0-9-]+) (AAAA[0-9A-Za-z+/=]+)( [\w\-@_\.]+)?$',
     'LDAP_USER_BASEDN': env('BORGHIVE_LDAP_USER_BASEDN', 'dc=borghive,dc=local')
 }
 

@@ -53,7 +53,6 @@ class RepositoryUser(BaseModel):
     uid = models.IntegerField(unique=True)
     group = models.IntegerField(default=1000)
 
-
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.generate_username()

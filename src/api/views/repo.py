@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from api.lib.viewsets import SimpleHyperlinkedModelViewSet
 from api.router import router
-from api.serializers import RepositorySerializer, RepositoryEventSerializer, RepositoryStatisticSerializer, SimpleHyperlinkedModelSerializer
+from api.serializers import RepositorySerializer, RepositoryEventSerializer, RepositoryStatisticSerializer
 from borghive.models import Repository, RepositoryLocation, RepositoryUser, RepositoryEvent, RepositoryStatistic
 
 LOGGER = logging.getLogger(__name__)
@@ -18,6 +18,9 @@ class RepositoryViewSet(SimpleHyperlinkedModelViewSet):
     """
     repository viewset
     """
+
+    # pylint: disable=unused-argument
+
     queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
     model = Repository
@@ -27,15 +30,21 @@ class RepositoryViewSet(SimpleHyperlinkedModelViewSet):
 
     @action(methods=['get'], detail=True)
     def events(self, request, pk=None):
+        """
+        detail view on repository events
+        """
         events = self.get_object().repositoryevent_set.all()
-        serializer =  RepositoryEventSerializer(events, many=True, context={'request': request})
-        return Response(serializer.data) 
+        serializer = RepositoryEventSerializer(events, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @action(methods=['get'], detail=True)
     def statistics(self, request, pk=None):
+        """
+        detail view on repository statistics
+        """
         stats = self.get_object().repositorystatistic_set.all()
-        serializer =  RepositoryStatisticSerializer(stats, many=True, context={'request': request})
-        return Response(serializer.data) 
+        serializer = RepositoryStatisticSerializer(stats, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
 class RepositoryUserViewSet(SimpleHyperlinkedModelViewSet):

@@ -21,6 +21,7 @@ class SSHPublicKeyViewSet(SimpleHyperlinkedModelViewSet):
     def get_queryset(self):
         return SSHPublicKey.objects.by_owner_or_group(self.request.user)
 
+
 router.register('sshpublickeys', SSHPublicKeyViewSet)
 
 # for view in map(__module__.__dict__.get, __all__):

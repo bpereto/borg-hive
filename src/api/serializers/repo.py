@@ -1,11 +1,12 @@
+from django.contrib.auth.models import Group
+from rest_framework import serializers
+
 from api.lib.serializers import SimpleHyperlinkedModelSerializer
 from api.serializers.key import SSHPublickeySerializer
 from api.serializers.user import SimpleGroupSerializer, SimpleOwnerSerializer
-from rest_framework import serializers
-from borghive.models import (Repository, RepositoryLocation, RepositoryUser, RepositoryEvent, RepositoryStatistic)
+from borghive.models import (Repository, RepositoryEvent, RepositoryLocation,
+                             RepositoryStatistic, RepositoryUser)
 from borghive.models.key import SSHPublicKey
-
-from django.contrib.auth.models import Group
 
 
 class RepositorySerializer(SimpleHyperlinkedModelSerializer):
@@ -17,18 +18,24 @@ class RepositorySerializer(SimpleHyperlinkedModelSerializer):
 
     owner = SimpleOwnerSerializer(read_only=True)
     group = SimpleGroupSerializer(many=True, read_only=True)
-    group_id = serializers.PrimaryKeyRelatedField(source='group', queryset=Group.objects.all(), write_only=True, many=True, required=False)
+    group_id = serializers.PrimaryKeyRelatedField(
+        source='group', queryset=Group.objects.all(), write_only=True, many=True, required=False)
 
-    location = SimpleHyperlinkedModelSerializer(model=RepositoryLocation, fields='__all__', read_only=True)
-    location_id = serializers.PrimaryKeyRelatedField(source='location', queryset=RepositoryLocation.objects.all(), write_only=True)
+    location = SimpleHyperlinkedModelSerializer(
+        model=RepositoryLocation, fields='__all__', read_only=True)
+    location_id = serializers.PrimaryKeyRelatedField(
+        source='location', queryset=RepositoryLocation.objects.all(), write_only=True)
 
-    repo_user = SimpleHyperlinkedModelSerializer(model=RepositoryUser, fields='__all__', read_only=True)
+    repo_user = SimpleHyperlinkedModelSerializer(
+        model=RepositoryUser, fields='__all__', read_only=True)
 
     ssh_keys = SSHPublickeySerializer(many=True, read_only=True)
-    ssh_keys_id = serializers.PrimaryKeyRelatedField(source='ssh_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
+    ssh_keys_id = serializers.PrimaryKeyRelatedField(
+        source='ssh_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
 
     append_only_keys = SSHPublickeySerializer(many=True, read_only=True)
-    append_only_keys_id = serializers.PrimaryKeyRelatedField(source='append_only_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
+    append_only_keys_id = serializers.PrimaryKeyRelatedField(
+        source='append_only_keys', queryset=SSHPublicKey.objects.all(), write_only=True, many=True, required=False)
 
     def create(self, validated_data, *args, **kwargs):
         """
@@ -39,6 +46,7 @@ class RepositorySerializer(SimpleHyperlinkedModelSerializer):
         repo_user.save()
         validated_data['repo_user'] = repo_user
         validated_data['owner'] = self.context['request'].user
+        print(validated_data['owner'])
         return super().create(validated_data, *args, **kwargs)
 
     class Meta:
@@ -51,17 +59,6 @@ class SimpleRepositorySerializer(SimpleHyperlinkedModelSerializer):
     show only limited fields on repository
     """
 
-class RepositorySerializer(SimpleHyperlinkedModelSerializer):
-    """
-    serializer for repository
-
-    to selectively display fields use the deifned serializers
-    """
- 
-    class Meta:
-        model = Repository
-        fields = ['_href', 'id', 'name']
-
 
 class RepositoryEventSerializer(SimpleHyperlinkedModelSerializer):
     """
@@ -71,8 +68,9 @@ class RepositoryEventSerializer(SimpleHyperlinkedModelSerializer):
     repo = RepositorySerializer(read_only=True)
 
     class Meta:
-            model = RepositoryEvent
-            fields = '__all__'
+        model = RepositoryEvent
+        fields = '__all__'
+
 
 class RepositoryStatisticSerializer(SimpleHyperlinkedModelSerializer):
     """
@@ -84,4 +82,3 @@ class RepositoryStatisticSerializer(SimpleHyperlinkedModelSerializer):
     class Meta:
         model = RepositoryStatistic
         fields = '__all__'
-        
