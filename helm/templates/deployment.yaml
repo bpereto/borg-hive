@@ -122,7 +122,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
-          {{- end}}  
+          {{- end}}
         - name: {{ include "borg-hive.fullname" . }}-repos
           {{- if .Values.persistence.repos.existingClaim }}
           persistentVolumeClaim:
@@ -130,7 +130,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
-          {{- end}}  
+          {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -182,7 +182,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          env:          
+          env:
             - name: "MYSQL_DATBASE"
               value: "{{ .Values.app.db.name }}"
             - name: "MYSQL_USER"
@@ -231,7 +231,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
-          {{- end}}  
+          {{- end}}
         - name: {{ include "borg-hive.fullname" . }}-repos
           {{- if .Values.persistence.repos.existingClaim }}
           persistentVolumeClaim:
@@ -239,7 +239,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
-          {{- end}}  
+          {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -328,7 +328,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
-          {{- end}}  
+          {{- end}}
         - name: {{ include "borg-hive.fullname" . }}-repos
           {{- if .Values.persistence.repos.existingClaim }}
           persistentVolumeClaim:
@@ -336,7 +336,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
-          {{- end}}  
+          {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -387,10 +387,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/bash", "-c"]
-          args: ["celery worker -A core -B --scheduler django_celery_beat.schedulers:DatabaseScheduler"]
+          args: ["celery -A core worker -B --scheduler django_celery_beat.schedulers:DatabaseScheduler"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          env:          
+          env:
             - name: "MYSQL_DATBASE"
               value: "{{ .Values.app.db.name }}"
             - name: "MYSQL_USER"
@@ -439,7 +439,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-config
-          {{- end}}  
+          {{- end}}
         - name: {{ include "borg-hive.fullname" . }}-repos
           {{- if .Values.persistence.repos.existingClaim }}
           persistentVolumeClaim:
@@ -447,7 +447,7 @@ spec:
           {{- else}}
           persistentVolumeClaim:
             claimName: {{ include "borg-hive.fullname" . }}-repos
-          {{- end}}  
+          {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
