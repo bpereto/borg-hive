@@ -5,7 +5,7 @@ django-extensions==3.1.0
 django-ldapdb==1.5.1
 django-login-required-middleware==0.5.0
 django-polymorphic==3.0.0
-django==3.1.4
+django==3.1.6
 djangorestframework-queryfields==1.0.0
 djangorestframework==3.12.2
 environs==9.2.0
