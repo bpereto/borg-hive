@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
         i = inotify.adapters.InotifyTree(options['repo_path'])
 
-        while True and not settings.TEST_MODE:
+        while True and not settings.TEST_MODE:  # noqa
             try:
                 for event in i.event_gen(yield_nones=False):
 
