@@ -1,0 +1,6 @@
+recommonmark==0.7.1       # via -r docs/requirements.txt
+sphinx-rtd-theme==0.5.2   # via -r docs/requirements.txt
+sphinx==3.5.4             # via -r docs/requirements.txt, recommonmark, sphinx-rtd-theme
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
