@@ -48,7 +48,7 @@ django-polymorphic==3.0.0
     # via -r requirements.in
 django-timezone-field==4.1.2
     # via django-celery-beat
-django==3.1.4
+django==3.1.8
     # via
     #   -r requirements.in
     #   django-celery-beat
