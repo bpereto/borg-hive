@@ -119,7 +119,7 @@ sshpubkeys==3.3.1
     # via -r requirements.in
 uritemplate==3.0.1
     # via -r requirements.in
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 vine==5.0.0
     # via

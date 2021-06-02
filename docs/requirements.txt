@@ -36,16 +36,16 @@ pyparsing==2.4.7
 pytz==2021.1
     # via babel
 recommonmark==0.7.1
-    # via -r requirements.in.txt
+    # via -r docs/requirements.in
 requests==2.25.1
     # via sphinx
 snowballstemmer==2.1.0
     # via sphinx
 sphinx-rtd-theme==0.5.2
-    # via -r requirements.in.txt
+    # via -r docs/requirements.in
 sphinx==3.5.4
     # via
-    #   -r requirements.in.txt
+    #   -r docs/requirements.in
     #   recommonmark
     #   sphinx-rtd-theme
 sphinxcontrib-applehelp==1.0.2
@@ -60,7 +60,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.4
     # via sphinx
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
