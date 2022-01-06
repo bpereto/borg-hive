@@ -4,13 +4,13 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.0.6
+amqp==5.0.9
     # via kombu
 asgiref==3.3.4
     # via django
 billiard==3.6.4.0
     # via celery
-celery==5.1.0
+celery==5.2.2
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -20,7 +20,7 @@ cffi==1.14.5
     # via cryptography
 chardet==4.0.0
     # via requests
-click==7.1.2
+click==8.0.3
     # via
     #   celery
     #   click-didyoumean
@@ -69,7 +69,7 @@ idna==2.10
     # via requests
 inotify==0.2.10
     # via -r requirements.in
-kombu==5.1.0
+kombu==5.2.3
     # via celery
 marshmallow==3.12.1
     # via environs
