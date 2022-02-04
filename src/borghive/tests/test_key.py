@@ -96,13 +96,13 @@ class SSHPublicKeyTest(TestCase):
         response = self.client.post(reverse('key-create'), data=data)
         self.assertEqual(SSHPublicKey.objects.count(), 1)
 
-    def test_create_invalid_key_commentspace(self):
+    def test_create_valid_key_commentspace(self):
         data = {
             'name': 'key-ed25519-xx',
             'public_key': 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJy2GMJLrWk7AiHWRA8crkfxcbqGfx8mCR4/ox3C9pZe asdf@asdf asdf asdf'
         }
         response = self.client.post(reverse('key-create'), data=data)
-        self.assertEqual(SSHPublicKey.objects.count(), 0)
+        self.assertEqual(SSHPublicKey.objects.count(), 1)
 
     def test_invalid_key(self):
         data = {
