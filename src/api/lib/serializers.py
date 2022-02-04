@@ -44,14 +44,14 @@ class SimpleModelSerializer(QueryFieldsMixin, ModelSerializer):  # pylint: disab
         name.
         '''
         field_class, field_kwargs = super().build_url_field(field_name, model_class)
-        field_kwargs['view_name'] = '{}:{}'.format(self.namespace, field_kwargs['view_name'])
+        field_kwargs['view_name'] = f'{self.namespace}:{field_kwargs["view_name"]}'
         return field_class, field_kwargs
 
     def build_relational_field(self, field_name, relation_info):
         field_class, field_kwargs = super().build_relational_field(field_name, relation_info)
 
         if hasattr(field_kwargs, 'view_name'):
-            field_kwargs['view_name'] = '{}:{}'.format(self.namespace, field_kwargs['view_name'])
+            field_kwargs['view_name'] = f'{self.namespace}:{field_kwargs["view_name"]}'
 
         return field_class, field_kwargs
 

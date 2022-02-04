@@ -24,7 +24,7 @@ class Pushover():
         """pushover to the rescue"""
         LOGGER.debug('send pushover notification: user=%s token=%s', self.user, self.token)
 
-        url = '{}:{}/1/messages.json'.format(self.base_uri, self.port)
+        url = f'{self.base_uri}:{self.port}/1/messages.json'
 
         # parse config
         data = {

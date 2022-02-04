@@ -41,7 +41,7 @@ def fire_alert(repo_id, alert_id):
     notifications = EmailNotification.objects.filter(owner=owner)
     LOGGER.debug('found notifications: %s', notifications)
 
-    subject = 'Missing backup for {}'.format(repo.name)
+    subject = f'Missing backup for {repo.name}'
     message = alert.message
     for messenger in notifications:
         messenger.notify(subject=subject, message=message)

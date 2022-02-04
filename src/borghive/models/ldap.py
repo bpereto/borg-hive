@@ -34,4 +34,4 @@ class RepositoryLdapUser(ldapdb.models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return 'RepositoryLdapUser: {0.dn}: uid={0.uid} gid={0.group}'.format(self)
+        return f'RepositoryLdapUser: {self.dn}: uid={self.uid} gid={self.group}'

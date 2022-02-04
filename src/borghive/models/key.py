@@ -41,7 +41,7 @@ class SSHPublicKey(BaseModel):
 
     def __str__(self):
         """representation"""
-        return 'SSHPublicKey: {}'.format(self.name)
+        return f'SSHPublicKey: {self.name}'
 
     def save(self, *args, **kwargs):  # pylint: disable=signature-differs
         """override save to parse public key"""

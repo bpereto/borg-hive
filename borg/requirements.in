@@ -1,2 +1,2 @@
-borgbackup==1.1.14
+borgbackup==1.2.0b4
 mysql-connector==2.2.9

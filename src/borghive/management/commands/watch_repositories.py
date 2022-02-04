@@ -45,8 +45,7 @@ class Command(BaseCommand):
         '''
 
         if not os.path.isdir(options['repo_path']):
-            raise Exception(
-                'Repo path: {} not found'.format(options['repo_path']))
+            raise Exception(f'Repo path: {options["repo_path"]} not found')
 
         i = inotify.adapters.InotifyTree(options['repo_path'])
 
