@@ -31,7 +31,7 @@ class NotificationBaseView(BaseView):
         """form valid function"""
         form.instance.owner = self.request.user
         messages.add_message(self.request, messages.SUCCESS,
-                             'Added: {}'.format(form.instance))
+                             f'Added: {form.instance}')
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -150,7 +150,7 @@ class NotificationTestView(View, SingleObjectMixin):
         self.object = self.get_object(queryset=self.model.objects.filter(id=kwargs['pk']))
         try:
             self.object.notify(**self.object.get_test_params())
-            messages.add_message(self.request, messages.SUCCESS, 'Sent {}'.format(self.object))
+            messages.add_message(self.request, messages.SUCCESS, f'Sent {self.object}')
         except Exception:
             messages.add_message(self.request, messages.ERROR, 'Test failed.')
         return redirect(reverse('notification-list'))

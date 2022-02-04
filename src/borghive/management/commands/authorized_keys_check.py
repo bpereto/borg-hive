@@ -26,7 +26,7 @@ class Command(BaseCommand):
         LOGGER.debug('repo %s@%s has mode: %s', user, user.repository, user.repository.mode)
 
         # import / export mode
-        if user.repository.mode == RepositoryMode.IMPORT or user.repository.mode == RepositoryMode.EXPORT:
+        if user.repository.mode in (RepositoryMode.IMPORT, RepositoryMode.EXPORT):
 
             # add rrsync wrapper for import or export
             for key in user.repository.ssh_keys.all():
@@ -53,7 +53,7 @@ class Command(BaseCommand):
                 command_options = ['borg serve --umask 007']
 
                 # restrict path
-                command_options.append('--restrict-to-repository {}'.format(user.repository.get_repo_path()))
+                command_options.append(f'--restrict-to-repository {user.repository.get_repo_path()}')
 
                 authorized_keys_line = KEY_CMD_PREFIX + \
                     ' '.join(command_options) + KEY_CMD_POSTFIX + key.public_key
@@ -69,7 +69,7 @@ class Command(BaseCommand):
                 command_options.append('--append-only')
 
                 # restrict path
-                command_options.append('--restrict-to-repository {}'.format(user.repository.get_repo_path()))
+                command_options.append(f'--restrict-to-repository {user.repository.get_repo_path()}')
 
                 authorized_keys_line = KEY_CMD_PREFIX + \
                     ' '.join(command_options) + KEY_CMD_POSTFIX + key.public_key

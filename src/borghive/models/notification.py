@@ -58,7 +58,7 @@ class EmailNotification(Notification):
     email = models.EmailField()
 
     def __str__(self):
-        return 'EmailNotification: {}'.format(self.email)
+        return f'EmailNotification: {self.email}'
 
     def get_test_params(self):
         """get params for test notification"""
@@ -91,7 +91,7 @@ class PushoverNotification(Notification):
     user = models.CharField(max_length=256)
 
     def __str__(self):
-        return 'PushoverNotification: {}'.format(self.name)
+        return f'PushoverNotification: {self.name}'
 
     def get_test_params(self):
         """get params for test notification"""

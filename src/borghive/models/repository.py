@@ -64,7 +64,7 @@ class RepositoryUser(BaseModel):
 
     def __str__(self):
         """representation"""
-        return 'RepositoryUser: {}'.format(self.name)
+        return f'RepositoryUser: {self.name}'
 
     def generate_username(self):
         """generate new userid and handle duplications"""
@@ -85,7 +85,7 @@ class RepositoryUser(BaseModel):
             uid = self.MIN_UID
         if self.MIN_UID <= uid <= self.MAX_UID:
             return uid
-        raise Exception('{} no uid found betweeen MIN_UID {} and MAX_UID {}'.format(uid, self.MIN_UID, self.MAX_UID))
+        raise Exception(f'{uid} no uid found betweeen MIN_UID {self.MIN_UID} and MAX_UID {self.MAX_UID}')
 
     def sync_to_ldap(self):
         """django prevents cross db relations - sync to ldap backend"""
@@ -151,7 +151,7 @@ class Repository(BaseModel):
 
     def __str__(self):
         """representation"""
-        return 'Repository: {}'.format(self.name)
+        return f'Repository: {self.name}'
 
     def get_repo_path(self):
         '''
@@ -176,8 +176,8 @@ class Repository(BaseModel):
         '''
         if self.is_created():
             config = os.path.join(self.get_repo_path(), 'config')
-            with open(config, 'r') as f:
-                return'key =' in f.read()
+            with open(config, 'r') as f:  # pylint: disable=W1514
+                return 'key =' in f.read()
         return False
 
     def get_last_access_by_fs(self):
@@ -302,8 +302,7 @@ class Repository(BaseModel):
 
         LOGGER.info('%s: alerting', self)
         delta = timezone.now() - self.last_updated
-        alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message='Last backup of {} is older than {} days'.format(
-            self.name, delta.days), repo=self)
+        alert = RepositoryEvent(event_type=RepositoryEvent.ALERT, message=f'Last backup of {self.name} is older than {delta.days} days', repo=self)
         alert.save()
 
         borghive.tasks.alert.fire_alert.delay(
@@ -336,7 +335,7 @@ class RepositoryStatistic(BaseModel):
 
     def __str__(self):
         """representation"""
-        return 'RepositoryStatistic: {} for {}'.format(self.created, self.repo)
+        return f'RepositoryStatistic: {self.created} for {self.repo}'
 
 
 class RepositoryEvent(BaseModel):
@@ -360,4 +359,4 @@ class RepositoryEvent(BaseModel):
     repo = models.ForeignKey(Repository, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'RepositoryEvent: {}: {}'.format(self.event_type, self.message)
+        return f'RepositoryEvent: {self.event_type}: {self.message}'.format(self.event_type, self.message)
