@@ -50,7 +50,7 @@ class Command(BaseCommand):
             # add restrict to repository
             for key in user.repository.ssh_keys.all():
                 LOGGER.debug(key)
-                command_options = ['borg serve --umask=0007 ']
+                command_options = ['borg serve --umask 007']
 
                 # restrict path
                 command_options.append('--restrict-to-repository {}'.format(user.repository.get_repo_path()))
