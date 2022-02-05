@@ -109,7 +109,7 @@ services:
     volumes:
       - ldap-data:/var/lib/ldap
       - ldap-config:/etc/ldap/slapd.d
-      - /var/backups/openldap:/data/backup
+      - ldap-backup:/data/backup
 
   redis:
     image: redis:latest
@@ -118,6 +118,7 @@ volumes:
   mariadb-data:
   borg-repos:
   borg-config:
+  ldap-backup:
   ldap-data:
   ldap-config:
   static:
