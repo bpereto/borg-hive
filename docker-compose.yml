@@ -85,6 +85,7 @@ volumes:
   mariadb-data:
   ldap-data:
   ldap-config:
+  ldap-backup:
   borg-config:
   static:
   borg-repos:
