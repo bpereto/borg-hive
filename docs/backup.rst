@@ -17,6 +17,22 @@ in your `.env` file:
 
 For a backup of the config every 5th minute past the hour, a data backup every 5 minutes.
 
+Restoring an LDAP backup
+-----
+
+To restore an LDAP backup to an openldap container, run the following commands:
+
+.. code-block:: bash
+
+    docker exec -it openldap-backup bash
+    sv stop /container/run/process/slapd
+    rm -r /etc/ldap/slapd.d/*
+    slapd-restore-config 20190502T082301-config
+    sv stop /container/run/process/slapd
+    rm /var/lib/ldap/* 
+    slapd-restore-data 20190502T080901-data
+
+
 MySQL/MariaDB
 -------------
 
