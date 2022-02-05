@@ -69,12 +69,13 @@ services:
 
   ldap:
     # image: osixia/openldap:latest
-    image: osixia/openldap:1.4.0-amd64
+    image: osixia/openldap-backup:1.4.0-amd64
     env_file:
       - .env
     volumes:
       - ldap-data:/var/lib/ldap
       - ldap-config:/etc/ldap/slapd.d
+      - /var/backups/openldap:/data/backup
 
   redis:
     # image: redis:latest
