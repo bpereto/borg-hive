@@ -118,3 +118,5 @@ __pycache__
 .dev
 
 helm/charts
+
+.idea

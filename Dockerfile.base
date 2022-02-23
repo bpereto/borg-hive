@@ -1,22 +1,39 @@
-FROM python:3.9-slim
-MAINTAINER bpereto
+FROM python:3.9-slim as base
+LABEL MAINTAINER=bpereto
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONHASHSEED=random \
+    PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get install -y libmariadb-dev mariadb-client python3-pip libsasl2-dev python-dev libldap2-dev libssl-dev && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir /app /staticfiles && groupadd -g 1000 borg && \
-    useradd -rm -u 1000 -g 1000 borg && chown -R borg:borg /app /staticfiles
 WORKDIR /app
-COPY requirements.txt /app/
 
-RUN pip3 install --no-cache -r requirements.txt
+FROM base as builder
+
+ENV PIP_DEFAULT_TIMEOUT=100 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1 \
+    POETRY_VERSION=1.0.5
+
+RUN apt-get update && apt-get install -y libmariadb-dev mariadb-client python3-pip libsasl2-dev python-dev libldap2-dev libssl-dev && rm -rf /var/lib/apt/lists/*
+RUN pip3 install --no-cache "poetry==$POETRY_VERSION" wheel
+RUN python3 -m venv /venv
+
+COPY pyproject.toml poetry.lock ./
+RUN poetry export --without-hashes -f requirements.txt | /venv/bin/pip3 install --no-cache -r /dev/stdin
 
 # install uwsgi now because it takes a little while
-RUN pip3 install --no-cache uwsgi
+RUN /venv/bin/pip3 install --no-cache uwsgi
+
+FROM base as final
+
+COPY --from=builder /venv /venv
+
+RUN apt-get update && apt-get install -y mariadb-client libldap2-dev && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /staticfiles && groupadd -g 1000 borg && \
+    useradd -rm -u 1000 -g 1000 borg && chown -R borg:borg /app /staticfiles
 
 COPY src /app/
 COPY scripts/init.sh /

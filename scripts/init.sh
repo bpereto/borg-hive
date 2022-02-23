@@ -15,11 +15,14 @@ DEBUG="${DEBUG:-True}"
 MIGRATE="${MIGRATE:-True}"
 FIXTURES="${FIXTURES:-True}"
 BORGHIVE_ADMIN_USER="${BORGHIVE_ADMIN_USER:-admin}"
+VENV="${VENV:-/venv}"
 
 echo "DEBUG:     ${DEBUG}"
 echo "MIGRATE:   ${MIGRATE}"
 echo "FIXTURES:  ${FIXTURES}"
-echo ""
+echo "VENV:      ${VENV}"
+
+source ${VENV}/bin/activate
 
 #
 # STATIC FILES
