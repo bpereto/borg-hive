@@ -36,6 +36,10 @@ ADD borg/pam-sshd.conf /etc/pam.d/sshd
 ADD borg/nsswitch.conf /etc/nsswitch.conf
 ADD borg/rrsync /usr/bin/rrsync
 
+# apply patches to borg
+ADD borg/*.patch /app/
+RUN patch -p1 -d /usr/local/lib/python3.9/site-packages < /app/001-borg-log.patch
+
 ADD borg/init.sh /init.sh
 
 EXPOSE 22

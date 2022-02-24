@@ -1,0 +1,12 @@
+--- a/borg/remote.py	2022-02-23 21:08:41.001470701 +0000
++++ b/borg/remote.py	2022-02-23 21:16:36.995400679 +0000
+@@ -230,6 +230,9 @@
+                             self.repository.close()
+                         raise UnexpectedRPCDataFormatFromClient(__version__)
+                     try:
++                        sys.path.append('/app')
++                        from borghive.lib.borg_event_logger import log_rpc
++                        log_rpc(self.repository, method)
+                         if method not in self.rpc_methods:
+                             raise InvalidRPCMethod(method)
+                         try:

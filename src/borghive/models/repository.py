@@ -344,14 +344,15 @@ class RepositoryEvent(BaseModel):
     """
 
     WATCHER = 'watcher'
+    BORG = 'borg'
     ALERT = 'alert'
     NOTIFY = 'notification'
 
     EVENT_TYPES = [
         (WATCHER, 'watcher'),
+        (BORG, 'borg'),
         (ALERT, 'alert'),
         (NOTIFY, 'notification'),
-
     ]
 
     event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
