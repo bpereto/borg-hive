@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: mariadb:10.5
+    image: mariadb:latest
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
@@ -98,15 +98,18 @@ services:
       - "22:22"
 
   ldap:
-    image: osixia/openldap:latest
+    image: osixia/openldap-backup:latest
     environment:
       - LDAP_ORGANISATION=borghive
       - LDAP_DOMAIN=borghive.local
       - LDAP_ADMIN_PASSWORD=borghive
       - LDAP_READONLY_USER=true
+      - LDAP_BACKUP_CONFIG_CRON_EXP="*/5 * * * *"
+      - LDAP_BACKUP_DATA_CRON_EXP="*/5 * * * *"
     volumes:
       - ldap-data:/var/lib/ldap
       - ldap-config:/etc/ldap/slapd.d
+      - ldap-backup:/data/backup
 
   redis:
     image: redis:latest
@@ -115,6 +118,7 @@ volumes:
   mariadb-data:
   borg-repos:
   borg-config:
+  ldap-backup:
   ldap-data:
   ldap-config:
   static:
