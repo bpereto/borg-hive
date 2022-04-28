@@ -16,5 +16,6 @@ Welcome to Borg Hive's documentation!
    quickstart
    usage
    deployment
+   backup
    internals
    develop
