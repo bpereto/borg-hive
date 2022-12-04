@@ -51,7 +51,7 @@
               {% endif %}
             </td>
             <td>{{object.location}}</td>
-            <td>{{object.object.repo_user.name}}</td>
+            <td>{{object.repo_user.name}}</td>
             <td>{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</td>
             <td>
             {% for key in object.ssh_keys.all %}
