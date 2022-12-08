@@ -14,7 +14,7 @@ celery==5.2.3
     # via
     #   -r requirements.in
     #   django-celery-beat
-certifi==2021.10.8
+certifi==2022.12.7
     # via requests
 cffi==1.15.0
     # via cryptography
@@ -75,6 +75,8 @@ kombu==5.2.3
     # via celery
 marshmallow==3.14.1
     # via environs
+mysqlclient==2.0.3
+    # via -r requirements.in
 nose==1.3.7
     # via inotify
 packaging==21.3
@@ -138,4 +140,3 @@ wrapt==1.13.3
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
-mysqlclient==2.0.3
