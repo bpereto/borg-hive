@@ -36,7 +36,7 @@ cryptography==36.0.1
     # via sshpubkeys
 deprecated==1.2.13
     # via redis
-django==3.2.12
+django==3.2.15
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -75,6 +75,8 @@ kombu==5.2.3
     # via celery
 marshmallow==3.14.1
     # via environs
+mysqlclient==2.0.3
+    # via -r requirements.in
 nose==1.3.7
     # via inotify
 packaging==21.3
@@ -138,4 +140,3 @@ wrapt==1.13.3
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
-mysqlclient==2.0.3
