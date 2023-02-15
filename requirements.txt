@@ -36,7 +36,7 @@ cryptography==36.0.1
     # via sshpubkeys
 deprecated==1.2.13
     # via redis
-django==3.2.16
+django==3.2.18
     # via
     #   -r requirements.in
     #   django-celery-beat
