@@ -10,6 +10,8 @@ To keep the overview over my backups and which device haven't done one in a whil
 
 .. warning:: **This is under active development. It's Alpha!**
 
+![Screenshot of borg-hive web interface](docs/img/borghive-overview.png)
+
 Features
 --------
 * Repository Managment
