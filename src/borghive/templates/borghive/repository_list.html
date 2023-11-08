@@ -32,6 +32,7 @@
           <thead>
             <th>Name</th>
             <th>Location</th>
+            <th>Username</th>
             <th>Usage</th>
             <th>SSH-Keys</th>
             <th>Append-only Keys</th>
@@ -50,6 +51,7 @@
               {% endif %}
             </td>
             <td>{{object.location}}</td>
+            <td>{{object.repo_user.name}}</td>
             <td>{{object.get_last_repository_statistic.repo_size|humanmegabytes}}</td>
             <td>
             {% for key in object.ssh_keys.all %}
